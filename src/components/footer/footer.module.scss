@@ -1,0 +1,36 @@
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 69px; 
+  background-color: #ccc; 
+  display: flex;
+
+  .footer-add{
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 3px sold black;
+    position: absolute;
+    left: 44%;
+    top: -25px;
+    z-index: 2;
+  }
+
+  .footer-list{
+    padding-top: 20px;
+    padding-bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .footer-item{
+    width: 69px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
