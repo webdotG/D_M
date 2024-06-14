@@ -1,0 +1,91 @@
+.layout__content {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 5px;
+  height: 33px;
+  display: flex;
+  align-items: center;
+  background-color: whitesmoke;
+  z-index: 2;
+}
+
+.layout__categories {
+  display: flex;
+  align-items: center;
+
+  .modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .layout__modal {
+    list-style-type: none;
+    padding: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .layout__modal__item {
+    margin: 10px 0;
+  }
+
+  .modalToggle_btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #333;
+  }
+
+  .modalToggle_btn:hover {
+    background-color: #f0f0f0;
+  }
+
+  .modalToggle_btn:focus {
+    outline: none;
+  }
+
+  .categoryToggle-btn {
+    padding-left: 25px;
+    padding-right: 25px;
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .layout__categories-target {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+
+}
+
+.layout__toggle {
+  display: flex;
+  position: absolute;
+  right: 5px;
+  top: 5px;
+
+  .langToggle-btn,
+  .colorToggle-btn {
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+}

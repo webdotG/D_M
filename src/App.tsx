@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import WelcomePage from './pages/welcome/welcomePage';
 import LoginRegisterPage from './pages/login_register/loginRegisterPage';
 import HomePage from './pages/home/home';
-import Layout from './components/layout/layout';
+import Layout from './layout/layout';
 
 function App() {
   return (

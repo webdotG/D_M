@@ -1,17 +1,33 @@
-import { ReactNode } from 'react'
+import { ReactNode, useState, useEffect } from 'react'
 import style from './layout.module.scss'
-import Header from '../header/header'
-import Footer from '../footer/footer'
-import { Link } from 'react-router-dom'
+import Header from '../components/header/header'
+import Footer from '../components/footer/footer'
+import useCategoryStore from '../store.ts';
 
 
 type typeProps = {
   children: ReactNode
 }
 
-export default function Layout({ children }: typeProps) {
+const CATEGORY = ['cны', 'воспоминания']
 
-  const CATEGORY = ['cны', 'воспоминания']
+export default function Layout({ children }: typeProps) {
+  const { selectedCategory, setSelectedCategory } = useCategoryStore();
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+  const handleCategorySelect = (category: string) => {
+    setSelectedCategory(category);
+    setModalVisible(false);
+  };
+
+  useEffect(() => {
+    console.log('layout useEffect selectedCategory : ', selectedCategory);
+    const currentState = useCategoryStore.getState();
+    console.log('layout useEffect currentState : ', currentState);
+  }, [selectedCategory]);
 
   return (
 
@@ -20,17 +36,24 @@ export default function Layout({ children }: typeProps) {
 
         <section className={style['layout__categories']}>
 
-          <ul className={style['layout__modal']}>
-            {CATEGORY.map((category, index) => (
-              <li key={index} className={style.layout__modal__item}>
-                <button className={style['modalToggle_btn']}>
-                  {category}
-                </button>
-              </li>
-            ))}  
-          </ul>
+          {modalVisible && (
+            <div className={style.modal_overlay} onClick={toggleModal}>
+              <ul className={style.layout__modal}>
+                {CATEGORY.map((category, index) => (
+                  <li key={index} className={style.layout__modal__item}>
+                    <button className={style.modalToggle_btn}
+                      onClick={() => handleCategorySelect(category)}
+                    >
+                      {category}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
 
-          <button className={style['categoryToggle-btn']} aria-label="Переключить категории">
+
+          <button className={style['categoryToggle-btn']} onClick={toggleModal}>
             <svg viewBox="0 -6 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
               <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
                 <g transform="translate(-204.000000, -365.000000)"
@@ -43,7 +66,7 @@ export default function Layout({ children }: typeProps) {
           </button>
 
           <p className={style['layout__categories-target']}>
-            {CATEGORY[0]}
+            {selectedCategory}
           </p>
 
         </section>
@@ -73,7 +96,7 @@ export default function Layout({ children }: typeProps) {
         </ul>
 
       </div>
-      
+
       <Header />
       {children}
       <Footer />

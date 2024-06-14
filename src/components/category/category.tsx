@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Categories } from '../../TYPES/types';
+import { Categories } from '../../types';
 import style from './category.module.scss';
 
 const category: Categories = {
