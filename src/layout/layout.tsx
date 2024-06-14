@@ -4,15 +4,15 @@ import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import { useCategoryStore, useLanguageStore, useThemeStore } from '../store.ts';
 
-type typeProps = {
+type TypeProps = {
   children: ReactNode;
 };
 
 const CATEGORY = ['сны', 'воспоминания'];
-const LANGUAGES = ['Русский', 'English', 'Morder'];
-const THEMES = ['Светлая', 'Тёмная', 'Мордер'];
+const LANGUAGES = ['RU', 'EN', 'BS'];
+const THEMES = ["Светлая", "Тёмная", "Мордер"];
 
-export default function Layout({ children }: typeProps) {
+export default function Layout({ children }: TypeProps) {
   const { selectedCategory, setSelectedCategory } = useCategoryStore();
   const { language, setLanguage } = useLanguageStore();
   const { theme, setTheme } = useThemeStore();
@@ -48,7 +48,6 @@ export default function Layout({ children }: typeProps) {
     setThemeModalVisible(false);
   };
   
-
   useEffect(() => {
     console.log('layout useEffect selectedCategory, language , theme : ', selectedCategory, language, theme);
   }, [selectedCategory, language, theme]);
@@ -131,7 +130,7 @@ export default function Layout({ children }: typeProps) {
 
       </div>
 
-      <Header />
+      <Header selectedLanguage={language} />
       {children}
       <Footer />
     </div>

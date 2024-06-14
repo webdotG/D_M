@@ -11,12 +11,12 @@ type LanguageState = {
 };
 
 type ThemeState = {
-  theme: "Светлая" | "Тёмная" | "Мордер"; 
-  setTheme: (theme: "Светлая" | "Тёмная" | "Мордер") => void;
+  theme:  string; 
+  setTheme: (theme: string) => void;
 };
 
 const CATEGORY = ['сны', 'воспоминания'];
-const LANGUAGES = ['Русский', 'English', 'Morder'];
+const LANGUAGES = ['RU', 'EN', 'BS'];
 const THEMES = ['Светлая', 'Тёмная', 'Мордер'];
 
 export const useCategoryStore = create<CategoryState>((set) => ({
@@ -37,7 +37,7 @@ export const useLanguageStore = create<LanguageState>((set) => ({
 
 export const useThemeStore = create<ThemeState>((set) => ({
   theme: THEMES[1],
-  setTheme: (theme: 'Светлая' | 'Тёмная' | 'Мордер') => {
+  setTheme: (theme: string) => {
     console.log(`Store theme :  ${theme} `);
     set({ theme });
   },
