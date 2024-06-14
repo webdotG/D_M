@@ -1,5 +1,5 @@
 import translations from '../../translations.json';
-import { TranslationMap } from '../../types'; 
+import { TranslationMap } from '../../types';
 import './header.module.scss';
 
 type Props = {
@@ -8,8 +8,20 @@ type Props = {
 
 export default function Header({ selectedLanguage }: Props) {
   const translateToLanguage = (text: string): string => {
-    const languageTranslations = translations[selectedLanguage] || translations.RU;
-    return languageTranslations[text] || text;
+    if (!(selectedLanguage in translations)) {
+      throw new Error(`Язык '${selectedLanguage}' не поддерживается.`);
+    }
+
+    //переводы для выбранного языка
+    const languageTranslations = translations[selectedLanguage as keyof typeof translations];
+    
+    //текст существует в переводах для выбранного языка
+    if (!(text in languageTranslations)) {
+      throw new Error(`Перевод для текста '${text}' не найден в языке '${selectedLanguage}'.`);
+    }
+
+    return languageTranslations[text as keyof typeof languageTranslations];
+    
   };
 
   return (
