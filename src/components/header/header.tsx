@@ -1,5 +1,5 @@
 import translations from '../../translations.json';
-import './header.module.scss'; // Общие стили
+import './header.module.scss'; 
 
 type TranslationMap = {
   ru: {
@@ -29,15 +29,15 @@ export default function Header({ selectedLanguage }: Props) {
         <section className="searches">
           <form className="search-header-form">
             <label htmlFor="search" className="search-label">
-              {translateToLanguage('по буквам')}
+              {translateToLanguage('буквы')}
               <input id="search" type="text" name="search" />
             </label>
             <label htmlFor="search-date" className="search-label">
-              {translateToLanguage('по дате')}
+              {translateToLanguage('дата')}
               <input id="search-date" type="text" name="search-date" />
             </label>
             <label htmlFor="search-category" className="search-label">
-              {translateToLanguage('по категории')}
+              {translateToLanguage('категории')}
               <input id="search-category" type="text" name="search-category" />
             </label>
             <button className="search-submit" type="submit">
