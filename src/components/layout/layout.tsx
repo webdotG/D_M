@@ -16,10 +16,10 @@ export default function Layout({ children }: typeProps) {
 
       <ul className={style['layout__content']}>
         <li className={style['layout__content__item']}>
-          <Link to='/'>cны</Link>
+          <Link to='/'>cны </Link>
         </li>
         <li className={style['layout__content__item']}>
-          <Link to='/'>воспоминания</Link>
+          <Link to='/'>воспоминания </Link>
         </li>
       </ul>
       <Header />
