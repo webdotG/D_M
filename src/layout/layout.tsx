@@ -60,10 +60,10 @@ export default function Layout({ children }: TypeProps) {
 
   // для перевода текста
   const translateToLanguage = (text: string): string => {
-    const languageTranslations = translations[language] || translations.RU;
-    return languageTranslations[text] || text;
+    const languageTranslations = translations[language as keyof typeof translations] || translations.RU;
+    return languageTranslations[text as keyof typeof languageTranslations] || text;
   };
-
+  
   return (
     <div className={style['layout']}>
       <div className={style['layout__content']}>
