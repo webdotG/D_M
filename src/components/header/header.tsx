@@ -2,26 +2,24 @@ import translations from '../../translations.json';
 import './header.module.scss'; // Общие стили
 
 type TranslationMap = {
-  RU: {
+  ru: {
     [key: string]: string;
   };
-  EN: {
+  english: {
     [key: string]: string;
   };
-  BS: {
+  blackSpeech: {
     [key: string]: string;
   };
 };
 
-
-
 type Props = {
-  selectedLanguage: keyof TranslationMap;
-}
+  selectedLanguage: string; 
+};
 
 export default function Header({ selectedLanguage }: Props) {
-  const translateToLanguage = (text: keyof TranslationMap['RU']): string => {
-    const languageTranslations = translations[selectedLanguage] || translations['BS'];
+  const translateToLanguage = (text: keyof TranslationMap['ru']): string => {
+    const languageTranslations = translations[selectedLanguage as keyof typeof translations] || translations['ru'];
     return languageTranslations[text] || text;
   };
 

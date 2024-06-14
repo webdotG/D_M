@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect } from 'react';
+import { ReactNode, useState } from 'react';
 import style from './layout.module.scss';
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
@@ -38,19 +38,37 @@ export default function Layout({ children }: TypeProps) {
     setModalVisible(false);
   };
 
-  const handleLanguageSelect = (language: string) => {
-    setLanguage(language);
+  const handleLanguageSelect = (lang: string) => {
+    setLanguage(lang);
     setLanguageModalVisible(false);
   };
 
-  const handleThemeSelect = (theme: "Светлая" | "Тёмная" | "Мордер") => {
-    setTheme(theme); 
+  const handleThemeSelect = (theme: string) => {
+    setTheme(theme);
     setThemeModalVisible(false);
   };
-  
-  useEffect(() => {
-    console.log('layout useEffect selectedCategory, language , theme : ', selectedCategory, language, theme);
-  }, [selectedCategory, language, theme]);
+
+  // Переводы для разных языков
+  const translations = {
+    RU: {
+      'по буквам': 'буквы',
+      'по дате': 'дата',
+      'по категории': 'категории',
+      'искать': 'искать'
+    },
+    EN: {
+      'по буквам': 'letters',
+      'по дате': 'date',
+      'по категории': 'category',
+      'искать': 'search'
+    },
+    BS: {
+      'по буквам': 'ashû',
+      'по дате': 'thrakât',
+      'по категории': 'ghâsh',
+      'искать': 'sharkû'
+    }
+  };
 
   return (
     <div className={style['layout']}>
@@ -113,7 +131,7 @@ export default function Layout({ children }: TypeProps) {
                 {LANGUAGES.map((lang, index) => (
                   <li key={index} className={style.layout__modal__item}>
                     <button className={style.modalToggle_btn} onClick={() => handleLanguageSelect(lang)}>
-                      {lang}
+                      {translations[lang]['по буквам']}
                     </button>
                   </li>
                 ))}
@@ -123,15 +141,15 @@ export default function Layout({ children }: TypeProps) {
 
           <button className={style['languageToggle-btn']} onClick={toggleLanguageModal}>
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <text x="0" y="20" fill="#000000">{language}</text>
+              <text x="0" y="20" fill="#000000">{translations[language]['по буквам']}</text>
             </svg>
           </button>
         </section>
 
       </div>
 
-      <Header selectedLanguage={language} />
-      {children}
+      <Header selectedLanguage={language} /> 
+      {children }
       <Footer />
     </div>
   );
