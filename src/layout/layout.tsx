@@ -39,7 +39,7 @@ export default function Layout({ children }: TypeProps) {
     setModalVisible(false);
   };
 
-  const handleLanguageSelect = (lang: string) => {
+  const handleLanguageSelect = (lang: keyof typeof translations) => {
     setLanguage(lang);
     setLanguageModalVisible(false);
   };
@@ -49,7 +49,6 @@ export default function Layout({ children }: TypeProps) {
     setThemeModalVisible(false);
   };
 
-  // Функция для перевода текста на текущий язык
   const translateToLanguage = (text: string): string => {
     const languageTranslations = translations[language as keyof typeof translations] || translations['RU'];
     return languageTranslations[text] || text;

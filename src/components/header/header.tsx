@@ -1,25 +1,25 @@
 import translations from '../../translations.json';
-import './header.module.scss'; 
+import './header.module.scss';
 
 type TranslationMap = {
-  ru: {
+  RU: {
     [key: string]: string;
   };
-  english: {
+  EN: {
     [key: string]: string;
   };
-  blackSpeech: {
+  BS: {
     [key: string]: string;
   };
 };
 
 type Props = {
-  selectedLanguage: string; 
+  selectedLanguage: keyof TranslationMap;
 };
 
 export default function Header({ selectedLanguage }: Props) {
-  const translateToLanguage = (text: keyof TranslationMap['ru']): string => {
-    const languageTranslations = translations[selectedLanguage as keyof typeof translations] || translations['ru'];
+  const translateToLanguage = (text: keyof TranslationMap['RU']): string => {
+    const languageTranslations = translations[selectedLanguage as keyof typeof translations] || translations['RU'];
     return languageTranslations[text] || text;
   };
 
