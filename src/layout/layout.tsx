@@ -1,9 +1,11 @@
+// layout.tsx
 import { ReactNode, useState } from 'react';
 import style from './layout.module.scss';
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import { useCategoryStore, useLanguageStore, useThemeStore } from '../store.ts';
 import translations from '../translations.json';
+import { TranslationMap } from '../types'; // Импортируйте тип TranslationMap
 
 type TypeProps = {
   children: ReactNode;
@@ -39,7 +41,7 @@ export default function Layout({ children }: TypeProps) {
     setModalVisible(false);
   };
 
-  const handleLanguageSelect = (lang: keyof typeof translations) => {
+  const handleLanguageSelect = (lang: keyof TranslationMap) => {
     setLanguage(lang);
     setLanguageModalVisible(false);
   };
@@ -49,8 +51,9 @@ export default function Layout({ children }: TypeProps) {
     setThemeModalVisible(false);
   };
 
+  // Функция для перевода текста на текущий язык
   const translateToLanguage = (text: string): string => {
-    const languageTranslations = translations[language as keyof typeof translations] || translations['RU'];
+    const languageTranslations = translations[language] || translations.RU;
     return languageTranslations[text] || text;
   };
 
