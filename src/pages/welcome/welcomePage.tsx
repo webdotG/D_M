@@ -1,25 +1,29 @@
 import style from './welcomePage.module.scss'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
+import firstSlide from '../../PNG/think-outside-box-concept-illustration_114360-15764.png';
+import secondeSlide from '../../PNG/untangle-concept-illustration_114360-21205.png';
+import thirdSlide from '../../PNG/poetry-concept-illustration_114360-8382.png'
+import fourthSlide from '../../PNG/chat-bot-concept-illustration_114360-5223.png'
 
 const SLIDES = [
   {
-    img: './think-outside-box-concept-illustration_114360-15764.png',
+    img: firstSlide,
     title: 'Привет',
     text: 'Я программа для записи снов и воспоминаний ',
   }, 
   {
-    img: './untangle-concept-illustration_114360-21205.png',
+    img: secondeSlide,
     title: 'Воспоминания',
     text: 'Получается автобиография с картинками и временными датами',
   }, 
   {
-    img: './poetry-concept-illustration_114360-8382.png',
+    img: thirdSlide,
     title: 'Сны',
     text: 'Подсознание общается с нами через образы, интересно научться понимать.',
   },
   {
-    img: './chat-bot-concept-illustration_114360-5223.png',
+    img: fourthSlide,
     title: 'Эпоха ИИ',
     text: 'У нас появился крутой инструмент для работы ',
   }
