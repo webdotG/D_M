@@ -55,7 +55,6 @@ export default function Layout({ children }: TypeProps) {
     setThemeModalVisible(false);
   };
 
-  // для перевода текста
   const translateToLanguage = (text: string): string => {
     const languageTranslations = translations[language as keyof typeof translations] || translations.RU;
     return languageTranslations[text as keyof typeof languageTranslations] || text;

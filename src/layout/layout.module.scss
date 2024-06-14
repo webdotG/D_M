@@ -2,12 +2,11 @@
   position: fixed;
   top: 0;
   width: 100%;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 5px;
+  padding: 0 10px;
   height: 33px;
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: whitesmoke;
   z-index: 2;
 }
@@ -17,10 +16,10 @@
 .layout__color-theme {
   display: flex;
   align-items: center;
+  font-size: 14px;
   position: relative;
 }
 
-/* Modal Overlay Styles */
 .modal_overlay {
   position: fixed;
   top: 0;
@@ -34,7 +33,7 @@
   align-items: center;
 }
 
-/* Modal Content Styles */
+
 .layout__modal {
   list-style-type: none;
   padding: 0;
@@ -47,7 +46,7 @@
   margin: 10px 0;
 }
 
-/* Button Styles */
+
 .modalToggle_btn {
   background: none;
   border: none;
@@ -65,22 +64,19 @@
   outline: none;
 }
 
-/* Category Toggle Button */
+
 .categoryToggle-btn,
 .languageToggle-btn,
 .colorThemeToggle-btn {
-  padding-left: 25px;
-  padding-right: 25px;
   svg {
-    width: 24px;
+    width: 35px;
     height: 24px;
   }
 }
 
-/* Targets (where the selected item displays) */
+
 .layout__categories-target,
 .layout__language-target,
 .layout__color-theme-target {
-  padding-left: 25px;
-  padding-right: 25px;
+  padding: 0 25px;
 }
