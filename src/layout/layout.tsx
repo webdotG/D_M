@@ -5,7 +5,7 @@ import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import { useCategoryStore, useLanguageStore, useThemeStore } from '../store.ts';
 import translations from '../translations.json';
-import { TranslationMap } from '../types'; 
+import { TranslationMap } from '../types';
 
 type TypeProps = {
   children: ReactNode;
@@ -13,7 +13,7 @@ type TypeProps = {
 
 const CATEGORY = ['сны', 'воспоминания'];
 const LANGUAGES = ['RU', 'EN', 'BS'];
-const THEMES = ["Светлая", "Тёмная", "Мордор"];
+const THEMES = ["Светлая", "Тёмная", "Мордор "];
 
 export default function Layout({ children }: TypeProps) {
   const { selectedCategory, setSelectedCategory } = useCategoryStore();
@@ -43,15 +43,12 @@ export default function Layout({ children }: TypeProps) {
 
   const handleLanguageSelect = (lang: string | number) => {
     if (typeof lang === 'string') {
-      setLanguage(lang); 
+      setLanguage(lang);
     } else {
       console.error('Expected a string for language, but received:', lang);
     }
-    setLanguageModalVisible(false); 
+    setLanguageModalVisible(false);
   };
-  
-  
-  
 
   const handleThemeSelect = (theme: string) => {
     setTheme(theme);
@@ -63,7 +60,7 @@ export default function Layout({ children }: TypeProps) {
     const languageTranslations = translations[language as keyof typeof translations] || translations.RU;
     return languageTranslations[text as keyof typeof languageTranslations] || text;
   };
-  
+
   return (
     <div className={style['layout']}>
       <div className={style['layout__content']}>
