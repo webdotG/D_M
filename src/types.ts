@@ -7,14 +7,6 @@ export interface Categories {
   memorises: CategoryData;
 }
 
-export type TranslationMap = {
-  RU: {
-    [key: string]: string;
-  };
-  EN: {
-    [key: string]: string;
-  };
-  BS: {
-    [key: string]: string;
-  };
-};
+export interface TranslationMap {
+  [key: string]: string;
+}

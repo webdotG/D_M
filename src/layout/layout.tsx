@@ -5,7 +5,7 @@ import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import { useCategoryStore, useLanguageStore, useThemeStore } from '../store.ts';
 import translations from '../translations.json';
-import { TranslationMap } from '../types'; // Импортируйте тип TranslationMap
+import { TranslationMap } from '../types'; 
 
 type TypeProps = {
   children: ReactNode;
@@ -41,17 +41,24 @@ export default function Layout({ children }: TypeProps) {
     setModalVisible(false);
   };
 
-  const handleLanguageSelect = (lang: keyof TranslationMap) => {
-    setLanguage(lang);
-    setLanguageModalVisible(false);
+  const handleLanguageSelect = (lang: string | number) => {
+    if (typeof lang === 'string') {
+      setLanguage(lang); 
+    } else {
+      console.error('Expected a string for language, but received:', lang);
+    }
+    setLanguageModalVisible(false); 
   };
+  
+  
+  
 
   const handleThemeSelect = (theme: string) => {
     setTheme(theme);
     setThemeModalVisible(false);
   };
 
-  // Функция для перевода текста на текущий язык
+  // для перевода текста
   const translateToLanguage = (text: string): string => {
     const languageTranslations = translations[language] || translations.RU;
     return languageTranslations[text] || text;
@@ -117,7 +124,7 @@ export default function Layout({ children }: TypeProps) {
               <ul className={style.layout__modal}>
                 {LANGUAGES.map((lang, index) => (
                   <li key={index} className={style.layout__modal__item}>
-                    <button className={style.modalToggle_btn} onClick={() => handleLanguageSelect(lang)}>
+                    <button className={style.modalToggle_btn} onClick={() => handleLanguageSelect(lang as keyof TranslationMap)}>
                       {translateToLanguage(lang)}
                     </button>
                   </li>
