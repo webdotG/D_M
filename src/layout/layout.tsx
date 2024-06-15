@@ -1,4 +1,3 @@
-// layout.tsx
 import { ReactNode, useState } from 'react';
 import style from './layout.module.scss';
 import Header from '../components/header/header';
@@ -13,7 +12,7 @@ type TypeProps = {
 
 const CATEGORY = ['сны', 'воспоминания'];
 const LANGUAGES = ['RU', 'EN', 'BS'];
-const THEMES = ["Светлая", "Тёмная", "Мордор "];
+const THEMES = ["Светлая", "Тёмная", "Мордор"];
 
 export default function Layout({ children }: TypeProps) {
   const { selectedCategory, setSelectedCategory } = useCategoryStore();
@@ -41,12 +40,8 @@ export default function Layout({ children }: TypeProps) {
     setModalVisible(false);
   };
 
-  const handleLanguageSelect = (lang: string | number) => {
-    if (typeof lang === 'string') {
-      setLanguage(lang);
-    } else {
-      console.error('Expected a string for language, but received:', lang);
-    }
+  const handleLanguageSelect = (lang: keyof TranslationMap) => {
+    setLanguage(lang);
     setLanguageModalVisible(false);
   };
 
@@ -84,9 +79,7 @@ export default function Layout({ children }: TypeProps) {
           )}
 
           <button className={style['categoryToggle-btn']} onClick={toggleCategoryModal}>
-            <svg viewBox="0 -6 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-              <text x="0" y="20" fill="#000000">{translateToLanguage(selectedCategory)}</text>
-            </svg>
+            {translateToLanguage(selectedCategory)}
           </button>
         </section>
 
@@ -107,9 +100,7 @@ export default function Layout({ children }: TypeProps) {
           )}
 
           <button className={style['colorThemeToggle-btn']} onClick={toggleThemeModal}>
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <text x="0" y="20" fill="#000000">{translateToLanguage(theme)}</text>
-            </svg>
+            {translateToLanguage(theme)}
           </button>
         </section>
 
@@ -130,9 +121,7 @@ export default function Layout({ children }: TypeProps) {
           )}
 
           <button className={style['languageToggle-btn']} onClick={toggleLanguageModal}>
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <text x="0" y="20" fill="#000000">{translateToLanguage(language)}</text>
-            </svg>
+            {translateToLanguage(language)}
           </button>
         </section>
 
@@ -140,7 +129,7 @@ export default function Layout({ children }: TypeProps) {
 
       <Header selectedLanguage={language} />
       {children}
-      <Footer />
+      <Footer selectedLanguage={language} translate={translateToLanguage} />
     </div>
   );
 }

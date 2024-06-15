@@ -9,7 +9,11 @@
     "Светлая": "Светлая",
     "Тёмная": "Тёмная",
     "Мордор": "Мордор",
-    "digitsAndDotOnly": "только цифры и/или ."
+    "digitsAndDotOnly": "только цифры и/или .",
+    "home": "Главная",
+    "calendar": "Календарь",
+    "chat": "Чат",
+    "profile": "Профиль"
   },
   "EN": {
     "буквы": "letters",
@@ -21,7 +25,11 @@
     "Светлая": "Light",
     "Тёмная": "Dark",
     "Мордор": "Mrdr",
-    "digitsAndDotOnly": "Digits and/or Dot only"
+    "digitsAndDotOnly": "Digits and/or Dot only",
+    "home": "Home",
+    "calendar": "Calendar",
+    "chat": "Chat",
+    "profile": "Profile"
   },
   "BS": {
     "буквы": "ashû",
@@ -33,6 +41,10 @@
     "Светлая": "Ghâsh",
     "Тёмная": "Durbatulûk",
     "Мордор": "Mordor",
-    "digitsAndDotOnly": "ashdûrz-ishi bagronk u Ghâsh"
+    "digitsAndDotOnly": "ashdûrz-ishi bagronk u Ghâsh",
+    "home": "ûrn",
+    "calendar": "thrakatûlûk",
+    "chat": "gûl",
+    "profile": "ghâsh-rug"
   }
 }

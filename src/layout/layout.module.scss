@@ -64,16 +64,17 @@
   outline: none;
 }
 
-
-.categoryToggle-btn,
-.languageToggle-btn,
-.colorThemeToggle-btn {
-  svg {
-    width: 35px;
-    height: 24px;
+.categoryToggle-btn{
+    width: 175px;
+    margin-right: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 21px;
   }
+.colorThemeToggle-btn{
+  margin-right: 6px;
 }
-
 
 .layout__categories-target,
 .layout__language-target,
