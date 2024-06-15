@@ -13,7 +13,8 @@
     "home": "Главная",
     "calendar": "Календарь",
     "chat": "Чат",
-    "profile": "Профиль"
+    "profile": "Профиль",
+    "Список": "Список"
   },
   "EN": {
     "буквы": "letters",
@@ -29,7 +30,8 @@
     "home": "Home",
     "calendar": "Calendar",
     "chat": "Chat",
-    "profile": "Profile"
+    "profile": "Profile",
+    "Список": "List"
   },
   "BS": {
     "буквы": "ashû",
@@ -45,6 +47,7 @@
     "home": "ûrn",
     "calendar": "thrakatûlûk",
     "chat": "gûl",
-    "profile": "ghâsh-rug"
+    "profile": "ghâsh-rug",
+    "Список": "Bûb"
   }
 }

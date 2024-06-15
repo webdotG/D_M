@@ -34,6 +34,7 @@ export default function Header({ selectedLanguage }: Props) {
   return (
     <header className={style.header}>
       <nav className={style.headerNav}>
+        <h1>поиск</h1>
         <section className={`${style.searches} searches`}>
           <form className={style['search-header-form']}>
             <label htmlFor="search" className={style['search-label']}>
