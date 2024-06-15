@@ -31,7 +31,7 @@ type FooterProps = {
   translate: (text: string) => string;
 };
 
-const Footer: React.FC<FooterProps> = ({ selectedLanguage, translate }) => {
+const Footer: React.FC<FooterProps> = ({ translate }) => {
   return (
     <footer className={styles.footer}>
       <button className={styles['footer-add']}>+</button>

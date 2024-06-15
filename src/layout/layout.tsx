@@ -40,10 +40,15 @@ export default function Layout({ children }: TypeProps) {
     setModalVisible(false);
   };
 
-  const handleLanguageSelect = (lang: keyof TranslationMap) => {
-    setLanguage(lang);
-    setLanguageModalVisible(false);
+  const handleLanguageSelect = (lang: string | number) => {
+    if (typeof lang === 'string') {
+      setLanguage(lang);
+      setLanguageModalVisible(false);
+    } else {
+      console.error('Expected a string for language, but received:', lang);
+    }
   };
+  
 
   const handleThemeSelect = (theme: string) => {
     setTheme(theme);
