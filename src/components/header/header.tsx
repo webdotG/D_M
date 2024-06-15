@@ -15,18 +15,16 @@ export default function Header({ selectedLanguage }: Props) {
     if (!(selectedLanguage in translations)) {
       throw new Error(`Язык '${selectedLanguage}' не поддерживается.`);
     }
-
-    //переводы для выбранного языка
+  
     const languageTranslations = translations[selectedLanguage as keyof typeof translations];
-
-    //текст существует в переводах для выбранного языка
+  
     if (!(text in languageTranslations)) {
       throw new Error(`Перевод для текста '${text}' не найден в языке '${selectedLanguage}'.`);
     }
-
+  
     return languageTranslations[text as keyof typeof languageTranslations];
   };
-
+  
   const handleSearchDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Очистка от нецифровых символов, но сохранение точек
     const cleanedValue = event.target.value.replace(/[^\d.]/g, '');
@@ -57,8 +55,8 @@ export default function Header({ selectedLanguage }: Props) {
               />
               {inputFocused && (
                 <span className={style.inputHint}>
-                  можно только цифры и/или точку
-                </span>
+                {translateToLanguage('digitsAndDotOnly')}
+              </span>
               )}
             </label>
             <label htmlFor="search-category" className={style['search-label']}>

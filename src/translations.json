@@ -8,7 +8,8 @@
     "воспоминания": "воспоминаия",
     "Светлая": "Светлая",
     "Тёмная": "Тёмная",
-    "Мордор": "Мордор"
+    "Мордор": "Мордор",
+    "digitsAndDotOnly": "только цифры и/или ."
   },
   "EN": {
     "буквы": "letters",
@@ -19,7 +20,8 @@
     "воспоминания": "memorys",
     "Светлая": "Light",
     "Тёмная": "Dark",
-    "Мордор": "Mrdr"
+    "Мордор": "Mrdr",
+    "digitsAndDotOnly": "Digits and/or Dot only"
   },
   "BS": {
     "буквы": "ashû",
@@ -30,6 +32,7 @@
     "воспоминания": "krith",
     "Светлая": "Ghâsh",
     "Тёмная": "Durbatulûk",
-    "Мордор": "Mordor"
+    "Мордор": "Mordor",
+    "digitsAndDotOnly": "ashdûrz-ishi bagronk u Ghâsh"
   }
 }
