@@ -1,28 +1,13 @@
 import React, { useState } from 'react';
-// import { TranslationMap } from '../../types';
-import { useLanguageStore } from '../../store';
-import translations from '../../translations.json';
 import style from './header.module.scss';
+import { useTranslate } from '../../hooks/useTranslate';
 
 export default function Header() {
-  const { language } = useLanguageStore();
   const [searchDate, setSearchDate] = useState('');
   const [inputFocused, setInputFocused] = useState(false);
 
-  const translateToLanguage = (text: string): string => {
-    if (!(language in translations)) {
-      throw new Error(`Язык '${language}' не поддерживается.`);
-    }
-  
-    const languageTranslations = translations[language as keyof typeof translations];
-  
-    if (!(text in languageTranslations)) {
-      throw new Error(`Перевод для текста '${text}' не найден в языке '${language}'.`);
-    }
-  
-    return languageTranslations[text as keyof typeof languageTranslations];
-  };
-  
+  const { translateToLanguage } = useTranslate();
+
   const handleSearchDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     // Очистка от нецифровых символов, но сохранение точек
     const cleanedValue = event.target.value.replace(/[^\d.]/g, '');
