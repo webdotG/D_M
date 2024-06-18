@@ -124,7 +124,6 @@ export default function Layout({ children }: TypeProps) {
               </ul>
             </div>
           )}
-
           <button className={style['languageToggle-btn']} onClick={toggleLanguageModal}>
             {translateToLanguage(language)}
           </button>
@@ -132,7 +131,7 @@ export default function Layout({ children }: TypeProps) {
 
       </div>
 
-      <Header selectedLanguage={language} />
+      <Header selectedLanguage={language} translate={translateToLanguage} />
       {children}
       <Footer selectedLanguage={language} translate={translateToLanguage} />
     </div>

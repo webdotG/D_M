@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
+// import { TranslationMap } from '../../types';
+import { useLanguageStore } from '../../store';
 import translations from '../../translations.json';
-import { TranslationMap } from '../../types';
 import style from './header.module.scss';
 
-type Props = {
-  selectedLanguage: keyof TranslationMap;
-};
-
-export default function Header({ selectedLanguage }: Props) {
+export default function Header() {
+  const { language } = useLanguageStore();
   const [searchDate, setSearchDate] = useState('');
   const [inputFocused, setInputFocused] = useState(false);
 
   const translateToLanguage = (text: string): string => {
-    if (!(selectedLanguage in translations)) {
-      throw new Error(`Язык '${selectedLanguage}' не поддерживается.`);
+    if (!(language in translations)) {
+      throw new Error(`Язык '${language}' не поддерживается.`);
     }
   
-    const languageTranslations = translations[selectedLanguage as keyof typeof translations];
+    const languageTranslations = translations[language as keyof typeof translations];
   
     if (!(text in languageTranslations)) {
-      throw new Error(`Перевод для текста '${text}' не найден в языке '${selectedLanguage}'.`);
+      throw new Error(`Перевод для текста '${text}' не найден в языке '${language}'.`);
     }
   
     return languageTranslations[text as keyof typeof languageTranslations];
@@ -34,7 +32,7 @@ export default function Header({ selectedLanguage }: Props) {
   return (
     <header className={style.header}>
       <nav className={style.headerNav}>
-        <h1>поиск</h1>
+        <h1>{translateToLanguage('поиск')}</h1>
         <section className={`${style.searches} searches`}>
           <form className={style['search-header-form']}>
             <label htmlFor="search" className={style['search-label']}>
@@ -65,7 +63,7 @@ export default function Header({ selectedLanguage }: Props) {
               <input id="search-category" type="text" name="search-category" />
             </label>
             <button className={style["search-submit"]} type="submit">
-              {translateToLanguage('искать')}
+              {translateToLanguage("искать")}
             </button>
           </form>
         </section>
