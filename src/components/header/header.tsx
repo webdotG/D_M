@@ -2,17 +2,23 @@ import React, { useState } from 'react';
 import style from './header.module.scss';
 import { useTranslate } from '../../hooks/useTranslate';
 
-export default function Header() {
+interface HeaderProps {
+  selectedLanguage: string;
+}
+
+export default function Header({ selectedLanguage }: HeaderProps) {
   const [searchDate, setSearchDate] = useState('');
   const [inputFocused, setInputFocused] = useState(false);
 
   const { translateToLanguage } = useTranslate();
 
   const handleSearchDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Очистка от нецифровых символов, но сохранение точек
     const cleanedValue = event.target.value.replace(/[^\d.]/g, '');
     setSearchDate(cleanedValue);
   };
+
+  // selectedLanguage
+  console.log(`Selected language is: ${selectedLanguage}`);
 
   return (
     <header className={style.header}>
@@ -39,21 +45,20 @@ export default function Header() {
               />
               {inputFocused && (
                 <span className={style.inputHint}>
-                {translateToLanguage('digitsAndDotOnly')}
-              </span>
+                  {translateToLanguage('digitsAndDotOnly')}
+                </span>
               )}
             </label>
             <label htmlFor="search-category" className={style['search-label']}>
               {translateToLanguage('категории')}
               <input id="search-category" type="text" name="search-category" />
             </label>
-            <button className={style["search-submit"]} type="submit">
-              {translateToLanguage("искать")}
+            <button className={style['search-submit']} type="submit">
+              {translateToLanguage('искать')}
             </button>
           </form>
         </section>
       </nav>
     </header>
-
   );
 }
