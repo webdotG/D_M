@@ -9,12 +9,20 @@
   .footer-add{
     width: 55px;
     height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 50%;
-    border: 3px sold black;
+    border: 2.5px solid black;
     position: absolute;
     left: 44%;
     top: -25px;
     z-index: 2;
+
+    svg{
+      width: 100%;
+      height: auto;       
+    }
   }
 
   .footer-list{
