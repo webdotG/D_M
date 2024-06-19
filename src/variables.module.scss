@@ -1,38 +1,31 @@
-// @import '../../variablesBase.scss';
 @mixin mobile {
   @media (min-width: 320px) {
     @content;
   }
 }
-@mixin descktop {
+
+@mixin desktop {
   @media (min-width: 780px) {
     @content;
   }
 }
 
-
-// --ФОРМАТ CSS ПЕРЕМЕННОЙ
-// --theme-dm-УНИКАЛЬНОЕ_ИМЯ    -- для 'уникальной'
-// --theme-light-УНИКАЛЬНОЕ_ИМЯ  -- светлая
-// --theme-dark-УНИКАЛЬНОЕ_ИМЯ      -- тёмная
-
 :root {
-
-  
   --color-white: rgba(255, 255, 255, 1.0); 
   --color-black: rgba(10, 10, 10, 1.0); 
   --color-dark-gray: rgba(34, 41, 50, 1.0); 
   --color-light-gray: rgba(238, 238, 238, 1.0); 
   --color-red: rgba(217, 26, 50, 1.0); 
-  --color-mauve: rgb(201, 177, 255, 1.0); 
-  --color-shampoo: rgba(255, 202, 242, 1.0); 
-  --color-dm: rgba(0, 174, 181, 1.0); 
-  --color-indigo-6: #464ed1;
-  --color-coral-2: #ffa28b;
-  --color-pink-3: #f778ba;
-  --color-purple-4: #a371f7;
-  --color-red-5: #da3633;
-  --color-gray-1: #c9d1d9;
-  --sub-nav-shadow: 0 0 0 1px rgba(0, 0, 0, 0.3), 0 3px 2px rgba(0, 0, 0, 0.2), 0 7px 7px rgba(0, 0, 0, 0.15);
-  
+
+  /* Light theme */
+  --theme-light-background: var(--color-white);
+  --theme-light-text: var(--color-black);
+
+  /* Dark theme */
+  --theme-dark-background: var(--color-black);
+  --theme-dark-text: var(--color-white);
+
+  /* Mordor theme */
+  --theme-mordor-background: var(--color-black);
+  --theme-mordor-text: var(--color-red);
 }

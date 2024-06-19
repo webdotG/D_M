@@ -6,6 +6,7 @@ import { useCategoryStore, useLanguageStore, useThemeStore } from '../store.ts';
 import translations from '../translations.json';
 import { TranslationMap } from '../types';
 
+
 type TypeProps = {
   children: ReactNode;
 };
@@ -48,7 +49,7 @@ export default function Layout({ children }: TypeProps) {
       console.error('Expected a string for language, but received:', lang);
     }
   };
-  
+
 
   const handleThemeSelect = (theme: string) => {
     setTheme(theme);

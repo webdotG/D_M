@@ -1,39 +1,62 @@
 import { useCategoryStore } from '../../store';
 import style from './category.module.scss';
 
+const colors = [
+  'rgba(255, 0, 0, 0.33)',     
+  'rgba(255, 165, 0, 0.33)',    
+  'rgba(255, 255, 0, 0.33)',   
+  'rgba(0, 128, 0, 0.33)',    
+  'rgba(0, 255, 255, 0.33)', 
+  'rgba(0, 0, 255, 0.33)',   
+  'rgba(75, 0, 130, 0.33)',    
+  'rgba(238, 130, 238, 0.33)', 
+  'rgba(128, 0, 128, 0.33)'    
+];
+
+let colorIndex = 0;
+
+function getNextColor(): string {
+  const color = colors[colorIndex];
+  colorIndex = (colorIndex + 1) % colors.length;
+  return color;
+}
+
 const category = {
   dreams: {
-    1: 'D-1',
-    2: 'D-2',
-    3: 'D-3',
-    4: 'D-4',
+    1: 'Бег',
+    2: 'Крутой секс, но не возможно кончить',
+    3: 'Разные разборки',
+    4: 'Ничего'
   },
   memorises: {
-    1: 'M-1',
-    2: 'M-2',
-    3: 'M-3',
-    4: 'M-4',
+    1: 'Детство',
+    2: 'Отрочество',
+    3: 'Юность',
+    4: 'Взросление'
   }
 };
 
-export default function Category() {
-  const { selectedCategory, setSelectedCategory } = useCategoryStore();
 
-  const toggleCategory = () => {
-    setSelectedCategory(selectedCategory === 'сны' ? 'воспоминания' : 'сны');
-  };
+
+
+export default function Category() {
+  const { selectedCategory } = useCategoryStore();
 
   const currentCategory = selectedCategory === 'сны' ? 'dreams' : 'memorises';
 
   return (
     <section className={style['category']}>
-      КАТЕГОРИИ
-      <button onClick={toggleCategory}>переключение тест</button>
-      {
-        Object.entries(category[currentCategory]).map(([key, value]) => (
-          <button className={style['category-button']} key={key}>{value}</button>
-        ))
-      }
-    </section>
+    {
+      Object.entries(category[currentCategory]).map(([key, value]) => (
+        <button
+          className={style['category-button']}
+          key={key}
+          style={{ backgroundColor: getNextColor() }}
+        >
+          {value}
+        </button>
+      ))
+    }
+  </section>
   );
 }
