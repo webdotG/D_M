@@ -132,7 +132,7 @@ export default function Layout({ children }: TypeProps) {
 
       </div>
 
-      <Header selectedLanguage={language} translate={translateToLanguage} />
+      <Header selectedLanguage={language}  />
       {children}
       <Footer selectedLanguage={language} translate={translateToLanguage} />
     </div>
