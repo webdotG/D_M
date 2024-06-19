@@ -21,6 +21,19 @@ function getNextColor(): string {
   return color;
 }
 
+const getRandomColor = () => {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return `rgb(${r},${g},${b})`;
+};
+
+const drawCircle = () => (
+  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="6" cy="6" r="6" fill={getRandomColor()} />
+  </svg>
+);
+
 const category = {
   dreams: {
     1: 'Бег',
@@ -53,6 +66,7 @@ export default function Category() {
           key={key}
           style={{ backgroundColor: getNextColor() }}
         >
+           {drawCircle()}
           {value}
         </button>
       ))
