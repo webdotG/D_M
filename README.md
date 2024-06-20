@@ -10,18 +10,25 @@
 - **Поиск**: Быстро находите нужные записи по ключевым словам.
 - **История**: Сбор и отображение истории ваших записей.
 
-## Используемые технологии
-
-- **Vite**
-- **TypeScript**
-- **JavaScript**
+## Используемые технологии  
+на данный момент
+- **Vite**  
+- **Zustand**  
+- **TS**
+- **JS**  
 - **HTML**
-- **SCSS**
-
+- **SCSS**  
+в процессе   
+- **Nginx**  
+- **Docker**  
+- **Compose**  
+- **PostgreeSQL**  
+- **LiteSQL**  
+- **Node Server**
 ## Установка
 Запуск
   ```bash
-   git clone https://github.com/yourusername/yourproject.git
+  git clone https://github.com/yourusername/yourproject.git
   cd D_M
   npm install
   ```
@@ -57,7 +64,7 @@ D_M/
 Форк, Коммит и Пуш   
 Создайте новую ветку: 
 ```bash  
-git checkout -b feature/YourFeature  
-git commit -m 'Add some feature'  
-git push origin feature/YourFeature  
+git checkout -b МояВетка/Навание  
+git commit -a -m 'То что сделано'  
+git push origin МояВетка/Навание  
 ```
