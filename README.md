@@ -34,34 +34,30 @@
  npm run build
  ```
 
-## Структура проекта  
-D_M/
+## Структура проекта    
+D_M/  
 ├── public/                 # Публичные файлы
     ├── 404.html
     ├── src/ 
-    └── ...                 # Файлы приложения
-├── src/                    
-│   ├── components/         # Компоненты приложения
-│   ├── styles/             # Файлы стилей (SCSS)
-│   ├── App.tsx             # Основной компонент приложения
-│   ├── main.tsx            # Точка входа в приложение
-│   └── ...                 # Другие файлы и директории
-├── index.html              # Шаблон HTML
-├── package.json            # Зависимости и скрипты
-├── tsconfig.json           # Конфигурация TypeScript
-├── vite.config.ts          # Конфигурация Vite
+    └── ...                 # Файлы приложения  
+    ├── src/                      
+│   ├── components/         # Компоненты приложения   
+│   ├── styles/             # Файлы стилей (SCSS)  
+│   ├── App.tsx             # Основной компонент приложения  
+│   ├── main.tsx            # Точка входа в приложение  
+│   └── ...                 # Другие файлы и директории  
+├── index.html              # Шаблон HTML  
+├── package.json            # Зависимости и скрипты  
+├── tsconfig.json           # Конфигурация TypeScript  
+├── vite.config.ts          # Конфигурация Vite  
 └── ...                     # Другие файлы и директории  
 
 ## Если вы хотите внести свой вклад в проект
 
-Форкните репозиторий.  
+Форк, Коммит и Пуш   
 Создайте новую ветку: 
-```bash
-git checkout -b feature/YourFeature
-```
-Коммит и Пуш
-```bash
+```bash  
+git checkout -b feature/YourFeature  
 git commit -m 'Add some feature'  
-git push origin feature/YourFeature
-
+git push origin feature/YourFeature  
 ```
