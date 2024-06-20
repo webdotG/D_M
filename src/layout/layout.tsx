@@ -21,7 +21,7 @@ export default function Layout({ children }: TypeProps) {
   const { selectedCategory, setSelectedCategory } = useCategoryStore();
   const { language, setLanguage } = useLanguageStore();
   const { theme, setTheme } = useThemeStore();
-
+  console.log('', theme)
   const [modalVisible, setModalVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const [themeModalVisible, setThemeModalVisible] = useState(false);
