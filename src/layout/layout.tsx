@@ -66,13 +66,13 @@ export default function Layout({ children }: TypeProps) {
   const renderSVG = () => {
     if (selectedCategory === 'сны') {
       return (
-        <svg width="35" height='35' >
+        <svg >
           <circle cx="16" cy="16" r="12" stroke="black" strokeWidth="2" fill="none" />
         </svg>
       );
     } else if (selectedCategory === 'воспоминания') {
       return (
-        <svg width="35" height="35">
+        <svg >
           <polygon points="17.5,5 30,30 5,30" stroke="black" strokeWidth="2" fill="none" />
         </svg>
       );
