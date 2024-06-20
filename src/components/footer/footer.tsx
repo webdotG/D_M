@@ -43,6 +43,7 @@ type FooterProps = {
 const Footer: React.FC<FooterProps> = ({ translate }) => {
   return (
     <footer className={styles.footer}>
+    <div className={styles['footer__wrapper']}>
       <button className={styles['footer-add']}>
         <svg width="52px" height="52px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <g id="layer1">
@@ -63,6 +64,7 @@ const Footer: React.FC<FooterProps> = ({ translate }) => {
           </li>
         ))}
       </ul>
+      </div>
     </footer>
   );
 };

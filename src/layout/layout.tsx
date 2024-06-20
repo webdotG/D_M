@@ -5,6 +5,8 @@ import Footer from '../components/footer/footer';
 import { useCategoryStore, useLanguageStore, useThemeStore } from '../store.ts';
 import translations from '../translations.json';
 import { TranslationMap } from '../types';
+import ToggleTheme from '../SVG/toggle.svg'
+import ToggleLang from '../SVG/language.svg'
 
 
 type TypeProps = {
@@ -61,6 +63,23 @@ export default function Layout({ children }: TypeProps) {
     return languageTranslations[text as keyof typeof languageTranslations] || text;
   };
 
+  const renderSVG = () => {
+    if (selectedCategory === 'сны') {
+      return (
+        <svg width="35" height='35' >
+          <circle cx="16" cy="16" r="12" stroke="black" strokeWidth="2" fill="none" />
+        </svg>
+      );
+    } else if (selectedCategory === 'воспоминания') {
+      return (
+        <svg width="35" height="35">
+          <polygon points="17.5,5 30,30 5,30" stroke="black" strokeWidth="2" fill="none" />
+        </svg>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className={style['layout']}>
       <div className={style['layout__content']}>
@@ -85,7 +104,8 @@ export default function Layout({ children }: TypeProps) {
           )}
 
           <button className={style['categoryToggle-btn']} onClick={toggleCategoryModal}>
-            {translateToLanguage(selectedCategory)}
+            
+{renderSVG()}
           </button>
         </section>
 
@@ -106,7 +126,8 @@ export default function Layout({ children }: TypeProps) {
           )}
 
           <button className={style['colorThemeToggle-btn']} onClick={toggleThemeModal}>
-            {translateToLanguage(theme)}
+          <img src={ToggleTheme} alt='toggleIcon' width='25px' height='25px'/>
+            {/* {translateToLanguage(theme)} */}
           </button>
         </section>
 
@@ -126,7 +147,8 @@ export default function Layout({ children }: TypeProps) {
             </div>
           )}
           <button className={style['languageToggle-btn']} onClick={toggleLanguageModal}>
-            {translateToLanguage(language)}
+          <img src={ToggleLang} alt='toggleIcon' width='25px' height='25px'/>
+            {/* {translateToLanguage(language)} */}
           </button>
         </section>
 

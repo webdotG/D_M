@@ -6,6 +6,11 @@
   background-color: #ccc; 
   display: flex;
 
+  .footer__wrapper{
+    width: 320px;
+    margin: 0 auto;
+    position: relative;
+  }
   .footer-add{
     width: 55px;
     height: 55px;
