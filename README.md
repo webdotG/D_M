@@ -1,30 +1,67 @@
-# React + TypeScript + Vite
+# Dreams & Memories
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Описание
 
-Currently, two official plugins are available:
+Это приложение предназначено для записи и хранения ваших снов и воспоминаний. Оно позволяет легко записывать, искать и собирать истории, связанные с вашими категориями "сны" и "воспоминания".
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Функциональность
 
-## Expanding the ESLint configuration
+- **Запись снов и воспоминаний**: Легко добавляйте новые записи в категории "сны" и "воспоминания".
+- **Поиск**: Быстро находите нужные записи по ключевым словам.
+- **История**: Сбор и отображение истории ваших записей.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Используемые технологии
 
-- Configure the top-level `parserOptions` property like this:
+- **Vite**
+- **TypeScript**
+- **JavaScript**
+- **HTML**
+- **SCSS**
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+## Установка
+Запуск
+  ```bash
+   git clone https://github.com/yourusername/yourproject.git
+  cd D_M
+  npm install
+  ```
+В режиме разработки 
+  ```bash
+ npm run dev
+ ```
+ Для сборки
+   ```bash
+ npm run build
+ ```
+
+## Структура проекта  
+D_M/
+├── public/                 # Публичные файлы
+    ├── 404.html
+    ├── src/ 
+    └── ...                 # Файлы приложения
+├── src/                    
+│   ├── components/         # Компоненты приложения
+│   ├── styles/             # Файлы стилей (SCSS)
+│   ├── App.tsx             # Основной компонент приложения
+│   ├── main.tsx            # Точка входа в приложение
+│   └── ...                 # Другие файлы и директории
+├── index.html              # Шаблон HTML
+├── package.json            # Зависимости и скрипты
+├── tsconfig.json           # Конфигурация TypeScript
+├── vite.config.ts          # Конфигурация Vite
+└── ...                     # Другие файлы и директории  
+
+## Если вы хотите внести свой вклад в проект
+
+Форкните репозиторий.  
+Создайте новую ветку: 
+```bash
+git checkout -b feature/YourFeature
 ```
+Коммит и Пуш
+```bash
+git commit -m 'Add some feature'  
+git push origin feature/YourFeature
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+```
