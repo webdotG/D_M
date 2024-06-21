@@ -1,7 +1,4 @@
-# Dreams & Memories  
-
-
-[**Потыкать**](https://webdotg.github.io/D_M/)  
+# Dreams & Memories  [**Потыкать**](https://webdotg.github.io/D_M/)  
 
 
 
