@@ -2,6 +2,35 @@
 
 [Потыкать](https://webdotg.github.io/D_M/)  
 
+<style>
+  
+  a {
+    color: #007bff; 
+    text-decoration: none; 
+    position: relative; 
+    transition: color 0.3s ease; 
+  }
+
+  a::before {
+    content: ''; 
+    position: absolute; 
+    width: 100%; 
+    height: 2px; 
+    bottom: -1px; 
+    background-color: #007bff; 
+    transition: width 0.3s ease; 
+  }
+
+  a:hover::before {
+    width: 0; 
+  }
+
+  a:hover {
+    color: #0056b3; 
+  }
+</style>
+
+
 ## Описание
 
 Это приложение предназначено для записи и хранения ваших снов и воспоминаний. Оно позволяет легко записывать, искать и собирать истории, связанные с вашими категориями "сны" и "воспоминания".
