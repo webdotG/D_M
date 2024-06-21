@@ -14,20 +14,22 @@
 
 ## Используемые технологии
 на данный момент
+  
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sass/sass-original.svg" title="sass" alt="sass/scss" width="40" height="40"/>&nbsp;
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" title="javascript" alt="javascript" width="40" height="40"/>&nbsp
+<img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" title="javascript" alt="javascript" width="40" height="40"/>&nbsp  
+- <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original-wordmark.svg" title="html5" alt="html5" width="40" height="40"/>&nbsp  
 - **Vite**  
 - **Zustand**  
-- **TS**
-- **JS**  
-- **HTML**
-- **SCSS**  
-в процессе  
-- **Nginx**  
-- **Docker**  
-- **Compose**  
-- **PostgreeSQL**  
-- **LiteSQL**  
-- **ExpressJS or? Next**  
-- **Node Server**
+
+   в процессе  
+
+- <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nginx/nginx-original.svg" title="nginx" alt="nginx" width="40" height="40"/>&nbsp
+- <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" title="docker" alt="docker" width="40" height="40" />&nbsp     
+- <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original-wordmark.svg" title="nodejs" alt="nodejs" width="40" height="40"/>&nbsp
+- <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original-wordmark.svg" title="postgreSQl" alt="postgreSQL" width="40" height="40"/  
+- **LiteSQL**    
+
 ## Установка
 Запуск
   ```bash
