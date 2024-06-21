@@ -1,8 +1,9 @@
 # Dreams & Memories  
 
-<a href="https://webdotg.github.io/D_M/" style="text-decoration: none; color: tomato; transition: color 0.3s ease;">
-  Потыкать
- </a>
+
+[**Потыкать**](https://webdotg.github.io/D_M/)  
+
+
 
 ## Описание
 
