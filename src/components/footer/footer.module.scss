@@ -2,8 +2,9 @@
   position: fixed;
   bottom: 0;
   width: 100%;
-  height: 69px; 
-  
+  height: 63px; 
+  background-color: white;
+  border-top: 2px solid black;
   display: flex;
 
   .footer__wrapper{
@@ -22,9 +23,10 @@
     left: 41%;
     top: -35px;
     z-index: 2;
-    background-color: transparent;
+    background-color: white;
     border: none;
     cursor: pointer;
+    border: 1.75px solid black;
 
     svg{
       width: 100%;
@@ -33,8 +35,7 @@
   }
 
   .footer-list{
-    padding-top: 20px;
-    padding-bottom: 10px;
+    padding-top: 10px;
     width: 100%;
     display: flex;
     justify-content: center;
