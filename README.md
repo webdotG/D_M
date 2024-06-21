@@ -1,9 +1,8 @@
 # Dreams & Memories  
 
-<a href="https://webdotg.github.io/D_M/" style="text-decoration: none; position: relative; color: #007bff; transition: color 0.3s ease;">
+<a href="https://webdotg.github.io/D_M/" style="text-decoration: none; color: tomato; transition: color 0.3s ease;">
   Потыкать
-  <span style="position: absolute; bottom: -2px; left: 0; right: 0; height: 2px; background-color: #007bff; transition: width 0.3s ease;"></span>
-</a>
+ </a>
 
 ## Описание
 
@@ -68,3 +67,6 @@ git checkout -b МояВетка/Навание
 git commit -a -m 'То что сделано'  
 git push origin МояВетка/Навание  
 ```
+
+
+<a href="https://t.me/kirillgrant" target="_blank"> <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" width="24" height="24" alt="telegram" />  Kirill Grant</a>
