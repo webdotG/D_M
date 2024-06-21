@@ -19,6 +19,7 @@ const THEMES = ["Светлая", "Тёмная", "Мордор"];
 
 export default function Layout({ children }: TypeProps) {
   const { selectedCategory, setSelectedCategory } = useCategoryStore();
+  console.log('', selectedCategory)
   const { language, setLanguage } = useLanguageStore();
   const { theme, setTheme } = useThemeStore();
   console.log('', theme)
