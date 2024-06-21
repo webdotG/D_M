@@ -88,7 +88,7 @@ export default function Layout({ children }: TypeProps) {
           )}
 
           <button className={style['categoryToggle-btn']} onClick={toggleCategoryModal}>
-          <img src={D_M} alt='D_M' width='32px' height='32px'/>
+          <img src={D_M} alt='D_M' />
 
           </button>
         </section>
@@ -110,7 +110,7 @@ export default function Layout({ children }: TypeProps) {
           )}
 
           <button className={style['colorThemeToggle-btn']} onClick={toggleThemeModal}>
-          <img src={ToggleTheme} alt='toggleIcon' width='25px' height='25px'/>
+          <img src={ToggleTheme} alt='toggleIcon' />
             {/* {translateToLanguage(theme)} */}
           </button>
         </section>
@@ -131,7 +131,7 @@ export default function Layout({ children }: TypeProps) {
             </div>
           )}
           <button className={style['languageToggle-btn']} onClick={toggleLanguageModal}>
-          <img src={ToggleLang} alt='toggleIcon' width='25px' height='25px'/>
+          <img src={ToggleLang} alt='toggleIcon' />
             {/* {translateToLanguage(language)} */}
           </button>
         </section>

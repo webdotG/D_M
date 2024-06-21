@@ -4,7 +4,6 @@
   width: 100%;
   padding-top: 9px;
   padding-bottom: 5px;
-  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,11 +73,13 @@
     font-size: 16px;
     border: none;
     background-color: transparent;
+    cursor: pointer;
 
-    svg{
-      width: 35px;
-      height: 35px;
+    img{
+      width: 33px;
+      height: 33px;
     }
+    
   }
 
   .colorThemeToggle-btn,
@@ -87,11 +88,12 @@
     background-color: transparent;
     padding-left: 10px;
     padding-right: 10px;
+    cursor: pointer;
 
 
-    svg{
-      width: 35px;
-      height: 35px;
+    img{
+      width: 28px;
+      height: 28px;
     }
   }
 
