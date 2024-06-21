@@ -26,7 +26,7 @@ Vite, Zustand, LiteSQL
 ## Установка
 Запуск
   ```bash
-  git clone https://github.com/yourusername/yourproject.git
+  git clone git@github.com:webdotG/D_M.git
   cd D_M
   npm install
   ```
@@ -59,7 +59,6 @@ D_M/
 
 ## Если вы хотите внести свой вклад в проект
 
-Форк, Коммит и Пуш   
 Создайте новую ветку: 
 ```bash  
 git checkout -b МояВетка/Навание  
