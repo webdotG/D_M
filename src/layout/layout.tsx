@@ -6,8 +6,8 @@ import { useCategoryStore, useLanguageStore, useThemeStore } from '../store.ts';
 import translations from '../translations.json';
 import { TranslationMap } from '../types';
 import ToggleTheme from '../SVG/toggle.svg'
-import ToggleLang from '../SVG/language.svg'
-
+import ToggleLang from '../SVG/lang.svg'
+import D_M from '../SVG/d_m.svg'
 
 type TypeProps = {
   children: ReactNode;
@@ -63,23 +63,6 @@ export default function Layout({ children }: TypeProps) {
     return languageTranslations[text as keyof typeof languageTranslations] || text;
   };
 
-  const renderSVG = () => {
-    if (selectedCategory === 'сны') {
-      return (
-        <svg >
-          <circle cx="16" cy="16" r="12" stroke="black" strokeWidth="2" fill="none" />
-        </svg>
-      );
-    } else if (selectedCategory === 'воспоминания') {
-      return (
-        <svg >
-          <polygon points="17.5,5 30,30 5,30" stroke="black" strokeWidth="2" fill="none" />
-        </svg>
-      );
-    }
-    return null;
-  };
-
   return (
     <div className={style['layout']}>
       <div className={style['layout__content']}>
@@ -104,8 +87,8 @@ export default function Layout({ children }: TypeProps) {
           )}
 
           <button className={style['categoryToggle-btn']} onClick={toggleCategoryModal}>
-            
-{renderSVG()}
+          <img src={D_M} alt='D_M' width='32px' height='32px'/>
+
           </button>
         </section>
 
