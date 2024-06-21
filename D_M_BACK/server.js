@@ -1,30 +1,25 @@
 import express from 'express';
 import pkg from 'express';
 const { Request, Response } = pkg;
-import { connectDB, queryDB } from './db.js';
+import { connectDB } from './db.js';
 
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT;
 
-// Пример маршрута для проверки работы сервера
-app.get('/', async (req, res) => {
+console.log('server.js Подключение к БД ...');
 
-  const test = await queryDB()
-  console.log ('TEST QUERY DB test : ', test)
-  try {
-    // Подключаемся к базе данных
-    const client = await connectDB();
-    // Здесь можно выполнять запросы к базе данных или другие операции
-    
-    res.send('Server is running');
-  } catch (err) {
-    console.error('Error in server request', err);
-    res.status(500).send('Internal Server Error');
-  }
-});
+connectDB()
+  .then(() => {
+    console.log('server.js  Коннект !');
+    // Далее
+  })
+  .catch((err) => {
+    console.error('server.js НЕТ Коннекта : ', err);
+    process.exit(1);
+  });
 
-// Слушаем указанный порт
+
 app.listen(port, () => {
   console.log(`Сервер работает на http://localhost:${port}`);
 });
