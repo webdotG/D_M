@@ -1,11 +1,11 @@
 
 import axios from 'axios';
 
-export const registerUser = async (username: string, password: string) => {
+export const registerUser = async (use_rname: string, user_password: string) => {
   try {
-    const response = await axios.post('/api/user/register', {
-      username,
-      password,
+    const response = await axios.post('/api/user/register/', {
+      use_rname,
+      user_password,
     });
     console.log('registerUser response ', response)
     return response.data;
@@ -14,11 +14,11 @@ export const registerUser = async (username: string, password: string) => {
   }
 };
 
-export const loginUser = async (username: string, password: string) => {
+export const loginUser = async (use_rname: string, user_password: string) => {
   try {
-    const response = await axios.post('/api/user/login', {
-      username,
-      password,
+    const response = await axios.post('/api/user/login/', {
+      use_rname,
+      user_password,
     });
     return response.data;
   } catch (error) {

@@ -1,4 +1,4 @@
-import style from './dreams_memories.module.scss'
+import style from './dreams_memories.module.scss';
 import { useState } from 'react';
 import { useDreamStore } from '../../store';
 
@@ -10,7 +10,7 @@ type DreamProps = {
   isAnalyzed: boolean;
 };
 
-export default function Dream({ id, date, content, category, isAnalyzed }: DreamProps) {
+const Dream = ({ id, date, content, category, isAnalyzed }: DreamProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedDate, setEditedDate] = useState(date);
   const [editedContent, setEditedContent] = useState(content);
@@ -94,4 +94,6 @@ export default function Dream({ id, date, content, category, isAnalyzed }: Dream
       </div>
     </li>
   );
-}
+};
+
+export default Dream;

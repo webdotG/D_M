@@ -13,7 +13,7 @@ app.use(express.json());
 
 const server = http.createServer(app);
 
-// Подключение к PostgreSQL для пользователей
+// Подключение к PostgreSQL 
 connectPostgresDB().then(pgClient => {
   app.locals.pgClient = pgClient; // Хранение подключения PostgreSQL в локальных переменных приложения
   console.log('Подключение к PostgreSQL установлено');
@@ -21,7 +21,7 @@ connectPostgresDB().then(pgClient => {
   console.error('Ошибка подключения к PostgreSQL:', error);
 });
 
-// Подключение к SQLite для снов и воспоминаний
+// Подключение к SQLite 
 connectSQLiteDB().then(sqliteDB => {
   app.locals.sqliteDB = sqliteDB; // Хранение подключения SQLite в локальных переменных приложения
   console.log('Подключение к SQLite установлено');
@@ -29,16 +29,18 @@ connectSQLiteDB().then(sqliteDB => {
   console.error('Ошибка подключения к SQLite:', error);
 });
 
-// Маршруты для пользователей (PostgreSQL)
+// Маршруты (PostgreSQL)
 app.use('/api/user', userRoutes);
 
-// Маршруты для снов и воспоминаний (SQLite)
+// Маршруты (SQLite)
 app.use('/api/dreams', dreamRoutes);
 
 // Запуск сервера
 server.listen(port, () => {
   console.log(`Сервер работает на http://localhost:${port}`);
 });
+
+
 
 // Обработчик сигнала SIGINT для корректного завершения работы сервера
 process.on('SIGINT', () => {

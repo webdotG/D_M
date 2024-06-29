@@ -64,7 +64,7 @@ export const useThemeStore = create<ThemeState>((set) => ({
 }));
 
 export const useAuthStore = create<AuthState>((set) => ({
-  isAuthenticated: true, 
+  isAuthenticated: false, 
   setAuthenticated: (auth: boolean) => {
     set({ isAuthenticated: auth });
     localStorage.setItem('isAuthenticated', JSON.stringify(auth)); 
@@ -75,7 +75,7 @@ export const useDreamStore = create<DreamState>((set) => ({
   dreams: [],
   loadDreams: async (category: string) => {
     try {
-      const response = await fetch(`/api/dreams?category=${category}`);
+      const response = await fetch(`/api/dreams/all?category=${category}`);
       if (!response.ok) {
         throw new Error(`Error loading dreams: ${response.statusText}`);
       }
@@ -84,11 +84,12 @@ export const useDreamStore = create<DreamState>((set) => ({
       console.log('Dreams loaded successfully:', dreams);
     } catch (error) {
       console.error('Failed to load dreams:', error);
+      throw error;
     }
   },
   updateDream: async (updatedDream: Dream) => {
     try {
-      const response = await fetch(`/api/dreams/${updatedDream.id}`, {
+      const response = await fetch(`/api/dreams/change/${updatedDream.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -107,6 +108,7 @@ export const useDreamStore = create<DreamState>((set) => ({
       console.log('Dream updated successfully:', updatedDreamFromDB);
     } catch (error) {
       console.error('Failed to update dream:', error);
+      throw error;
     }
   },
 }));

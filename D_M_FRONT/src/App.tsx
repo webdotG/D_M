@@ -10,22 +10,24 @@ import instance from './axios';
 
 function App() {
   // const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  // const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
-
-  // useEffect(() => {
-  //   const checkAuth = async () => {
-  //     try {
-  //       const response = await instance.get('/api/user/current')
-  //       console.log('App setAuthenticated response:', response.data.authenticated);
-  //     } catch (error) {
-  //       console.error('Ошибка проверки аутентификации', error);
-  //     }
-  //   };
-  
-  //   checkAuth();
-  // }, [setAuthenticated]);
-
   const isAuthenticated = true
+
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await instance.get('/api/user/current')
+        console.log('App setAuthenticated response:', response.data.authenticated);
+      } catch (error) {
+        console.error('Ошибка проверки аутентификации', error);
+      }
+    };
+  
+    checkAuth();
+  }, [setAuthenticated]);
+
+
   
   return (
     <Routes>

@@ -49,7 +49,7 @@ export const Login = async (req, res) => {
 export const Register = async (req, res) => {
     const { username, password } = req.body;
 
-    const apiUserName = username;
+    // const apiUserName = username;
 
     console.log('Register request: ');
     console.dir(req.body);
