@@ -2,6 +2,7 @@ import React, { useState, ChangeEvent, FormEvent } from 'react';
 import style from './login.module.scss';
 import LoginImage from '../../PNG/feeling-free-concept-illustration_114360-13580.png';
 import RegisterImage from '../../PNG/contemplating-concept-illustration_114360-3216.png';
+import { registerUser, loginUser } from '../../API/login_register'
 import axios from 'axios'; // Импортируем axios
 import { useNavigate } from 'react-router-dom';
 
@@ -45,29 +46,6 @@ const LoginPage: React.FC = () => {
     }
   };
 
-  const registerUser = async (username: string, password: string) => {
-    try {
-      const response = await axios.post('/api/user/register', {
-        username,
-        password,
-      });
-      return response.data;
-    } catch (error) {
-      throw error.response.data;
-    }
-  };
-
-  const loginUser = async (username: string, password: string) => {
-    try {
-      const response = await axios.post('/api/user/login', {
-        username,
-        password,
-      });
-      return response.data;
-    } catch (error) {
-      throw error.response.data;
-    }
-  };
 
   // Для переключения между регистрацией и входом
   const toggleRegister = () => {
