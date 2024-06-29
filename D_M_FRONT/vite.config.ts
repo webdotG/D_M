@@ -8,5 +8,14 @@ export default defineConfig({
   base: "/D_M",
   optimizeDeps: {
     include: ['*.mp4'],
-  },
+  },  
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://localhost:2525',
+        changeOrigin: true,
+      }
+    }
+  }
+
 })

@@ -22,7 +22,21 @@ type ThemeState = {
 
 type AuthState = {
   isAuthenticated: boolean;
-  setIsAuthenticated: (isAuthenticated: boolean) => void;
+  setAuthenticated: (auth: boolean) => void;
+};
+
+type Dream = {
+  id: number;
+  date: string;
+  content: string;
+  category: string;
+  isAnalyzed: boolean;
+};
+
+type DreamState = {
+  dreams: Dream[];
+  loadDreams: (category: string) => void;
+  updateDream: (updatedDream: Dream) => void;
 };
 
 export const useCategoryStore = create<CategoryState>((set) => ({
@@ -50,9 +64,53 @@ export const useThemeStore = create<ThemeState>((set) => ({
 }));
 
 export const useAuthStore = create<AuthState>((set) => ({
-  isAuthenticated: true,
-  setIsAuthenticated: (isAuthenticated: boolean) => {
-    console.log(`Store isAuthenticated : ${isAuthenticated}`);
-    set({ isAuthenticated });
+  isAuthenticated: true, 
+  setAuthenticated: (auth: boolean) => {
+    set({ isAuthenticated: auth });
+    localStorage.setItem('isAuthenticated', JSON.stringify(auth)); 
   },
 }));
+
+export const useDreamStore = create<DreamState>((set) => ({
+  dreams: [],
+  loadDreams: async (category: string) => {
+    try {
+      const response = await fetch(`/api/dreams?category=${category}`);
+      if (!response.ok) {
+        throw new Error(`Error loading dreams: ${response.statusText}`);
+      }
+      const dreams = await response.json();
+      set({ dreams });
+      console.log('Dreams loaded successfully:', dreams);
+    } catch (error) {
+      console.error('Failed to load dreams:', error);
+    }
+  },
+  updateDream: async (updatedDream: Dream) => {
+    try {
+      const response = await fetch(`/api/dreams/${updatedDream.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedDream),
+      });
+      if (!response.ok) {
+        throw new Error(`Error updating dream: ${response.statusText}`);
+      }
+      const updatedDreamFromDB = await response.json();
+      set((state) => ({
+        dreams: state.dreams.map((dream) =>
+          dream.id === updatedDreamFromDB.id ? updatedDreamFromDB : dream
+        ),
+      }));
+      console.log('Dream updated successfully:', updatedDreamFromDB);
+    } catch (error) {
+      console.error('Failed to update dream:', error);
+    }
+  },
+}));
+
+// Проверка аутентификации при загрузке приложения
+const initialAuthState = JSON.parse(localStorage.getItem('isAuthenticated') || 'false');
+useAuthStore.setState({ isAuthenticated: initialAuthState });

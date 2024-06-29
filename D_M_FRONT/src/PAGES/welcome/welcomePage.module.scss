@@ -14,8 +14,8 @@
   }
 
   .slide {
-    padding: 40px 20px;
-    width: 100%;
+    padding: 10px 20px;
+    width: 320px;
     height: 100%;
     background-color: var(--color-white);
     position: relative;
@@ -30,10 +30,18 @@
     font-size: 14px;
     cursor: pointer;
 
+    img{
+      width: 42px;
+    }
+
     &:hover{
       border-bottom: 2px solid black;
     }
 
+  }
+
+  .pagination_btn{
+    width: 52px;
   }
 
   .slide-content{
@@ -42,28 +50,13 @@
     flex-direction: column;
     justify-content: space-around;
 
-    img{
-      padding-top: 30px;
-      width: 280px;
-      height: 330px;   
-      display: block;
-      margin: 0 auto; 
-      font-size: 12px;
-      text-align: center;
-      line-height: 280px;
-      }
- 
 
   h2 {
-    // padding-top: 50px;
-    // padding-bottom: 30px;
     font-size: 25px;
     font-weight: 500;
   }
 
   p {
-    // padding-top: 25px;
-    // padding-bottom: 50px;
     line-height: 22px;
     font-size: 18px;
     letter-spacing: 0.1px;
@@ -82,13 +75,12 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    background-color: var( --color-light-gray);
+    background-color: var( --color-white);
     border: 2px solid var(--color-light-gray);
     transition: background-color 0.33s ease;
   }
 
   button:hover {
-    background-color: var(--color-white);
     border: 2px solid var(--color-dark-gray);
   }
 

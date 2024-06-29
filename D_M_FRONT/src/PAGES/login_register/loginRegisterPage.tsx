@@ -1,47 +1,82 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import style from './login.module.scss';
-import Login from '../../PNG/feeling-free-concept-illustration_114360-13580.png'
-import Register from '../../PNG/contemplating-concept-illustration_114360-3216.png'
+import LoginImage from '../../PNG/feeling-free-concept-illustration_114360-13580.png';
+import RegisterImage from '../../PNG/contemplating-concept-illustration_114360-3216.png';
+import axios from 'axios'; // Импортируем axios
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [ui_username, setUIUsername] = useState<string>('');
+  const [ui_password, setUIPassword] = useState<string>('');
+  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [isRegistering, setIsRegistering] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setUsername(event.target.value);
+    setUIUsername(event.target.value);
   };
 
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setPassword(event.target.value);
+    setUIPassword(event.target.value);
   };
 
   const handleConfirmPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(event.target.value);
   };
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (isRegistering) {
-      if (password !== confirmPassword) {
-        console.log('Пароли не совпадают');
-        return;
+    try {
+      if (isRegistering) {
+        // Регистрация нового пользователя
+        const userData = await registerUser(ui_username, ui_password);
+        console.log('Регистрация успешна:', userData);
+      } else {
+        // Вход существующего пользователя
+        const userData = await loginUser(ui_username, ui_password);
+        console.log('Вход успешен:', userData);
       }
-      console.log('Регистрация:', { username, password });
-    } else {
-      console.log('Вход:', { username, password });
+
+      navigate('/D_M/home');
+
+    } catch (err: any) {
+      console.error('Ошибка входа или регистрации:', err.message);
     }
   };
 
+  const registerUser = async (username: string, password: string) => {
+    try {
+      const response = await axios.post('/api/user/register', {
+        username,
+        password,
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
+  };
+
+  const loginUser = async (username: string, password: string) => {
+    try {
+      const response = await axios.post('/api/user/login', {
+        username,
+        password,
+      });
+      return response.data;
+    } catch (error) {
+      throw error.response.data;
+    }
+  };
+
+  // Для переключения между регистрацией и входом
   const toggleRegister = () => {
     setIsRegistering(!isRegistering);
   };
 
   return (
     <div className={style['login-page']}>
-      <img className={style['img']} src={isRegistering ? Register : Login} />
+      <img className={style['img']} src={isRegistering ? RegisterImage : LoginImage} alt="Login or Register" />
       <h1>{isRegistering ? 'Регистрация' : 'Вход'}</h1>
       <form onSubmit={handleSubmit} className={style['login-form']}>
         <div className={style['form-group']}>
@@ -49,7 +84,7 @@ const LoginPage: React.FC = () => {
           <input
             type="text"
             id="username"
-            value={username}
+            value={ui_username}
             onChange={handleUsernameChange}
             required
             className={style['input']}
@@ -60,7 +95,7 @@ const LoginPage: React.FC = () => {
           <input
             type="password"
             id="password"
-            value={password}
+            value={ui_password}
             onChange={handlePasswordChange}
             required
             className={style['input']}

@@ -1,0 +1,18 @@
+{
+  "name": "D_M_LiteSQL",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "db": "ts-node db/setup.ts"
+  },
+  "dependencies": {
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "@types/sqlite3": "^3.1.11",
+    "ts-node": "^10.9.2",
+    "typescript": "^4.9.5"
+  }
+}

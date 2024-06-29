@@ -14,17 +14,27 @@ const pool = new Pool({
 });
 
 
-// Подключение к базе данных
+// Проверка подключения к базе данных
 export async function connectDB() {
   try {
     const client = await pool.connect();
-    if (client) console.log('db.js ... Конект ');
+    if (client) console.log('db.js ... Конект PostgresSQL ');
+    const checkUserQuery = `
+        SELECT id, user_name 
+        FROM public.users 
+        WHERE user_name = $1
+    `;
+    console.log(`request: ${checkUserQuery}`);
+    const userResult = await client.query(checkUserQuery, ['username']);
+    console.log(`Req db`)
     return client;
   } catch (err) {
-    console.error('db.js ... НЕ Конект ', err);
+    console.error('db.js ... НЕ Конект  PostgresSQL ', err);
     throw err;
   }
 }
 
+const client = await connectDB()
+
 // объект pool для использования в других модулях
-export { pool };
+export { pool, client };

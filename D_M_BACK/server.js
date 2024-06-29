@@ -1,25 +1,54 @@
 import express from 'express';
-import pkg from 'express';
-const { Request, Response } = pkg;
-import { connectDB } from './db.js';
+import http from 'node:http';
+import cors from 'cors';
+import userRoutes from './routes/user.js';
+import dreamRoutes from './routes/dreams.js';
+import { connectDB as connectPostgresDB } from './db.js'; 
+import { connectDB as connectSQLiteDB } from './dbLite.js'; 
 
-
+const port = process.env.PORT || 5173;
 const app = express();
-const port = process.env.PORT;
+app.use(cors());
+app.use(express.json());
 
-console.log('server.js Подключение к БД ...');
+const server = http.createServer(app);
 
-connectDB()
-  .then(() => {
-    console.log('server.js  Коннект !');
-    // Далее
-  })
-  .catch((err) => {
-    console.error('server.js НЕТ Коннекта : ', err);
-    process.exit(1);
-  });
+// Подключение к PostgreSQL для пользователей
+connectPostgresDB().then(pgClient => {
+  app.locals.pgClient = pgClient; // Хранение подключения PostgreSQL в локальных переменных приложения
+  console.log('Подключение к PostgreSQL установлено');
+}).catch(error => {
+  console.error('Ошибка подключения к PostgreSQL:', error);
+});
 
+// Подключение к SQLite для снов и воспоминаний
+connectSQLiteDB().then(sqliteDB => {
+  app.locals.sqliteDB = sqliteDB; // Хранение подключения SQLite в локальных переменных приложения
+  console.log('Подключение к SQLite установлено');
+}).catch(error => {
+  console.error('Ошибка подключения к SQLite:', error);
+});
 
-app.listen(port, () => {
+// Маршруты для пользователей (PostgreSQL)
+app.use('/api/user', userRoutes);
+
+// Маршруты для снов и воспоминаний (SQLite)
+app.use('/api/dreams', dreamRoutes);
+
+// Запуск сервера
+server.listen(port, () => {
   console.log(`Сервер работает на http://localhost:${port}`);
+});
+
+// Обработчик сигнала SIGINT для корректного завершения работы сервера
+process.on('SIGINT', () => {
+  console.log('Получен SIGINT. Выполняется корректное завершение работы.');
+  server.close(() => {
+    console.log('HTTP сервер закрыт.');
+    process.exit(0);
+  });
+  setTimeout(() => {
+    console.error('Принудительное завершение работы.');
+    process.exit(1);
+  }, 5000); // Настройте таймаут по необходимости
 });

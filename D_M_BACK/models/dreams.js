@@ -1,0 +1,52 @@
+import { db } from '../dbLite.js'; 
+
+// получение всех снов
+export async function getAllDreams(req, res) {
+  try {
+    const category = req.query.category; // Получаем категорию из запроса
+    const sql = `SELECT * FROM dreams WHERE category = ?`;
+    const params = [category];
+    const rows = await db.all(sql, params);
+    console.log('Запрос выполнен: Получение всех снов');
+    res.json(rows);
+  } catch (error) {
+    console.error('Ошибка получения всех снов:', error);
+    res.status(500).json({ error: 'Не удалось получить сны' });
+  }
+}
+
+// получение конкретного сна по ID
+export async function getCurrentDream(id) {
+  try {
+    const sql = `SELECT * FROM dreams WHERE id = ?`;
+    const params = [id];
+    const dream = await db.get(sql, params);
+    console.log(`Запрос выполнен: Получение сна с ID ${id}`);
+    return dream;
+  } catch (error) {
+    console.error('Ошибка получения сна:', error);
+    throw error;
+  }
+}
+
+// изменение конкретного сна по ID
+export async function changeDream(id, updatedData) {
+  try {
+    const { date, content, category, isAnalyzed } = updatedData;
+    const sql = `
+      UPDATE dreams
+      SET date = ?,
+          content = ?,
+          category = ?,
+          isAnalyzed = ?
+      WHERE id = ?
+    `;
+    const params = [date, content, category, isAnalyzed, id];
+    const result = await db.run(sql, params);
+    console.log(`Запрос выполнен: Изменение сна с ID ${id}`);
+    return result.changes > 0;
+  } catch (error) {
+    console.error('Ошибка изменения сна:', error);
+    throw error;
+  }
+}
