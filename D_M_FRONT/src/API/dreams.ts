@@ -6,7 +6,17 @@ export const loadDreams = async () => {
     console.log('loadDreams response ', response);
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    if (axios.isAxiosError(error)) {
+      // Обработка ошибки AxiosError
+      if (error.response?.data) {
+        throw error.response.data;
+      } else {
+        throw new Error('Unknown Axios Error');
+      }
+    } else {
+      // Обработка других ошибок
+      throw error;
+    }
   }
 };
 
@@ -19,7 +29,17 @@ export const createDream = async (title: string, description: string) => {
     console.log('createDream response ', response);
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    if (axios.isAxiosError(error)) {
+      // Обработка ошибки AxiosError
+      if (error.response?.data) {
+        throw error.response.data;
+      } else {
+        throw new Error('Unknown Axios Error');
+      }
+    } else {
+      // Обработка других ошибок
+      throw error;
+    }
   }
 };
 
@@ -32,7 +52,17 @@ export const updateDream = async (id: string, title: string, description: string
     console.log('updateDream response ', response);
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    if (axios.isAxiosError(error)) {
+      // Обработка ошибки AxiosError
+      if (error.response?.data) {
+        throw error.response.data;
+      } else {
+        throw new Error('Unknown Axios Error');
+      }
+    } else {
+      // Обработка других ошибок
+      throw error;
+    }
   }
 };
 
@@ -42,6 +72,16 @@ export const deleteDream = async (id: string) => {
     console.log('deleteDream response ', response);
     return response.data;
   } catch (error) {
-    throw error.response.data;
+    if (axios.isAxiosError(error)) {
+      // Обработка ошибки AxiosError
+      if (error.response?.data) {
+        throw error.response.data;
+      } else {
+        throw new Error('Unknown Axios Error');
+      }
+    } else {
+      // Обработка других ошибок
+      throw error;
+    }
   }
 };

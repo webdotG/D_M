@@ -1,5 +1,24 @@
 import { db } from '../dbLite.js'; 
 
+// запись нового сна
+export async function createDream(newDream) {
+  const { date, content, category, isAnalyzed } = newDream;
+  try {
+    const sql = `
+      INSERT INTO dreams (date, content, category, isAnalyzed)
+      VALUES (?, ?, ?, ?)
+    `;
+    const params = [date, content, category, isAnalyzed];
+    const result = await db.run(sql, params);
+    console.log(`Запрос выполнен: Создание нового сна`);
+    return result.lastID; // возвращаем ID только что созданного сна
+  } catch (error) {
+    console.error('Ошибка создания сна:', error);
+    throw error;
+  }
+}
+
+
 // получение всех снов
 export async function getAllDreams(req, res) {
   try {
