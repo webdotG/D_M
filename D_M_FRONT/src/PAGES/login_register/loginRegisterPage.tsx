@@ -3,7 +3,6 @@ import style from './login.module.scss';
 import LoginImage from '../../PNG/feeling-free-concept-illustration_114360-13580.png';
 import RegisterImage from '../../PNG/contemplating-concept-illustration_114360-3216.png';
 import { registerUser, loginUser } from '../../API/login_register'
-import axios from 'axios'; // Импортируем axios
 import { useNavigate } from 'react-router-dom';
 
 const LoginPage: React.FC = () => {
