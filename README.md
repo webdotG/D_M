@@ -64,6 +64,7 @@ D_M/
   cd D_M
   cd D_M_LiteSQL
   npm i
+  npm run db
   cd ..
   cd D_M_BACK
   npm i
