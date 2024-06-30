@@ -1,22 +1,34 @@
-import { dbLite } from '../dbLite.js'; 
+import { dbLite } from '../dbLite.js';
 
-// запись нового сна
-export async function createDream(newDream) {
-  const { date, content, category, isAnalyzed } = newDream;
+// Создание нового сна
+export const createDream = async (newDream) => {
   try {
-    const sql = `
-      INSERT INTO dreams (date, content, category, isAnalyzed)
-      VALUES (?, ?, ?, ?)
-    `;
-    const params = [date, content, category, isAnalyzed];
-    const result = await dbLite.run(sql, params);
-    console.log(`Запрос выполнен: Создание нового сна`);
-    return result.lastID; // возвращаем ID только что созданного сна
+    console.log('Попытка добавления сна в базу данных:', newDream);
+
+    const result = await dbLite.run(`
+      INSERT INTO dreams (title,
+        date,
+        content,
+        category,
+        isAnalyzed,
+        createdAt
+          )
+      VALUES (?, ?, ?, ?, ?, ?)
+    `, [newDream.title,
+       newDream.date, 
+       newDream.content, 
+       newDream.category, 
+       newDream.isAnalyzed,
+       newDream.createdAt
+      ]);
+    
+    console.log('Сон успешно добавлен в базу данных');
+    return result.lastID; // Возвращаем ID только что созданного сна
   } catch (error) {
-    console.error('Ошибка создания сна:', error);
+    console.error('Ошибка при добавлении сна:', error);
     throw error;
   }
-}
+};
 
 
 // получение всех снов
@@ -51,19 +63,29 @@ export async function getCurrentDream(id) {
 // изменение конкретного сна по ID
 export async function changeDream(id, updatedData) {
   try {
-    const { date, content, category, isAnalyzed } = updatedData;
+    const { title, content, isAnalyzed, category, date, updatedAt, associations } = updatedData;
     const sql = `
       UPDATE dreams
-      SET date = ?,
+      SET title = ?,
           content = ?,
+          isAnalyzed = ?,
           category = ?,
-          isAnalyzed = ?
+          date = ?,
+          updatedAt = ?,
+          associations = ?
       WHERE id = ?
     `;
-    const params = [date, content, category, isAnalyzed, id];
+    const params = [title, content, isAnalyzed, category, date, updatedAt, associations, id];
     const result = await dbLite.run(sql, params);
     console.log(`Запрос выполнен: Изменение сна с ID ${id}`);
-    return result.changes > 0;
+    console.log('Результат изменения:', result);
+
+    if (result.changes > 0) {
+      return true;
+    } else {
+      console.log(`Сон с ID ${id} не был найден или не было сделано изменений.`);
+      return false;
+    }
   } catch (error) {
     console.error('Ошибка изменения сна:', error);
     throw error;

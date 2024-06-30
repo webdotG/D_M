@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
 import styles from './Add_dreams_memories.module.scss';
-import { useDreamStore, useAssociationsStore } from '../../store';
+import { useDreamStore} from '../../store';
 
 const AddDreams: React.FC = () => {
   const [title, setTitle] = useState<string>('');
@@ -16,15 +16,15 @@ const AddDreams: React.FC = () => {
   const [isAddingNewAssociation, setIsAddingNewAssociation] = useState<boolean>(false);
 
   const addDream = useDreamStore((state) => state.addDream);
-  const updateDream = useDreamStore((state) => state.updateDream);
-  const loadAssociations = useAssociationsStore((state) => state.loadAssociations);
-  const associationsList = useAssociationsStore((state) => state.associations);
+  // const updateDream = useDreamStore((state) => state.updateDream);
+  // const loadAssociations = useAssociationsStore((state) => state.loadAssociations);
+  // const associationsList = useAssociationsStore((state) => state.associations);
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    loadAssociations();
-  }, [loadAssociations]);
+  // useEffect(() => {
+  //   loadAssociations();
+  // }, [loadAssociations]);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -55,17 +55,20 @@ const AddDreams: React.FC = () => {
     setNewAssociation(event.target.value);
   };
 
+  const now = new Date().toISOString();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const finalAssociations = isAddingNewAssociation ? newAssociation : associations;
-    const newDream = {
-      id: Date.now(),
-      title,
-      content,
-      isAnalyzed,
-      category,
-      date: date ? date.toISOString() : '',
-      associations: finalAssociations,
+    
+const newDream = {
+  id: Date.now(),
+  title,
+  content,
+  isAnalyzed,
+  category,
+  date: date ? date.toISOString() : '',
+  createdAt: now,
+  updatedAt: now,
+  associations: isAddingNewAssociation ? newAssociation : associations,
     };
     await addDream(newDream);
     setTitle('');
@@ -79,18 +82,26 @@ const AddDreams: React.FC = () => {
     navigate('/D_M/');
   };
 
-  useEffect(() => {
-    const newDream = {
-      id: Date.now(),
-      title,
-      content,
-      isAnalyzed,
-      category,
-      date: date ? date.toISOString() : '',
-      associations: isAddingNewAssociation ? newAssociation : associations,
-    };
-    updateDream(newDream);
-  }, [title, content, isAnalyzed, category, date, associations, newAssociation, isAddingNewAssociation]);
+  // useEffect(() => {
+  //   const newDream = {
+  //     id: Date.now(),
+  //     title,
+  //     content,
+  //     isAnalyzed,
+  //     category,
+  //     date: date ? date.toISOString() : '',
+  //     associations: isAddingNewAssociation ? newAssociation : associations,
+  //   };
+  //   addDream(newDream);
+  // }, [
+  //   title, 
+  //   content, 
+  //   isAnalyzed, 
+  //   category, 
+  //   date, 
+  //   associations, 
+  //   newAssociation, 
+  //   isAddingNewAssociation]);
 
   const handleBackToHome = () => {
     navigate('/D_M/');
@@ -149,11 +160,11 @@ const AddDreams: React.FC = () => {
           <label htmlFor="associations">Ассоциации</label>
           <select id="associations" value={associations} onChange={handleAssociationsChange}>
             <option value="">Выберите ассоциацию</option>
-            {associationsList.map((association) => (
+            {/* {associationsList.map((association) => (
               <option key={association} value={association}>
                 {association}
               </option>
-            ))}
+            ))} */}
             <option value="new">Добавить новую</option>
           </select>
           {isAddingNewAssociation && (
