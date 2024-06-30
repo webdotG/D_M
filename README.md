@@ -62,13 +62,12 @@ D_M/
   ```bash
   git clone git@github.com:webdotG/D_M.git
   cd D_M
-  npm install
   cd D_M_BACK
-  npm install
+  npm i
   npm run server  
   cd ..
-  cd D_MFRONT 
-  npm install
+  cd D_M_FRONT 
+  npm i
     //В режиме разработки 
    npm run dev
    //Для сборки
