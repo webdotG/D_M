@@ -126,7 +126,7 @@ const AddDreams: React.FC = () => {
           </label>
         </div>
         <div className={styles['form-group']}>
-          <label htmlFor="associations">Ассоциации</label>
+          <label htmlFor="associations">из категории : </label>
           <textarea
             id="associations"
             value={associations}
