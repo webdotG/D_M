@@ -45,9 +45,11 @@ const Footer: React.FC<FooterProps> = ({ translate }) => {
   return (
     <footer className={styles.footer}>
     <div className={styles['footer__wrapper']}>
-      <button className={styles['footer-add']}>
-      <img src={AddNew} alt='toggleIcon'/>
-      </button>
+
+    <Link to="/D_M/add_d-m" className={styles['footer-add']}>
+          <img src={AddNew} alt="toggleIcon" />
+    </Link>
+
       <ul className={styles['footer-list']}>
         {BUTTONS.map(item => (
           <li className={styles['footer-item']} key={item.id}>

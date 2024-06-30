@@ -1,4 +1,4 @@
-import { db } from '../dbLite.js'; 
+import { dbLite } from '../dbLite.js'; 
 
 // запись нового сна
 export async function createDream(newDream) {
@@ -9,7 +9,7 @@ export async function createDream(newDream) {
       VALUES (?, ?, ?, ?)
     `;
     const params = [date, content, category, isAnalyzed];
-    const result = await db.run(sql, params);
+    const result = await dbLite.run(sql, params);
     console.log(`Запрос выполнен: Создание нового сна`);
     return result.lastID; // возвращаем ID только что созданного сна
   } catch (error) {
@@ -25,7 +25,7 @@ export async function getAllDreams(req, res) {
     const category = req.query.category; // Получаем категорию из запроса
     const sql = `SELECT * FROM dreams WHERE category = ?`;
     const params = [category];
-    const rows = await db.all(sql, params);
+    const rows = await dbLite.all(sql, params);
     console.log('Запрос выполнен: Получение всех снов');
     res.json(rows);
   } catch (error) {
@@ -39,7 +39,7 @@ export async function getCurrentDream(id) {
   try {
     const sql = `SELECT * FROM dreams WHERE id = ?`;
     const params = [id];
-    const dream = await db.get(sql, params);
+    const dream = await dbLite.get(sql, params);
     console.log(`Запрос выполнен: Получение сна с ID ${id}`);
     return dream;
   } catch (error) {
@@ -61,7 +61,7 @@ export async function changeDream(id, updatedData) {
       WHERE id = ?
     `;
     const params = [date, content, category, isAnalyzed, id];
-    const result = await db.run(sql, params);
+    const result = await dbLite.run(sql, params);
     console.log(`Запрос выполнен: Изменение сна с ID ${id}`);
     return result.changes > 0;
   } catch (error) {

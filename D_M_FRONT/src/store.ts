@@ -37,6 +37,7 @@ type DreamState = {
   dreams: Dream[];
   loadDreams: (category: string) => void;
   updateDream: (updatedDream: Dream) => void;
+  addDream: (newDream: Omit<Dream, 'id'>) => void;
 };
 
 export const useCategoryStore = create<CategoryState>((set) => ({
@@ -73,6 +74,28 @@ export const useAuthStore = create<AuthState>((set) => ({
 
 export const useDreamStore = create<DreamState>((set) => ({
   dreams: [],
+  addDream: async (newDream) => {
+    try {
+      const response = await fetch('/api/dreams/add_d-m', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newDream),
+      });
+      if (!response.ok) {
+        throw new Error(`Error adding dream: ${response.statusText}`);
+      }
+      const addedDreamFromDB = await response.json();
+      set((state) => ({
+        dreams: [...state.dreams, addedDreamFromDB],
+      }));
+      console.log('Dream added successfully:', addedDreamFromDB);
+    } catch (error) {
+      console.error('Failed to add dream:', error);
+      throw error;
+    }
+  },
   loadDreams: async (category: string) => {
     try {
       const response = await fetch(`/api/dreams/all?category=${category}`);

@@ -5,6 +5,7 @@ import WelcomePage from './PAGES/welcome/welcomePage';
 import LoginRegisterPage from './PAGES/login_register/loginRegisterPage';
 import HomePage from './PAGES/home/home';
 import Layout from './layout/layout';
+import AddDM from './components/dreams_memories/Add_dreams_memories';
 import instance from './axios'; 
 
 
@@ -43,7 +44,12 @@ function App() {
         path="/D_M/"
         element={isAuthenticated ? <Layout><HomePage /></Layout> : <Navigate to="/D_M/welcome" />}
       />
+      <Route
+        path="/D_M/add_d-m"
+        element={isAuthenticated ? <AddDM /> : <Navigate to="/D_M/add_d-m" />}
+      />
     </Routes>
+    
   );
 }
 

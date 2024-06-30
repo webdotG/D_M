@@ -10,12 +10,12 @@ const dbPath = '/home/webdotg/A_webdotgProjects/D_M/D_M_LiteSQL/db/dreams_memori
 // открытия подключения кSQLite
 export async function connectDB() {
   try {
-    const db = await open({
+    const dbLite = await open({
       filename: dbPath,
       driver: sqlite3.Database
     });
     console.log(`dbLite.js  ...  Коннект SQLite `);
-    return db;
+    return dbLite;
   } catch (error) {
     console.error('dbLite.js  ... НЕ Конект SQLLIte : ', error);
     throw error;
@@ -23,10 +23,10 @@ export async function connectDB() {
 }
 
 // для получения объекта базы данных
-let db;
+let dbLite;
 
 (async () => {
-  db = await connectDB();
+  dbLite = await connectDB();
 })();
 
-export { db };
+export { dbLite };
