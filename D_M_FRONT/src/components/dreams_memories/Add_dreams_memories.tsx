@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
 import styles from './Add_dreams_memories.module.scss';
-import { useDreamStore } from '../../store';
+import { useDreamStore, useAssociationsStore } from '../../store';
 
 const AddDreams: React.FC = () => {
   const [title, setTitle] = useState<string>('');
@@ -12,10 +12,19 @@ const AddDreams: React.FC = () => {
   const [category, setCategory] = useState<string>('сны'); 
   const [date, setDate] = useState<Date | null>(null); 
   const [associations, setAssociations] = useState<string>('');
+  const [newAssociation, setNewAssociation] = useState<string>('');
+  const [isAddingNewAssociation, setIsAddingNewAssociation] = useState<boolean>(false);
 
   const addDream = useDreamStore((state) => state.addDream);
   const updateDream = useDreamStore((state) => state.updateDream);
+  const loadAssociations = useAssociationsStore((state) => state.loadAssociations);
+  const associationsList = useAssociationsStore((state) => state.associations);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    loadAssociations();
+  }, [loadAssociations]);
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
@@ -37,44 +46,55 @@ const AddDreams: React.FC = () => {
     setDate(date);
   };
 
-  const handleAssociationsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleAssociationsChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setAssociations(event.target.value);
+    setIsAddingNewAssociation(event.target.value === 'new');
+  };
+
+  const handleNewAssociationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNewAssociation(event.target.value);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const finalAssociations = isAddingNewAssociation ? newAssociation : associations;
     const newDream = {
-      id: Date.now(), // временный ID
+      id: Date.now(),
       title,
       content,
       isAnalyzed,
       category,
       date: date ? date.toISOString() : '',
-      associations,
+      associations: finalAssociations,
     };
-    await addDream(newDream); // zustand store
-    // Сброс состояний после отправки данных
+    await addDream(newDream);
     setTitle('');
     setContent('');
     setIsAnalyzed(false);
     setCategory('сны');
     setDate(null);
     setAssociations('');
-    navigate('/D_M/'); 
+    setNewAssociation('');
+    setIsAddingNewAssociation(false);
+    navigate('/D_M/');
   };
 
   useEffect(() => {
     const newDream = {
-      id: Date.now(), // временный ID
+      id: Date.now(),
       title,
       content,
       isAnalyzed,
       category,
       date: date ? date.toISOString() : '',
-      associations,
+      associations: isAddingNewAssociation ? newAssociation : associations,
     };
-    updateDream(newDream); // Автосохранение изменений
-  }, [title, content, isAnalyzed, category, date, associations]);
+    updateDream(newDream);
+  }, [title, content, isAnalyzed, category, date, associations, newAssociation, isAddingNewAssociation]);
+
+  const handleBackToHome = () => {
+    navigate('/D_M/');
+  };
 
   return (
     <div className={styles['add-dreams-container']}>
@@ -126,12 +146,24 @@ const AddDreams: React.FC = () => {
           </label>
         </div>
         <div className={styles['form-group']}>
-          <label htmlFor="associations">из категории : </label>
-          <textarea
-            id="associations"
-            value={associations}
-            onChange={handleAssociationsChange}
-          />
+          <label htmlFor="associations">Ассоциации</label>
+          <select id="associations" value={associations} onChange={handleAssociationsChange}>
+            <option value="">Выберите ассоциацию</option>
+            {associationsList.map((association) => (
+              <option key={association} value={association}>
+                {association}
+              </option>
+            ))}
+            <option value="new">Добавить новую</option>
+          </select>
+          {isAddingNewAssociation && (
+            <input
+              type="text"
+              value={newAssociation}
+              onChange={handleNewAssociationChange}
+              placeholder="Введите новую ассоциацию"
+            />
+          )}
         </div>
         <div className={styles['form-group']}>
           <label htmlFor="date">Дата</label>
@@ -144,6 +176,9 @@ const AddDreams: React.FC = () => {
         </div>
         <button type="submit" className={styles['submit-button']}>
           Сохранить
+        </button>
+        <button type="button" className={styles['back-button']} onClick={handleBackToHome}>
+          На главную
         </button>
       </form>
     </div>

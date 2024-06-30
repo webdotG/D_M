@@ -40,6 +40,11 @@ type DreamState = {
   addDream: (newDream: Omit<Dream, 'id'>) => void;
 };
 
+type AssociationsState = {
+  associations: string[];
+  loadAssociations: () => void;
+};
+
 export const useCategoryStore = create<CategoryState>((set) => ({
   selectedCategory: CATEGORY[0],
   setSelectedCategory: (category: string) => {
@@ -131,6 +136,24 @@ export const useDreamStore = create<DreamState>((set) => ({
       console.log('Dream updated successfully:', updatedDreamFromDB);
     } catch (error) {
       console.error('Failed to update dream:', error);
+      throw error;
+    }
+  },
+}));
+
+export const useAssociationsStore = create<AssociationsState>((set) => ({
+  associations: [],
+  loadAssociations: async () => {
+    try {
+      const response = await fetch('/api/associations');
+      if (!response.ok) {
+        throw new Error(`Error loading associations: ${response.statusText}`);
+      }
+      const associations = await response.json();
+      set({ associations });
+      console.log('Associations loaded successfully:', associations);
+    } catch (error) {
+      console.error('Failed to load associations:', error);
       throw error;
     }
   },
