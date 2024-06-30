@@ -82,4 +82,4 @@ git push origin МояВетка/Навание
 ```
 
 
-CONTACTS  -  @KirillGrant  <a href="https://t.me/kirillgrant" target="_blank"> <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" width="24" height="24" alt="telegram" />  Kirill Grant</a>
+CONTACT  -  @KirillGrant  <a href="https://t.me/kirillgrant" target="_blank">  @KirillGrant <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" width="24" height="24" alt="telegram" />  Kirill Grant</a>
