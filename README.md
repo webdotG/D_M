@@ -16,7 +16,7 @@
 
 ## Используемые технологии
 
-Vite, HTML, Sass, JS, TS, React, Zustand, Node,  PostrgresSQL, LiteSQL, GPT
+Vite, HTML, Sass, JS, TS, React, Zustand, Node,  PostrgresSQL, LiteSQL, Docker, GPT
   
   
 ## Установка
