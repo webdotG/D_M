@@ -17,25 +17,8 @@
 ## Используемые технологии
 
 Vite, HTML, Sass, JS, TS, React, Zustand, Node,  PostrgresSQL, LiteSQL, Docker, GPT
-  
-  
-## Установка
-Запуск
-  ```bash
-  git clone git@github.com:webdotG/D_M.git
-  cd D_M
-  npm install
-  cd D_M_BACK
-  npm install
-  npm run server  
-  cd ..
-  cd D_MFRONT 
-  npm install
-    //В режиме разработки 
-   npm run dev
-   //Для сборки
-   npm run build
- ```
+
+
 
 ## Структура проекта    
 D_M/  
@@ -44,6 +27,7 @@ D_M/
 │   ├── api/  
 │   ├── routes/  
 │   ├── db.js  
+│   ├── dbLite.js
 │   ├── server.js  
 │   ├── package.json  
 │   └── ...  
@@ -71,6 +55,25 @@ D_M/
 ├──README.MD  
 └──.gitignore  
 
+
+  
+## Установка
+Запуск
+  ```bash
+  git clone git@github.com:webdotG/D_M.git
+  cd D_M
+  npm install
+  cd D_M_BACK
+  npm install
+  npm run server  
+  cd ..
+  cd D_MFRONT 
+  npm install
+    //В режиме разработки 
+   npm run dev
+   //Для сборки
+   npm run build
+ ```
 
 ## Если вы хотите внести свой вклад в проект
 
