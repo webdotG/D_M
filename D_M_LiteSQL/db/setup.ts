@@ -16,9 +16,10 @@ async function setup() {
     await db.exec(`
       CREATE TABLE IF NOT EXISTS dreams (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        category TEXT NOT NULL,
+        association TEXT NOT NULL,
         date TEXT NOT NULL,
         content TEXT NOT NULL,
-        category TEXT NOT NULL,
         isAnalyzed BOOLEAN NOT NULL
       );
     `);

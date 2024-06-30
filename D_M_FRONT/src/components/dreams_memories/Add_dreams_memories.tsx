@@ -1,40 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
 import styles from './Add_dreams_memories.module.scss';
-import { useDreamStore} from '../../store';
+import { useDreamStore } from '../../store';
+import { fetchAssociations } from '../../API/associationSearch';
+import Category from '../category/categoryAssociation';
 
 const AddDreams: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [isAnalyzed, setIsAnalyzed] = useState<boolean>(false);
-  const [category, setCategory] = useState<string>('сны'); 
-  const [date, setDate] = useState<Date | null>(null); 
-  const [associations, setAssociations] = useState<string>('');
+  const [category, setCategory] = useState<string>('сны');
+  const [date, setDate] = useState<Date | null>(null);
+  const [associationsList, setAssociationsList] = useState<string[]>([]);
+  const [selectedAssociation, setSelectedAssociation] = useState<string>('');
   const [newAssociation, setNewAssociation] = useState<string>('');
   const [isAddingNewAssociation, setIsAddingNewAssociation] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const addDream = useDreamStore((state) => state.addDream);
-  // const updateDream = useDreamStore((state) => state.updateDream);
-  // const loadAssociations = useAssociationsStore((state) => state.loadAssociations);
-  // const associationsList = useAssociationsStore((state) => state.associations);
-
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   loadAssociations();
-  // }, [loadAssociations]);
-
-  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  const handleContentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value);
   };
 
-  const handleIsAnalyzedChange = () => {
+  const handleIsAnalyzed = () => {
     setIsAnalyzed(!isAnalyzed);
   };
 
@@ -46,8 +42,8 @@ const AddDreams: React.FC = () => {
     setDate(date);
   };
 
-  const handleAssociationsChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setAssociations(event.target.value);
+  const handleAssociation = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedAssociation(event.target.value);
     setIsAddingNewAssociation(event.target.value === 'new');
   };
 
@@ -56,19 +52,20 @@ const AddDreams: React.FC = () => {
   };
 
   const now = new Date().toISOString();
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    
-const newDream = {
-  id: Date.now(),
-  title,
-  content,
-  isAnalyzed,
-  category,
-  date: date ? date.toISOString() : '',
-  createdAt: now,
-  updatedAt: now,
-  associations: isAddingNewAssociation ? newAssociation : associations,
+
+    const newDream = {
+      id: Date.now(),
+      title,
+      content,
+      isAnalyzed,
+      category,
+      date: date ? date.toISOString() : '',
+      createdAt: now,
+      updatedAt: now,
+      associations: isAddingNewAssociation ? newAssociation : selectedAssociation,
     };
     await addDream(newDream);
     setTitle('');
@@ -76,53 +73,52 @@ const newDream = {
     setIsAnalyzed(false);
     setCategory('сны');
     setDate(null);
-    setAssociations('');
+    setSelectedAssociation('');
     setNewAssociation('');
     setIsAddingNewAssociation(false);
     navigate('/D_M/');
   };
 
-  // useEffect(() => {
-  //   const newDream = {
-  //     id: Date.now(),
-  //     title,
-  //     content,
-  //     isAnalyzed,
-  //     category,
-  //     date: date ? date.toISOString() : '',
-  //     associations: isAddingNewAssociation ? newAssociation : associations,
-  //   };
-  //   addDream(newDream);
-  // }, [
-  //   title, 
-  //   content, 
-  //   isAnalyzed, 
-  //   category, 
-  //   date, 
-  //   associations, 
-  //   newAssociation, 
-  //   isAddingNewAssociation]);
+  useEffect(() => {
+    async function loadAssociations() {
+      const fetchedAssociations = await fetchAssociations(category);
+      setAssociationsList(fetchedAssociations);
+    }
+    loadAssociations();
+  }, [category]);
 
   const handleBackToHome = () => {
     navigate('/D_M/');
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredAssociations = associationsList.filter((association) =>
+    association.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className={styles['add-dreams-container']}>
       <form onSubmit={handleSubmit} className={styles['add-dreams-form']}>
         <div className={styles['category-buttons']}>
-          <button 
-            type="button" 
-            onClick={() => handleCategoryChange('сны')} 
-            className={`${styles['category-button']} ${category === 'сны' ? styles['selected'] : ''}`}
+          <button
+            type="button"
+            onClick={() => handleCategoryChange('сны')}
+            className={`
+              ${styles['category-button']}
+              ${category === 'сны' ? styles['selected'] : ''}`}
           >
             <h2>Сон</h2>
           </button>
           <p>или</p>
-          <button 
-            type="button" 
-            onClick={() => handleCategoryChange('воспоминания')} 
-            className={`${styles['category-button']} ${category === 'воспоминания' ? styles['selected'] : ''}`}
+          <button
+            type="button"
+            onClick={() => handleCategoryChange('воспоминания')}
+            className={`
+              ${styles['category-button']}
+              ${category === 'воспоминания' ? styles['selected'] : ''}`}
           >
             <h2>Воспоминание</h2>
           </button>
@@ -133,7 +129,7 @@ const newDream = {
             type="text"
             id="title"
             value={title}
-            onChange={handleTitleChange}
+            onChange={handleTitle}
             required
           />
         </div>
@@ -142,7 +138,7 @@ const newDream = {
           <textarea
             id="content"
             value={content}
-            onChange={handleContentChange}
+            onChange={handleContent}
             required
           />
         </div>
@@ -151,20 +147,31 @@ const newDream = {
             <input
               type="checkbox"
               checked={isAnalyzed}
-              onChange={handleIsAnalyzedChange}
+              onChange={handleIsAnalyzed}
             />
             Анализировано
           </label>
         </div>
         <div className={styles['form-group']}>
           <label htmlFor="associations">Ассоциации</label>
-          <select id="associations" value={associations} onChange={handleAssociationsChange}>
+          <input
+            type="text"
+            id="search"
+            placeholder="Поиск ассоциаций"
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
+          <select
+            id="associations"
+            value={selectedAssociation}
+            onChange={handleAssociation}
+          >
             <option value="">Выберите ассоциацию</option>
-            {/* {associationsList.map((association) => (
+            {filteredAssociations.map((association) => (
               <option key={association} value={association}>
                 {association}
               </option>
-            ))} */}
+            ))}
             <option value="new">Добавить новую</option>
           </select>
           {isAddingNewAssociation && (
@@ -192,6 +199,7 @@ const newDream = {
           На главную
         </button>
       </form>
+      <Category />
     </div>
   );
 };

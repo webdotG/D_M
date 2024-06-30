@@ -5,6 +5,7 @@ import { useEffect } from 'react';
 
 export default function DreamsList() {
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
+  
   const { dreams, loadDreams } = useDreamStore((state) => ({
     dreams: state.dreams,
     loadDreams: state.loadDreams,

@@ -1,27 +1,36 @@
 import { dbLite } from '../dbLite.js';
 
-// Создание нового сна
+// Добавление нового сна
 export const createDream = async (newDream) => {
   try {
     console.log('Попытка добавления сна в базу данных:', newDream);
 
-    const result = await dbLite.run(`
-      INSERT INTO dreams (title,
-        date,
-        content,
-        category,
-        isAnalyzed,
-        createdAt
-          )
-      VALUES (?, ?, ?, ?, ?, ?)
-    `, [newDream.title,
-       newDream.date, 
-       newDream.content, 
-       newDream.category, 
-       newDream.isAnalyzed,
-       newDream.createdAt
-      ]);
-    
+    if (
+      !newDream.title ||
+      !newDream.date ||
+      !newDream.content ||
+      !newDream.category ||
+      newDream.isAnalyzed === undefined ||
+      !newDream.createdAt ||
+      newDream.associations === undefined
+    ) {
+      throw new Error('Некоторые поля отсутствуют в newDream');
+    }
+
+    const result = await dbLite.run(
+      `INSERT INTO dreams_memories (title, date, content, category, isAnalyzed, createdAt, associations)
+       VALUES (?, ?, ?, ?, ?, ?, ?)`, 
+      [
+        newDream.title,
+        newDream.date,
+        newDream.content,
+        newDream.category,
+        newDream.isAnalyzed,
+        newDream.createdAt,
+        newDream.associations 
+      ]
+    );
+
     console.log('Сон успешно добавлен в базу данных');
     return result.lastID; // Возвращаем ID только что созданного сна
   } catch (error) {
@@ -31,14 +40,19 @@ export const createDream = async (newDream) => {
 };
 
 
-// получение всех снов
+// Получение всех снов
 export async function getAllDreams(req, res) {
   try {
-    const category = req.query.category; // Получаем категорию из запроса
-    const sql = `SELECT * FROM dreams WHERE category = ?`;
+    const category = req.query.category;
+    console.log('Полученная категория:', category);
+
+    const sql = `SELECT * FROM dreams_memories WHERE category = ?`;
     const params = [category];
     const rows = await dbLite.all(sql, params);
+
     console.log('Запрос выполнен: Получение всех снов');
+    console.log('Полученные строки:', rows);
+
     res.json(rows);
   } catch (error) {
     console.error('Ошибка получения всех снов:', error);
@@ -46,10 +60,11 @@ export async function getAllDreams(req, res) {
   }
 }
 
-// получение конкретного сна по ID
+
+// Получение конкретного сна по ID
 export async function getCurrentDream(id) {
   try {
-    const sql = `SELECT * FROM dreams WHERE id = ?`;
+    const sql = `SELECT * FROM dreams_memories WHERE id = ?`;
     const params = [id];
     const dream = await dbLite.get(sql, params);
     console.log(`Запрос выполнен: Получение сна с ID ${id}`);
@@ -60,12 +75,12 @@ export async function getCurrentDream(id) {
   }
 }
 
-// изменение конкретного сна по ID
+// Изменение конкретного сна по ID
 export async function changeDream(id, updatedData) {
   try {
     const { title, content, isAnalyzed, category, date, updatedAt, associations } = updatedData;
     const sql = `
-      UPDATE dreams
+      UPDATE dreams_memories
       SET title = ?,
           content = ?,
           isAnalyzed = ?,
