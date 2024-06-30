@@ -64,14 +64,11 @@ D_M/
   cd D_M
   cd D_M_BACK
   npm i
-  npm run server  
+  npm run server
   cd ..
   cd D_M_FRONT 
-  npm i
-    //В режиме разработки 
-   npm run dev
-   //Для сборки
-   npm run build
+  npm i 
+  npm run dev
  ```
 
 ## Если вы хотите внести свой вклад в проект
