@@ -14,7 +14,7 @@
 
 ## Используемые технологии
 
-Vite, HTML, Sass, JS, TS, React, Zustand, Postrgress 
+Vite, HTML, Sass, JS, TS, React, Zustand, Node,  PostrgresSQL, LiteSQL
   
   
 ## Установка
@@ -23,48 +23,52 @@ Vite, HTML, Sass, JS, TS, React, Zustand, Postrgress
   git clone git@github.com:webdotG/D_M.git
   cd D_M
   npm install
-  ```
-В режиме разработки 
-  ```bash
- npm run dev
- ```
- Для сборки
-   ```bash
- npm run build
+  cd D_M_BACK
+  npm install
+  npm run server  
+  cd ..
+  cd D_MFRONT 
+  npm install
+    //В режиме разработки 
+   npm run dev
+   //Для сборки
+   npm run build
  ```
 
 ## Структура проекта    
-D_M/
-├──D_M_BACK/
-│   ├── midlewear/
-│   ├── api/
-│   ├── routes/
-│   ├── db.js
-│   ├── server.js
-│   ├── package.json
-│   └── ...
-├──D_M_FRONT/
-│   ├── public/
-│   │   ├── 404.html
-│   │   └── ...
-│   ├── src/
-│   │   ├── components/
-│   │   ├── styles/
-│   │   ├── App.tsx
-│   │   ├── main.tsx
-│   │   └── ...
-│   ├── index.html
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── vite.config.ts
-├──D_M_LiteSQL/
-│   ├── db/
-│     ├── database.ts
-│     ├── setup.ts
-│   ├── package.json
-│   ├── tsconfig.json
-├──README.MD
-└──.gitignore
+D_M/  
+├──D_M_BACK/  
+│   ├── midlewear/  
+│   ├── api/  
+│   ├── routes/  
+│   ├── db.js  
+│   ├── server.js  
+│   ├── package.json  
+│   └── ...  
+├──D_M_FRONT/  
+│   ├── public/  
+│   │   ├── 404.html  
+│   │   └── ...  
+│   ├── src/  
+│   │   ├── components/  
+│   │   ├── styles/  
+│   │   ├── App.tsx  
+│   │   ├── main.tsx  
+│   │   └── ...  
+│   ├── index.html  
+│   ├── package.json  
+│   ├── tsconfig.json  
+│   └── vite.config.ts  
+├──D_M_LiteSQL/  
+│   ├── db/  
+│     ├── database.ts  
+│     ├── setup.ts  
+│     ├── dreams_memories.db  
+│   ├── package.json  
+│   ├── tsconfig.json  
+├──README.MD  
+└──.gitignore  
+
 
 ## Если вы хотите внести свой вклад в проект
 
