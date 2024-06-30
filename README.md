@@ -76,9 +76,10 @@ D_M/
 
 Создайте новую ветку: 
 ```bash  
-git checkout -b МояВетка/Навание  
-git commit -a -m 'То что сделано'  
-git push origin МояВетка/Навание  
+git checkout -b  
+git add . 
+git commit -a -m   
+git push origin  
 ```
 
 
