@@ -86,4 +86,4 @@ git push origin
 ```
 
 
-CONTACT  -  могу и .env выслать   <a href="https://t.me/kirillgrant" target="_blank">  @KirillGrant <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" width="24" height="24" alt="telegram" /></a>
+CONTACT  -  ОТВЕЧУ НА ВОПРОСЫ и вышлю .env <a href="https://t.me/kirillgrant" target="_blank">  @KirillGrant <img src="https://cdn-icons-png.flaticon.com/512/2111/2111646.png" width="24" height="24" alt="telegram" /></a>
