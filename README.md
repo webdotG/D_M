@@ -1,5 +1,5 @@
 # Dreams & Memories    
-# [Тыкни(откроется github-pages)](https://webdotg.github.io/D_M/)
+# [Тыкни ... (откроется github-pages)](https://webdotg.github.io/D_M/)
 
 
 ## Описание
