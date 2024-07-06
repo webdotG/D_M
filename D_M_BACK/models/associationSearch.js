@@ -1,15 +1,13 @@
 import { dbLite } from '../dbLite.js';
-// console.log('{ dbLite } : ', dbLite );
 
-
-export const associationSearch = async (category) => {
-   
+export const associationSearch = async () => {
   try {
     const sql = `SELECT associations FROM dreams_memories WHERE associations != ''`;
+    console.log('SQL запрос:', sql);
 
-    const params = [category];
-    const rows = await dbLite.all(sql, params);
-  
+    const rows = await dbLite.all(sql);
+    console.log('Результаты запроса rows from dreams_memories:', rows);
+
     // Маппим значения associations, предполагая, что они хранятся в виде JSON-строк
     const associations = rows.map(row => {
       try {

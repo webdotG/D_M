@@ -40,15 +40,25 @@ export const createDream = async (newDream) => {
 };
 
 
+
 // Получение всех снов
 export async function getAllDreams(req, res) {
   try {
-    const category = req.query.category;
-    console.log('Полученная категория:', category);
+    const categories = req.query.categories;
+    console.log('Полученные категории:', categories);
 
-    const sql = `SELECT * FROM dreams_memories WHERE category = ?`;
-    const params = [category];
-    const rows = await dbLite.all(sql, params);
+    // Проверка, что категории были переданы
+    if (!categories) {
+      return res.status(400).json({ error: 'Необходимо указать категории' });
+    }
+
+    // Преобразование строки категорий в массив
+    const categoryArray = categories.split(',');
+
+    // Формирование SQL-запроса с использованием оператора IN
+    const placeholders = categoryArray.map(() => '?').join(',');
+    const sql = `SELECT * FROM dreams_memories WHERE category IN (${placeholders})`;
+    const rows = await dbLite.all(sql, categoryArray);
 
     console.log('Запрос выполнен: Получение всех снов');
     console.log('Полученные строки:', rows);
@@ -59,6 +69,28 @@ export async function getAllDreams(req, res) {
     res.status(500).json({ error: 'Не удалось получить сны' });
   }
 }
+
+
+
+// // Получение всех снов
+// export async function getAllDreams(req, res) {
+//   try {
+//     const category = req.query.category;
+//     console.log('Полученная категория:', category);
+
+//     const sql = `SELECT * FROM dreams_memories WHERE category = ?`;
+//     const params = [category];
+//     const rows = await dbLite.all(sql, params);
+
+//     console.log('Запрос выполнен: Получение всех снов');
+//     console.log('Полученные строки:', rows);
+
+//     res.json(rows);
+//   } catch (error) {
+//     console.error('Ошибка получения всех снов:', error);
+//     res.status(500).json({ error: 'Не удалось получить сны' });
+//   }
+// }
 
 
 // Получение конкретного сна по ID
