@@ -2,23 +2,18 @@ import { dbLite } from '../dbLite.js';
 
 export const associationSearch = async () => {
   try {
-    const sql = `SELECT associations FROM dreams_memories WHERE associations != ''`;
+    const sql = `SELECT associations FROM dreams WHERE associations != ''`;
     console.log('SQL запрос:', sql);
 
     const rows = await dbLite.all(sql);
-    console.log('Результаты запроса rows from dreams_memories:', rows);
+    console.log('Результаты запроса rows from dreams:', rows);
 
-    // Маппим значения associations, предполагая, что они хранятся в виде JSON-строк
-    const associations = rows.map(row => {
-      try {
-        return JSON.parse(row.associations);
-      } catch (error) {
-        console.error('Ошибка при парсинге JSON:', error);
-        return null; 
-      }
-    });
+    // Обработка данных без JSON.parse
+    const associationsList = rows.map(row => row.associations.split(',').map(item => item.trim()));
+    console.log('Обработанный список ассоциаций:');
+    console.log(associationsList);
 
-    return associations;
+    return associationsList;
   } catch (error) {
     console.error('Ошибка получения ассоциаций:', error);
     throw error;
