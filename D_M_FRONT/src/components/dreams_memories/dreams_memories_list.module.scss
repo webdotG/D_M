@@ -1,6 +1,13 @@
-.dreams-memories{
-    width: 320px;
-    padding: 10px 20px;
+.dreams-memories {
+    max-width: 340px;
     margin: 0 auto;
+    padding-bottom: 150px;
+    padding-top: 10px;
+  }
+
+  .dreams-memories__title{
+    font-size: 25px;
+    padding-bottom: 20px;
     text-align: center;
-}
+    font-weight: 300;
+  }

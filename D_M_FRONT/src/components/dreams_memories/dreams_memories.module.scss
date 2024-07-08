@@ -1,2 +1,77 @@
-@import '../../variables.module.scss';
-
+.dream {
+    max-width: 340px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: background-color 0.3s ease;
+  
+    &-content {
+      margin-bottom: 10px;
+  
+      &-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #333; /* Темно-серый */
+      }
+  
+      &-associations {
+        color: #666; /* Серый */
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+  
+      &-text {
+        font-size: 16px;
+        line-height: 1.5;
+        margin-bottom: 10px;
+        color: #555; /* Средне-серый */
+      }
+  
+      &-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+  
+        & > div {
+          flex: 1;
+          margin-right: 10px;
+  
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+  
+    &-function {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+  
+      &__edit-btn,
+      &__analysis-btn {
+        padding: 8px 16px;
+        background-color: #f0f0f0; /* Светло-серый */
+        color: #333; /* Темно-серый */
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, color 0.3s ease;
+  
+        &:hover {
+          background-color: #e0e0e0; /* Немного темнее светло-серого */
+        }
+  
+        img {
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+  

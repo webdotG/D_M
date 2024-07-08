@@ -92,9 +92,9 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
               <p>{date}</p>
             )}
           </div>
-          <div className={style['dream-category']}>
+          {/* <div className={style['dream-category']}>
             <p>{category}</p>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className={style['dream-function']}>

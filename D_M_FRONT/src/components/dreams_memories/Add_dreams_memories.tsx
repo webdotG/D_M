@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Add_dreams_memories.module.scss';
 import { useDreamStore } from '../../store';
 import { fetchAssociations } from '../../API/associationSearch';
-import Category from '../category/categoryAssociation';
+import Category from '../Associations/Association';
 
 const AddDreams: React.FC = () => {
   const [title, setTitle] = useState<string>('');
