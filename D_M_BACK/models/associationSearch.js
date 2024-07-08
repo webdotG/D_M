@@ -6,14 +6,19 @@ export const associationSearch = async () => {
     console.log('SQL запрос:', sql);
 
     const rows = await dbLite.all(sql);
-    console.log('Результаты запроса rows from dreams:', rows);
+    console.log('associationSearch ... :', rows);
 
-    // Обработка данных без JSON.parse
-    const associationsList = rows.map(row => row.associations.split(',').map(item => item.trim()));
-    console.log('Обработанный список ассоциаций:');
-    console.log(associationsList);
+    // Маппим associations, предполагая, что они хранятся в виде JSON-строк
+    const associations = rows.map(row => {
+      try {
+        return JSON.parse(row.associations);
+      } catch (error) {
+        console.error('Ошибка при парсинге JSON:', error);
+        return null; 
+      }
+    });
 
-    return associationsList;
+    return associations;
   } catch (error) {
     console.error('Ошибка получения ассоциаций:', error);
     throw error;

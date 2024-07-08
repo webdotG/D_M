@@ -1,140 +1,166 @@
 import { dbLite } from '../dbLite.js';
 
-// Добавление нового сна
-export const createDream = async (newDream) => {
+export const getAllRecords = async (tableName) => {
   try {
-    console.log('Попытка добавления сна в базу данных:', newDream);
+    const sql = `SELECT * FROM ${tableName}`;
+    const rows = await dbLite.all(sql);
+    return rows;
+  } catch (error) {
+    console.error('Ошибка получения записей:', error);
+    throw error;
+  }
+};
+
+// export async function getAllRecords(req, res) {
+//   try {
+//     const category = req.query.category;
+//     console.log('Полученная категория:', category);
+
+//     if (!category) {
+//       return res.status(400).json({ error: 'Необходимо указать категорию' });
+//     }
+
+//     let tableName;
+//     if (category === 'сон') {
+//       tableName = 'dreams';
+//     } else if (category === 'воспоминание') {
+//       tableName = 'memories';
+//     } else {
+//       return res.status(400).json({ error: 'Некорректная категория' });
+//     }
+
+//     const sql = `SELECT * FROM ${tableName}`;
+//     const rows = await dbLite.all(sql);
+
+//     console.log(`Запрос выполнен: Получение всех записей из таблицы ${tableName}`);
+//     console.log('Полученные строки:', rows);
+
+//     res.json(rows);
+//   } catch (error) {
+//     console.error('Ошибка получения всех записей:', error);
+//     res.status(500).json({ error: 'Не удалось получить записи' });
+//   }
+// }
+
+
+export const createRecord = async (newRecord) => {
+  try {
+    console.log('Попытка добавления записи в базу данных:', newRecord);
 
     if (
-      !newDream.title ||
-      !newDream.date ||
-      !newDream.content ||
-      !newDream.category ||
-      newDream.isAnalyzed === undefined ||
-      !newDream.createdAt ||
-      newDream.associations === undefined
+      !newRecord.title ||
+      !newRecord.date ||
+      !newRecord.content ||
+      !newRecord.category ||
+      newRecord.isAnalyzed === undefined ||
+      !newRecord.createdAt ||
+      newRecord.associations === undefined
     ) {
-      throw new Error('Некоторые поля отсутствуют в newDream');
+      throw new Error('Некоторые поля отсутствуют в newRecord');
+    }
+
+    let tableName;
+    if (newRecord.category === 'сон') {
+      tableName = 'dreams';
+    } else if (newRecord.category === 'воспоминание') {
+      tableName = 'memories';
+    } else {
+      throw new Error('Некорректная категория');
     }
 
     const result = await dbLite.run(
-      `INSERT INTO dreams_memories (title, date, content, category, isAnalyzed, createdAt, associations)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`, 
+      `INSERT INTO ${tableName} (category, associations, title, content, isAnalyzed, date, createdAt, updatedAt)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
-        newDream.title,
-        newDream.date,
-        newDream.content,
-        newDream.category,
-        newDream.isAnalyzed,
-        newDream.createdAt,
-        newDream.associations 
+        newRecord.category,
+        newRecord.associations,
+        newRecord.title,
+        newRecord.content,
+        newRecord.isAnalyzed,
+        newRecord.date,
+        newRecord.createdAt,
+        newRecord.updatedAt
       ]
     );
 
-    console.log('Сон успешно добавлен в базу данных');
-    return result.lastID; // Возвращаем ID только что созданного сна
+    console.log(`Запись успешно добавлена в таблицу ${tableName}`);
+    return result.lastID;
   } catch (error) {
-    console.error('Ошибка при добавлении сна:', error);
+    console.error('Ошибка при добавлении записи:', error);
     throw error;
   }
 };
 
 
-
-// Получение всех снов
-export async function getAllDreams(req, res) {
+export async function getCurrentRecord(req, res) {
   try {
-    const categories = req.query.categories;
-    console.log('Полученные категории:', categories);
+    const id = req.params.id;
+    const category = req.query.category;
 
-    // Проверка, что категории были переданы
-    if (!categories) {
-      return res.status(400).json({ error: 'Необходимо указать категории' });
+    if (!category) {
+      return res.status(400).json({ error: 'Необходимо указать категорию' });
     }
 
-    // Преобразование строки категорий в массив
-    const categoryArray = categories.split(',');
+    let tableName;
+    if (category === 'сон') {
+      tableName = 'dreams';
+    } else if (category === 'воспоминание') {
+      tableName = 'memories';
+    } else {
+      return res.status(400).json({ error: 'Некорректная категория' });
+    }
 
-    // Формирование SQL-запроса с использованием оператора IN
-    const placeholders = categoryArray.map(() => '?').join(',');
-    const sql = `SELECT * FROM dreams_memories WHERE category IN (${placeholders})`;
-    const rows = await dbLite.all(sql, categoryArray);
+    const sql = `SELECT * FROM ${tableName} WHERE id = ?`;
+    const record = await dbLite.get(sql, [id]);
 
-    console.log('Запрос выполнен: Получение всех снов');
-    console.log('Полученные строки:', rows);
+    if (!record) {
+      return res.status(404).json({ error: 'Запись не найдена' });
+    }
 
-    res.json(rows);
+    console.log(`Запрос выполнен: Получение записи с ID ${id} из таблицы ${tableName}`);
+    res.json(record);
   } catch (error) {
-    console.error('Ошибка получения всех снов:', error);
-    res.status(500).json({ error: 'Не удалось получить сны' });
+    console.error('Ошибка получения записи:', error);
+    res.status(500).json({ error: 'Не удалось получить запись' });
   }
 }
 
-
-
-// // Получение всех снов
-// export async function getAllDreams(req, res) {
-//   try {
-//     const category = req.query.category;
-//     console.log('Полученная категория:', category);
-
-//     const sql = `SELECT * FROM dreams_memories WHERE category = ?`;
-//     const params = [category];
-//     const rows = await dbLite.all(sql, params);
-
-//     console.log('Запрос выполнен: Получение всех снов');
-//     console.log('Полученные строки:', rows);
-
-//     res.json(rows);
-//   } catch (error) {
-//     console.error('Ошибка получения всех снов:', error);
-//     res.status(500).json({ error: 'Не удалось получить сны' });
-//   }
-// }
-
-
-// Получение конкретного сна по ID
-export async function getCurrentDream(id) {
+export async function changeRecord(req, res) {
   try {
-    const sql = `SELECT * FROM dreams_memories WHERE id = ?`;
-    const params = [id];
-    const dream = await dbLite.get(sql, params);
-    console.log(`Запрос выполнен: Получение сна с ID ${id}`);
-    return dream;
-  } catch (error) {
-    console.error('Ошибка получения сна:', error);
-    throw error;
-  }
-}
+    const id = req.params.id;
+    const updatedData = req.body;
+    const category = req.query.category;
 
-// Изменение конкретного сна по ID
-export async function changeDream(id, updatedData) {
-  try {
-    const { title, content, isAnalyzed, category, date, updatedAt, associations } = updatedData;
+    if (!category) {
+      return res.status(400).json({ error: 'Необходимо указать категорию' });
+    }
+
+    let tableName;
+    if (category === 'сон') {
+      tableName = 'dreams';
+    } else if (category === 'воспоминание') {
+      tableName = 'memories';
+    } else {
+      return res.status(400).json({ error: 'Некорректная категория' });
+    }
+
+    const { title, content, isAnalyzed, associations, date, updatedAt } = updatedData;
     const sql = `
-      UPDATE dreams_memories
-      SET title = ?,
-          content = ?,
-          isAnalyzed = ?,
-          category = ?,
-          date = ?,
-          updatedAt = ?,
-          associations = ?
+      UPDATE ${tableName}
+      SET title = ?, content = ?, isAnalyzed = ?, associations = ?, date = ?, updatedAt = ?
       WHERE id = ?
     `;
-    const params = [title, content, isAnalyzed, category, date, updatedAt, associations, id];
-    const result = await dbLite.run(sql, params);
-    console.log(`Запрос выполнен: Изменение сна с ID ${id}`);
-    console.log('Результат изменения:', result);
+    const result = await dbLite.run(sql, [title, content, isAnalyzed, associations, date, updatedAt, id]);
 
     if (result.changes > 0) {
-      return true;
+      console.log(`Запись с ID ${id} успешно обновлена в таблице ${tableName}`);
+      res.json({ message: 'Запись успешно обновлена' });
     } else {
-      console.log(`Сон с ID ${id} не был найден или не было сделано изменений.`);
-      return false;
+      console.log(`Запись с ID ${id} не найдена в таблице ${tableName}`);
+      res.status(404).json({ error: 'Запись не найдена' });
     }
   } catch (error) {
-    console.error('Ошибка изменения сна:', error);
-    throw error;
+    console.error('Ошибка обновления записи:', error);
+    res.status(500).json({ error: 'Не удалось обновить запись' });
   }
 }

@@ -1,28 +1,25 @@
 import axios from 'axios';
 
-export const loadDreams = async () => {
+// запрос с параметром category
+export const loadDreams = async (category: string) => {
   try {
-    const response = await axios.get('/api/dreams');
-    console.log('loadDreams response ', response);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      // Обработка ошибки AxiosError
-      if (error.response?.data) {
-        throw error.response.data;
-      } else {
-        throw new Error('Unknown Axios Error');
-      }
-    } else {
-      // Обработка других ошибок
-      throw error;
+    const response = await fetch(`/api/dreams/all?category=${category}`);
+    if (!response.ok) {
+      throw new Error(`Error loading records: ${response.statusText}`);
     }
+    const records = await response.json();
+    console.log('Records loaded successfully:', records);
+    return records;
+  } catch (error) {
+    console.error('Failed to load records:', error);
+    throw error;
   }
 };
 
+
 export const createDream = async (title: string, description: string) => {
   try {
-    const response = await axios.post('/api/dreams', {
+    const response = await axios.post('/api/dreams/add', {
       title,
       description,
     });

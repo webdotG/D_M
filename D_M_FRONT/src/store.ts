@@ -77,7 +77,7 @@ export const useDreamStore = create<DreamState>((set) => ({
   dreams: [],
   addDream: async (newDream) => {
     try {
-      const response = await fetch('/api/dreams/add_d-m', {
+      const response = await fetch('/api/dreams/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +99,10 @@ export const useDreamStore = create<DreamState>((set) => ({
   },
   loadDreams: async (category: string) => {
     try {
-      const response = await fetch(`/api/dreams/all?category=${category}`);
+      const params = new URLSearchParams();
+      params.append('category', category);
+  
+      const response = await fetch(`/api/dreams/all?${params}`);
       if (!response.ok) {
         throw new Error(`Error loading dreams: ${response.statusText}`);
       }
@@ -111,6 +114,7 @@ export const useDreamStore = create<DreamState>((set) => ({
       throw error;
     }
   },
+  
   updateDream: async (updatedDream: Dream) => {
     try {
       const response = await fetch(`/api/dreams/change/${updatedDream.id}`, {
