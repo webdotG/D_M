@@ -1,9 +1,17 @@
 import { dbLite } from '../dbLite.js';
 
-export const associationSearch = async () => {
+export const associationSearch = async (category) => {
   try {
-    const sql = `SELECT associations FROM dreams WHERE associations != ''`;
-    console.log('SQL запрос:', sql);
+    let tableName;
+    if (category === 'сны') {
+      tableName = 'dreams';
+    } else if (category === 'воспоминания') {
+      tableName = 'memories';
+    } else {
+      throw new Error('Некорректная категория');
+    }
+
+    const sql = `SELECT associations FROM ${tableName} WHERE associations != ''`;
 
     const rows = await dbLite.all(sql);
     console.log('associationSearch ... :', rows);

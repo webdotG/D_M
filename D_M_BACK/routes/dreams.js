@@ -10,7 +10,6 @@ const router = express.Router();
 router.post('/add', createRecord )
 router.get('/current/:id', getCurrentRecord); 
 router.put('/change/:id', changeRecord)
-router.get('/associationSearch', associationSearch)
 
 
 // Маршрут для получения всех записей с учетом категории
@@ -27,7 +26,7 @@ router.get('/all', async (req, res) => {
     let tableName;
     if (category === 'сны') {
       tableName = 'dreams';
-    } else if (category === 'воспоминание') {
+    } else if (category === 'воспоминания') {
       tableName = 'memories';
     } else {
       return res.status(400).json({ error: 'Некорректная категория' });
@@ -42,6 +41,24 @@ router.get('/all', async (req, res) => {
     res.status(500).json({ error: 'Не удалось выполнить запрос' });
   }
 });
+
+// Маршрут для поиска всех ассооциаций с учетом категории
+router.get('/associationSearch', async (req, res) => {
+  try {
+    const { category } = req.query;
+
+    if (!category) {
+      return res.status(400).json({ error: 'Необходимо указать категорию' });
+    }
+
+    const associations = await associationSearch(category);
+    res.json(associations);
+  } catch (error) {
+    console.error('Ошибка получения ассоциаций:', error);
+    res.status(500).json({ error: 'Не удалось получить ассоциации' });
+  }
+});
+
 
 export default router;
 

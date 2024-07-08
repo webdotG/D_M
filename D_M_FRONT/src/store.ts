@@ -27,10 +27,12 @@ type AuthState = {
 
 type Dream = {
   id: number;
-  date: string;
-  content: string;
   category: string;
+  associations: string;
+  title: string;
+  content: string;
   isAnalyzed: boolean;
+  date: string;
 };
 
 type DreamState = {
@@ -38,6 +40,7 @@ type DreamState = {
   loadDreams: (category: string) => void;
   updateDream: (updatedDream: Dream) => void;
   addDream: (newDream: Omit<Dream, 'id'>) => void;
+  loadAssociations: (category: string) => void;
 };
 
 
@@ -75,6 +78,42 @@ export const useAuthStore = create<AuthState>((set) => ({
 
 export const useDreamStore = create<DreamState>((set) => ({
   dreams: [],
+  loadDreams: async (category: string) => {
+    try {
+      const params = new URLSearchParams();
+      params.append('category', category);
+  
+      const response = await fetch(`/api/dreams/all?${params}`);
+      if (!response.ok) {
+        throw new Error(`Error loading dreams: ${response.statusText}`);
+      }
+      const dreams = await response.json();
+      set({ dreams });
+      console.log('Dreams loaded successfully:', dreams);
+    } catch (error) {
+      console.error('Failed to load dreams:', error);
+      throw error;
+    }
+  },
+  loadAssociations: async (category: string) => {
+    try {
+      const response = await fetch(`/api/dreams/associationSearch?category=${category}`);
+      if (!response.ok) {
+        throw new Error(`Error loading associations: ${response.statusText}`);
+      }
+      const associations = await response.json();
+      console.log('Associations loaded successfully:', associations);
+    } catch (error) {
+      console.error('Failed to load associations:', error);
+      throw error;
+    }
+  },
+  updateDream: (updatedDream: Dream) => {
+    set((state) => ({
+      dreams: state.dreams.map((dream) => (dream.id === updatedDream.id ? updatedDream : dream)),
+    }));
+    console.log('Dream updated successfully:', updatedDream);
+  },
   addDream: async (newDream) => {
     try {
       const response = await fetch('/api/dreams/add', {
@@ -94,48 +133,6 @@ export const useDreamStore = create<DreamState>((set) => ({
       console.log('Dream added successfully:', addedDreamFromDB);
     } catch (error) {
       console.error('Failed to add dream:', error);
-      throw error;
-    }
-  },
-  loadDreams: async (category: string) => {
-    try {
-      const params = new URLSearchParams();
-      params.append('category', category);
-  
-      const response = await fetch(`/api/dreams/all?${params}`);
-      if (!response.ok) {
-        throw new Error(`Error loading dreams: ${response.statusText}`);
-      }
-      const dreams = await response.json();
-      set({ dreams });
-      console.log('Dreams loaded successfully:', dreams);
-    } catch (error) {
-      console.error('Failed to load dreams:', error);
-      throw error;
-    }
-  },
-  
-  updateDream: async (updatedDream: Dream) => {
-    try {
-      const response = await fetch(`/api/dreams/change/${updatedDream.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedDream),
-      });
-      if (!response.ok) {
-        throw new Error(`Error updating dream: ${response.statusText}`);
-      }
-      const updatedDreamFromDB = await response.json();
-      set((state) => ({
-        dreams: state.dreams.map((dream) =>
-          dream.id === updatedDreamFromDB.id ? updatedDreamFromDB : dream
-        ),
-      }));
-      console.log('Dream updated successfully:', updatedDreamFromDB);
-    } catch (error) {
-      console.error('Failed to update dream:', error);
       throw error;
     }
   },

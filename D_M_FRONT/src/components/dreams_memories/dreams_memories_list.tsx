@@ -12,11 +12,16 @@ export default function DreamsList() {
   }));
 
   useEffect(() => {
+    console.log('Selected Category changed:', selectedCategory);
     loadDreams(selectedCategory);
   }, [selectedCategory, loadDreams]);
 
+  useEffect(() => {
+    console.log('DREAMS LIST DREAMS ... :', dreams);
+  }, [dreams]);
+
   return (
-    <section className={style['dreams-memories']}>
+    <section key={selectedCategory} className={style['dreams-memories']}>
       <h3 className={style['dreams-memories__title']}>{selectedCategory}</h3>
       <ul className={style['dreams-memories__list']}>
         {dreams.map((dream) => (

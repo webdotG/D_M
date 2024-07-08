@@ -11,37 +11,6 @@ export const getAllRecords = async (tableName) => {
   }
 };
 
-// export async function getAllRecords(req, res) {
-//   try {
-//     const category = req.query.category;
-//     console.log('Полученная категория:', category);
-
-//     if (!category) {
-//       return res.status(400).json({ error: 'Необходимо указать категорию' });
-//     }
-
-//     let tableName;
-//     if (category === 'сон') {
-//       tableName = 'dreams';
-//     } else if (category === 'воспоминание') {
-//       tableName = 'memories';
-//     } else {
-//       return res.status(400).json({ error: 'Некорректная категория' });
-//     }
-
-//     const sql = `SELECT * FROM ${tableName}`;
-//     const rows = await dbLite.all(sql);
-
-//     console.log(`Запрос выполнен: Получение всех записей из таблицы ${tableName}`);
-//     console.log('Полученные строки:', rows);
-
-//     res.json(rows);
-//   } catch (error) {
-//     console.error('Ошибка получения всех записей:', error);
-//     res.status(500).json({ error: 'Не удалось получить записи' });
-//   }
-// }
-
 
 export const createRecord = async (newRecord) => {
   try {

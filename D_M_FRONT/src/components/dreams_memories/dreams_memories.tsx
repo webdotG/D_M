@@ -4,30 +4,35 @@ import { useDreamStore } from '../../store';
 
 type DreamProps = {
   id: number;
-  date: string;
-  content: string;
   category: string;
+  associations: string;
+  title: string;
+  content: string;
   isAnalyzed: boolean;
+  date: string;
 };
 
-const Dream = ({ id, date, content, category, isAnalyzed }: DreamProps) => {
+const Dream = ({ id, category, associations, title, content, isAnalyzed, date }: DreamProps) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editedDate, setEditedDate] = useState(date);
-  const [editedContent, setEditedContent] = useState(content);
   const [editedCategory, setEditedCategory] = useState(category);
+  const [editedAssociations, setEditedAssociations] = useState(associations);
+  const [editedTitle, setEditedTitle] = useState(title);
+  const [editedContent, setEditedContent] = useState(content);
   const [editedIsAnalyzed, setEditedIsAnalyzed] = useState(isAnalyzed);
+  const [editedDate, setEditedDate] = useState(date);
 
   const updateDream = useDreamStore((state) => state.updateDream);
 
   const handleEditClick = () => {
     if (isEditing) {
-      // Сохранить изменения
       updateDream({
         id,
-        date: editedDate,
-        content: editedContent,
         category: editedCategory,
+        associations: editedAssociations,
+        title: editedTitle,
+        content: editedContent,
         isAnalyzed: editedIsAnalyzed,
+        date: editedDate,
       });
     }
     setIsEditing(!isEditing);
@@ -50,6 +55,18 @@ const Dream = ({ id, date, content, category, isAnalyzed }: DreamProps) => {
               onChange={(e) => setEditedCategory(e.target.value)}
               className={style['dream-content-title']}
             />
+            <input
+              type="text"
+              value={editedAssociations}
+              onChange={(e) => setEditedAssociations(e.target.value)}
+              className={style['dream-content-associations']}
+            />
+            <input
+              type="text"
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              className={style['dream-content-title']}
+            />
             <textarea
               value={editedContent}
               onChange={(e) => setEditedContent(e.target.value)}
@@ -58,8 +75,9 @@ const Dream = ({ id, date, content, category, isAnalyzed }: DreamProps) => {
           </>
         ) : (
           <>
-            <h3 className={style['dream-content-title']}>{editedCategory}</h3>
-            <p className={style['dream-content-text']}>{editedContent}</p>
+            <h3 className={style['dream-content-title']}>{title}</h3>
+            <p className={style['dream-content-associations']}>{associations}</p>
+            <p className={style['dream-content-text']}>{content}</p>
           </>
         )}
         <div className={style['dream-content-info']}>
@@ -71,7 +89,7 @@ const Dream = ({ id, date, content, category, isAnalyzed }: DreamProps) => {
                 onChange={(e) => setEditedDate(e.target.value)}
               />
             ) : (
-              <p>{editedDate}</p>
+              <p>{date}</p>
             )}
           </div>
           <div className={style['dream-category']}>
@@ -85,9 +103,9 @@ const Dream = ({ id, date, content, category, isAnalyzed }: DreamProps) => {
         </button>
         <button className={style['dream-function__edit-btn']} onClick={handleAnalysisClick}>
           {editedIsAnalyzed ? (
-            <img src='' alt='картинка что анализировано' width='12px' height='12px' />
+            <img src='' alt='анализировано' width='12px' height='12px' />
           ) : (
-            <img src='' alt='картинка что НЕ анализировано' />
+            <img src='' alt='не анализировано' />
           )}
           {editedIsAnalyzed ? <p>сделано</p> : <p>анализировать</p>}
         </button>
