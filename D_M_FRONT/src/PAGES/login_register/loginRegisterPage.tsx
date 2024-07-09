@@ -1,9 +1,10 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import style from './login.module.scss';
 import LoginImage from '../../PNG/feeling-free-concept-illustration_114360-13580.png';
 import RegisterImage from '../../PNG/contemplating-concept-illustration_114360-3216.png';
-import { registerUser, loginUser } from '../../API/login_register'
+import { registerUser, loginUser } from '../../API/login_register';
 import { useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store';
 
 const LoginPage: React.FC = () => {
   const [ui_username, setUIUsername] = useState<string>('');
@@ -11,6 +12,8 @@ const LoginPage: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
   const navigate = useNavigate();
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated); 
+  const setAuthenticated = useAuthStore(state => state.setAuthenticated); 
 
   const handleUsernameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUIUsername(event.target.value);
@@ -38,21 +41,32 @@ const LoginPage: React.FC = () => {
         console.log('Вход успешен:', userData);
       }
 
-      navigate('/D_M/home');
+      setAuthenticated(true);
+      navigate('/D_M/');
 
     } catch (err: any) {
       console.error('Ошибка входа или регистрации:', err.message);
     }
   };
 
-
   // Для переключения между регистрацией и входом
   const toggleRegister = () => {
     setIsRegistering(!isRegistering);
   };
 
+  useEffect(() => {
+  
+    if (localStorage.getItem('token')) {
+      setAuthenticated(true);
+      localStorage.setItem('isAuthenticated', JSON.stringify(true));
+    } else {
+      setAuthenticated(false);
+      localStorage.setItem('isAuthenticated', JSON.stringify(false));
+    }
+  }, [setAuthenticated]);
+
   return (
-    <div className={style['login-page']}>
+    <div key={isAuthenticated.toString()} className={style['login-page']}>
       <img className={style['img']} src={isRegistering ? RegisterImage : LoginImage} alt="Login or Register" />
       <h1>{isRegistering ? 'Регистрация' : 'Вход'}</h1>
       <form onSubmit={handleSubmit} className={style['login-form']}>

@@ -22,7 +22,8 @@ type ThemeState = {
 
 type AuthState = {
   isAuthenticated: boolean;
-  setAuthenticated: (auth: boolean) => void;
+  token: string; 
+  setAuthenticated: (auth: boolean, token?: string) => void;
 };
 
 type Dream = {
@@ -68,13 +69,22 @@ export const useThemeStore = create<ThemeState>((set) => ({
   },
 }));
 
+
 export const useAuthStore = create<AuthState>((set) => ({
-  isAuthenticated: false, 
-  setAuthenticated: (auth: boolean) => {
+  isAuthenticated: JSON.parse(localStorage.getItem('isAuthenticated') || 'false'),
+  token: localStorage.getItem('token') || '', 
+  setAuthenticated: (auth: boolean, token?: string) => {
     set({ isAuthenticated: auth });
-    localStorage.setItem('isAuthenticated', JSON.stringify(auth)); 
+    localStorage.setItem('isAuthenticated', JSON.stringify(auth));
+    if (token) {
+      set({ token });
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
   },
 }));
+
 
 export const useDreamStore = create<DreamState>((set) => ({
   dreams: [],
@@ -138,7 +148,6 @@ export const useDreamStore = create<DreamState>((set) => ({
   },
 }));
 
-
-// Проверка аутентификации при загрузке приложения
+// Установка начального значения в хранилище приложения
 const initialAuthState = JSON.parse(localStorage.getItem('isAuthenticated') || 'false');
 useAuthStore.setState({ isAuthenticated: initialAuthState });

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import { pool } from '../db.js';
 
 const Auth = async (req, res, next) => {
-  console.log('MIDLEWEAR AUTH');
+  console.log('MIDDLEWARE AUTH');
 
   try {
     const token = (req.headers.authorization || '').replace(/Bearer\s?/, '');
@@ -38,7 +38,7 @@ const Auth = async (req, res, next) => {
 
     next();
   } catch (err) {
-    console.error('MIDLEWEAR AUTH ERROR: ', err.message);
+    console.error('MIDDLEWARE AUTH ERROR:', err.message);
     res.status(401).json({ message: 'Не авторизован' });
   }
 };
