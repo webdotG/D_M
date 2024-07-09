@@ -10,9 +10,6 @@ export const Current = (req, res) => {
         const currentUser = req.user;
         const token = req.headers.authorization.replace(/Bearer\s?/, '');
     
-  
-    
-        // Return response with user id, username, and token
         res.status(200).json({
           id: currentUser.id,
           userName: currentUser.userName,

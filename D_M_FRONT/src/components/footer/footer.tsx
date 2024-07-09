@@ -31,22 +31,18 @@ export const BUTTONS = [
   {
     id: 5,
     name: 'profile',
-    url: '/',
+    url: '/D_M/myPage/',
     icon: ProfileIcon,
   },
 ];
 
-type FooterProps = {
-  selectedLanguage: keyof TranslationMap;
-  translate: (text: string) => string;
-};
 
-const Footer: React.FC<FooterProps> = ({ translate }) => {
+const Footer= () => {
   return (
     <footer className={styles.footer}>
     <div className={styles['footer__wrapper']}>
 
-    <Link to="/D_M/add_d-m" className={styles['footer-add']}>
+    <Link to="/D_M/add" className={styles['footer-add']}>
           <img src={AddNew} alt="toggleIcon" />
     </Link>
 
@@ -56,7 +52,6 @@ const Footer: React.FC<FooterProps> = ({ translate }) => {
             <Link to={item.url}>
               <img 
               src={item.icon} 
-              alt={translate(item.name)} 
               className={styles['footer-icon']}
                />
             </Link>

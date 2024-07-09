@@ -3,7 +3,7 @@ import axios from 'axios';
 // Функция для сохранения токена в localStorage
 const saveToken = (token: string) => {
   localStorage.setItem('token', token);
-  console.log('LOCAL STORAGE GET ITEM >>> ... ', localStorage.getItem('token'))
+  console.log('Login_Register LocalStorage GetItem ... >>> ... ', localStorage.getItem('token'))
 };
 
 
