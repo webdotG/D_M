@@ -1,7 +1,6 @@
-import React from 'react';
+
 import { Link } from 'react-router-dom';
 import styles from './footer.module.scss';
-import { TranslationMap } from '../../types';
 
 import AddNew from '../../SVG/plus.svg'
 import HomeIcon from '../../SVG/home.svg';

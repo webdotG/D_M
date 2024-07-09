@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { fetchUserProfile, fetchDreamStats, fetchMemoryStats } from '../../API/profileServices';
+import { useAuthStore } from '../../store';
 import style from './myPage.module.scss';  
 import Footer from '../../components/footer/footer';
 
@@ -8,12 +9,11 @@ const MyPage = () => {
     const [dreamStats, setDreamStats] = useState({ total: 0, analyzed: 0 });
     const [memoryStats, setMemoryStats] = useState({ total: 0, analyzed: 0 });
 
+    const setAuthenticated = useAuthStore(state => state.setAuthenticated);
+
     useEffect(() => {
         const token = localStorage.getItem('token');
         console.log('Token in MyPage:', token);
-
-        // Здесь ваш код для получения данных
-        // ...
     }, []);
 
     useEffect(() => {
@@ -44,9 +44,13 @@ const MyPage = () => {
     }, []);
 
     const handleLogout = () => {
-        console.log('click',localStorage.getItem('token'))
-        localStorage.removeItem('token');
-        window.location.reload();
+        const confirmed = window.confirm('Вы уверены, что хотите выйти?');
+        if (confirmed) {
+            setAuthenticated(false);
+            localStorage.removeItem('token');
+            localStorage.setItem('isAuthenticated', JSON.stringify(false));
+            window.location.href = '/D_M/login'; 
+        }
     };
 
     return (
