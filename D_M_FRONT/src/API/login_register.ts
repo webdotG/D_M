@@ -46,10 +46,16 @@ export const loginUser = async (user_name: string, user_password: string) => {
       user_password,
     });
     console.log('API/USER/LOGIN response.data.token ... : ', response.data.token)
-    saveToken(response.data.token);
-    
-    return response.data;
-  } catch (error) {
+
+      const token = response.data.token;
+      localStorage.setItem('token', token);
+      console.log('setItem ... >>> ... :', token);
+
+      const savedToken = localStorage.getItem('token');
+      console.log('getItem ... >>> ... :', savedToken);
+  
+      return { token };
+      } catch (error) {
     if (axios.isAxiosError(error)) {
       if (error.response?.data) {
         throw error.response.data;

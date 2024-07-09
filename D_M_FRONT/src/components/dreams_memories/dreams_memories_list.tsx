@@ -13,12 +13,11 @@ export default function DreamsList() {
   }));
 
   useEffect(() => {
-    console.log('Selected Category changed:', selectedCategory);
     loadDreams(selectedCategory);
   }, [selectedCategory, loadDreams]);
 
   useEffect(() => {
-    console.log('DREAMS LIST DREAMS ... :', dreams);
+    console.log('Dreams List ... >>> ... :', dreams);
   }, [dreams]);
 
   return (

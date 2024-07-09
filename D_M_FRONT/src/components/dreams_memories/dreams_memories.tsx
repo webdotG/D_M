@@ -92,9 +92,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
               <p>{date}</p>
             )}
           </div>
-          {/* <div className={style['dream-category']}>
-            <p>{category}</p>
-          </div> */}
+
         </div>
       </div>
       <div className={style['dream-function']}>
@@ -103,11 +101,11 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
         </button>
         <button className={style['dream-function__edit-btn']} onClick={handleAnalysisClick}>
           {editedIsAnalyzed ? (
-            <img src='' alt='анализировано' width='12px' height='12px' />
+            <img src='' alt='1' width='12px' height='12px' />
           ) : (
-            <img src='' alt='не анализировано' />
+            <img src='' alt='0' />
           )}
-          {editedIsAnalyzed ? <p>сделано</p> : <p>анализировать</p>}
+          {editedIsAnalyzed ? <p>подумал</p> : <p>подумать</p>}
         </button>
       </div>
     </li>

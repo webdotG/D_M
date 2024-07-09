@@ -1,4 +1,3 @@
-import { useEffect} from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuthStore } from './store';
 import WelcomePage from './PAGES/welcome/welcomePage';
@@ -8,11 +7,10 @@ import Layout from './layout/layout';
 import AddDM from './components/dreams_memories/Add_dreams_memories';
 import MyPage from './PAGES/myPage/myPage';
 
-
 function App() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   console.log('APP ... >>>  ... state.isAuth: ', isAuthenticated);
-
+  
   return (
     <Routes>
       <Route path="/D_M/welcome" element={!isAuthenticated ? <WelcomePage /> : <Navigate to="/D_M/" />} />

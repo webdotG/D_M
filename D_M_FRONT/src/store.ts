@@ -22,9 +22,10 @@ type ThemeState = {
 
 type AuthState = {
   isAuthenticated: boolean;
-  token: string; 
+  token: string;
   setAuthenticated: (auth: boolean, token?: string) => void;
 };
+
 
 type Dream = {
   id: number;
@@ -70,22 +71,6 @@ export const useThemeStore = create<ThemeState>((set) => ({
 }));
 
 
-export const useAuthStore = create<AuthState>((set) => ({
-  isAuthenticated: JSON.parse(localStorage.getItem('isAuthenticated') || 'false'),
-  token: localStorage.getItem('token') || '', 
-  setAuthenticated: (auth: boolean, token?: string) => {
-    set({ isAuthenticated: auth });
-    localStorage.setItem('isAuthenticated', JSON.stringify(auth));
-    if (token) {
-      set({ token });
-      localStorage.setItem('token', token);
-    } else {
-      localStorage.removeItem('token');
-    }
-  },
-}));
-
-
 export const useDreamStore = create<DreamState>((set) => ({
   dreams: [],
   loadDreams: async (category: string) => {
@@ -99,7 +84,7 @@ export const useDreamStore = create<DreamState>((set) => ({
       }
       const dreams = await response.json();
       set({ dreams });
-      console.log('Dreams loaded successfully:', dreams);
+     
     } catch (error) {
       console.error('Failed to load dreams:', error);
       throw error;
@@ -112,7 +97,7 @@ export const useDreamStore = create<DreamState>((set) => ({
         throw new Error(`Error loading associations: ${response.statusText}`);
       }
       const associations = await response.json();
-      console.log('Associations loaded successfully:', associations);
+      console.log('Associations loaded ... >>> ... ', associations);
     } catch (error) {
       console.error('Failed to load associations:', error);
       throw error;
@@ -148,6 +133,30 @@ export const useDreamStore = create<DreamState>((set) => ({
   },
 }));
 
-// Установка начального значения в хранилище приложения
+export const useAuthStore = create<AuthState>((set) => ({
+  isAuthenticated: JSON.parse(localStorage.getItem('isAuthenticated') || 'false'),
+  token: localStorage.getItem('token') || '',
+  setAuthenticated: (auth: boolean, token?: string) => {
+    set({ isAuthenticated: auth });
+    localStorage.setItem('isAuthenticated', JSON.stringify(auth));
+    if (token) {
+      set({ token });
+      localStorage.setItem('token', token);
+      console.log('Token set:', token);
+    } else {
+      set({ token: '' });
+      localStorage.removeItem('token');
+      console.log('Token removed');
+    }
+    console.log('Auth store ... >>> ... ', auth);
+    console.log('Token store ... >>> ... ', token || 'Token removed');
+  },
+}));
+
+
+// Установка начального значения 
 const initialAuthState = JSON.parse(localStorage.getItem('isAuthenticated') || 'false');
-useAuthStore.setState({ isAuthenticated: initialAuthState });
+const initialToken = localStorage.getItem('token') || '';
+useAuthStore.setState({ isAuthenticated: initialAuthState, token: initialToken });
+
+

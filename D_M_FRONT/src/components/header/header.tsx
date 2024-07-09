@@ -10,8 +10,6 @@ interface HeaderProps {
 
 export default function Header({ selectedLanguage }: HeaderProps) {
   const { translateToLanguage } = useTranslate();
-
-
   const [searchValue, setSearchValue] = useState('');
   const [searchDate, setSearchDate] = useState('');
   const [searchCategory, setSearchCategory] = useState('');
@@ -31,8 +29,7 @@ export default function Header({ selectedLanguage }: HeaderProps) {
     setSearchDate(cleanedValue);
   };
 
-  // selectedLanguage
-  console.log(`Selected language is: ${selectedLanguage}`);
+  console.log(`selectedLang ... >>> ... : ${selectedLanguage}`);
 
   return (
     <header className={style.header}>

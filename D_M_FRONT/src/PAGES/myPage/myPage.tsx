@@ -9,6 +9,14 @@ const MyPage = () => {
     const [memoryStats, setMemoryStats] = useState({ total: 0, analyzed: 0 });
 
     useEffect(() => {
+        const token = localStorage.getItem('token');
+        console.log('Token in MyPage:', token);
+
+        // Здесь ваш код для получения данных
+        // ...
+    }, []);
+
+    useEffect(() => {
         const fetchData = async () => {
             try {
                 const userData = await fetchUserProfile();
@@ -36,6 +44,7 @@ const MyPage = () => {
     }, []);
 
     const handleLogout = () => {
+        console.log('click',localStorage.getItem('token'))
         localStorage.removeItem('token');
         window.location.reload();
     };

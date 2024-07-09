@@ -14,15 +14,13 @@ type TypeProps = {
 };
 
 const CATEGORY = ['сны', 'воспоминания'];
-const LANGUAGES = ['RU', 'EN', 'BS'];
+const LANGUAGES = ['Русский', 'Englesh', 'BlackSpeech'];
 const THEMES = ["Светлая", "Тёмная", "Мордор"];
 
 export default function Layout({ children }: TypeProps) {
   const { selectedCategory, setSelectedCategory } = useCategoryStore();
-  console.log('', selectedCategory)
   const { language, setLanguage } = useLanguageStore();
-  const { theme, setTheme } = useThemeStore();
-  console.log('', theme)
+  const { setTheme } = useThemeStore();
   const [modalVisible, setModalVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const [themeModalVisible, setThemeModalVisible] = useState(false);
@@ -148,7 +146,7 @@ export default function Layout({ children }: TypeProps) {
 
       <Header selectedLanguage={language}  />
       {children}
-      <Footer selectedLanguage={language} translate={translateToLanguage} />
+      <Footer />
     </div>
   );
 }

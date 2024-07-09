@@ -5,6 +5,7 @@ import RegisterImage from '../../PNG/contemplating-concept-illustration_114360-3
 import { registerUser, loginUser } from '../../API/login_register';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store';
+import axios from 'axios';
 
 const LoginPage: React.FC = () => {
   const [ui_username, setUIUsername] = useState<string>('');
@@ -31,21 +32,36 @@ const LoginPage: React.FC = () => {
     event.preventDefault();
 
     try {
+      let userData;
+
       if (isRegistering) {
         // Регистрация нового пользователя
-        const userData = await registerUser(ui_username, ui_password);
+        userData = await registerUser(ui_username, ui_password);
         console.log('Регистрация успешна:', userData);
       } else {
         // Вход существующего пользователя
-        const userData = await loginUser(ui_username, ui_password);
+        userData = await loginUser(ui_username, ui_password);
         console.log('Вход успешен:', userData);
       }
 
-      setAuthenticated(true);
+      setAuthenticated(true, userData.token);
+
+      // Проверка после установки
+      // const token = useAuthStore.getState().token;
+      // const isAuthenticated = useAuthStore.getState().isAuthenticated;
+      // console.log('After setAuthenticated - isAuthenticated:', isAuthenticated);
+      // console.log('After setAuthenticated - Token:', token);
+
       navigate('/D_M/');
 
-    } catch (err: any) {
-      console.error('Ошибка входа или регистрации:', err.message);
+    } catch (err: unknown) {  
+      if (axios.isAxiosError(err)) {
+        console.error('Ошибка входа или регистрации:', err.response?.data || err.message);
+      } else if (err instanceof Error) {
+        console.error('Ошибка входа или регистрации:', err.message);
+      } else {
+        console.error('Неизвестная ошибка входа или регистрации');
+      }
     }
   };
 
@@ -53,18 +69,17 @@ const LoginPage: React.FC = () => {
   const toggleRegister = () => {
     setIsRegistering(!isRegistering);
   };
-
   useEffect(() => {
-  
-    if (localStorage.getItem('token')) {
-      setAuthenticated(true);
+    const token = localStorage.getItem('token') || undefined;  
+    if (token) {
+      setAuthenticated(true, token);
       localStorage.setItem('isAuthenticated', JSON.stringify(true));
     } else {
       setAuthenticated(false);
       localStorage.setItem('isAuthenticated', JSON.stringify(false));
     }
   }, [setAuthenticated]);
-
+  
   return (
     <div key={isAuthenticated.toString()} className={style['login-page']}>
       <img className={style['img']} src={isRegistering ? RegisterImage : LoginImage} alt="Login or Register" />
