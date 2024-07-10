@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 
-
 const CATEGORY = ['сны', 'воспоминания'];
 const LANGUAGES = ['RU', 'EN', 'BS'];
 const THEMES = ['Светлая', 'Тёмная', 'Мордер'];

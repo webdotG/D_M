@@ -1,50 +1,14 @@
-import { useEffect, useState } from 'react';
-import { fetchUserProfile, fetchDreamStats, fetchMemoryStats } from '../../API/profileServices';
+import React from 'react';
 import { useAuthStore } from '../../store';
 import style from './myPage.module.scss';  
 import Footer from '../../components/footer/footer';
+import DreamStatsComponent from '../../components/Stats/dreamsStats';
 
-const MyPage = () => {
-    const [user, setUser] = useState({ name: '' });
-    const [dreamStats, setDreamStats] = useState({ total: 0, analyzed: 0 });
-    const [memoryStats, setMemoryStats] = useState({ total: 0, analyzed: 0 });
-
+const MyPage: React.FC = () => {
     const setAuthenticated = useAuthStore(state => state.setAuthenticated);
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        console.log('Token in MyPage:', token);
-    }, []);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const userData = await fetchUserProfile();
-                setUser(userData);
-            } catch (error) {
-                console.error('Error fetching user data:', error);
-            }
-
-            try {
-                const dreamStatsData = await fetchDreamStats();
-                setDreamStats(dreamStatsData);
-            } catch (error) {
-                console.error('Error fetching dream stats:', error);
-            }
-
-            try {
-                const memoryStatsData = await fetchMemoryStats();
-                setMemoryStats(memoryStatsData);
-            } catch (error) {
-                console.error('Error fetching memory stats:', error);
-            }
-        };
-
-        fetchData();
-    }, []);
-
     const handleLogout = () => {
-        const confirmed = window.confirm('Вы уверены, что хотите выйти?');
+        const confirmed = window.confirm('Уверены, что хотите выйти?');
         if (confirmed) {
             setAuthenticated(false);
             localStorage.removeItem('token');
@@ -55,29 +19,19 @@ const MyPage = () => {
 
     return (
         <>
-        <div className={style['my-page-container']}>
-            <div className={style['profile-section']}>
-                <h1>Профиль</h1>
-                <p>Имя: {user.name}</p>
-            </div>
-            <div className={style['stats-section']}>
-                <div className={style['stats-box']}>
-                    <h2>Сны</h2>
-                    <p>Всего: {dreamStats.total}</p>
-                    <p>Анализировано: {dreamStats.analyzed}</p>
+            <div className={style['my-page-container']}>
+                <div className={style['profile-section']}>
+                    <h1>Профиль</h1>
+                    <p>Имя</p>
                 </div>
-                <div className={style['stats-box']}>
-                    <h2>Воспоминания</h2>
-                    <p>Всего: {memoryStats.total}</p>
-                    <p>Анализировано: {memoryStats.analyzed}</p>
+                <div className={style['stats-section']}>
+                    <DreamStatsComponent />
                 </div>
+                <button className={style['logout-button']} onClick={handleLogout}>
+                    Выйти
+                </button>
             </div>
-            <button className={style['logout-button']} onClick={handleLogout}>
-                Выйти
-            </button>
-        </div>
-
-        <Footer />
+            <Footer />
         </>
     );
 };

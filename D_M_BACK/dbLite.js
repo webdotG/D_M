@@ -1,29 +1,34 @@
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
 import path from 'path';
-import assert from 'assert';
 
 // Путь к SQLite
 const dbPath = '/home/webdotg/A_webdotgProjects/D_M/D_M_LiteSQL/db/dreams_memories.db';
 
-// Открытие подключения к SQLite
+// для подключения к SQLite
 export async function connectDB() {
   try {
     const dbLite = await open({
       filename: dbPath,
       driver: sqlite3.Database
     });
-    console.log('Успешно подключились к базе данных SQLite', dbLite.db);
+    console.log('Успешно подключились к SQLite');
+    console.log('connectDB return dbLite ... >>> ... ', dbLite)
     return dbLite;
   } catch (error) {
-    console.error('Ошибка при подключении к базе данных SQLite:', error);
+    console.error('Ошибка при подключении к  SQLite:', error);
     throw error;
   }
 }
 
-// Для получения объекта базы данных
-let dbLite;
 
+
+//переменная для хранения экземпляра базы данных
+export let dbLite;
+//экспорт промиса подключения
+export const dbLitePromise = connectDB();
+
+// для инициализации базы данных
 (async () => {
   try {
     dbLite = await connectDB();
@@ -57,7 +62,6 @@ let dbLite;
         ('сны', 'контроль, полет', 'Полет над городом', 'Я летал над городом и контролировал всё.', 1, '2024-07-04', '2024-07-04', '2024-07-04'),
         ('сны', 'магия, приключение', 'Магический квест', 'Я был на магическом квесте в поисках скрытого сокровища.', 1, '2024-07-02', '2024-07-02', '2024-07-02'),
         ('сны', 'секс, страсть', 'Интим с незнакомцем', 'Мне приснился страстный секс с незнакомцем.', 0, '2024-07-01', '2024-07-01', '2024-07-01');
-
       `);
       console.log('Тестовые данные в таблицу dreams успешно вставлены');
     }
@@ -91,20 +95,8 @@ let dbLite;
       `);
       console.log('Тестовые данные в таблицу memories успешно вставлены');
     }
-
-    // Выборка данных из таблицы dreams
-    let rows = await dbLite.all('SELECT * FROM dreams');
-    console.log('Данные из таблицы dreams:');
-    console.log(JSON.stringify(rows, null, 2));
-
-    // Выборка данных из таблицы memories
-    rows = await dbLite.all('SELECT * FROM memories');
-    console.log('Данные из таблицы memories:');
-    console.log(JSON.stringify(rows, null, 2));
   } catch (error) {
     console.error('Не удалось инициализировать базу данных:', error);
-    process.exit(1); // В случае ошибки при инициализации, завершаем процесс
+    process.exit(1); 
   }
 })();
-
-export { dbLite };

@@ -14,7 +14,7 @@ export const associationSearch = async (category) => {
     const sql = `SELECT associations FROM ${tableName} WHERE associations != ''`;
 
     const rows = await dbLite.all(sql);
-    console.log('associationSearch ... :', rows);
+    // console.log('associationSearch ... :', rows);
 
     // Маппим associations, предполагая, что они хранятся в виде JSON-строк
     const associations = rows.map(row => {

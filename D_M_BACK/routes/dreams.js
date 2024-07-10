@@ -1,40 +1,41 @@
 import express from 'express';
-import { getAllRecords, getCurrentRecord, changeRecord , createRecord} from '../models/dreams.js'; 
+import { getAllRecords, createRecord} from '../models/dreams.js'; 
 // import Auth from '../midlewear/auth.js'; 
 import { associationSearch } from '../models/associationSearch.js'
+import { getStats } from '../models/stats.js';
+import { getTableName } from '../midlewear/getTableName.js';
+// import { validateCategory } from '../midlewear/validateCategory.js';
 
 const router = express.Router();
+
+// getStats('dreams')
 
 /* api/dreams/... */
 
 router.post('/add', createRecord )
-router.get('/current/:id', getCurrentRecord); 
-router.put('/change/:id', changeRecord)
+
+// Маршрут для получения статистики снов или воспоминаний
+router.get('/statistic', getTableName, async (req, res) => {
+  try {
+    const { tableName } = req;
+    console.log('Перед вызовом getStats, tableName:', tableName);
+    const stats = await getStats(tableName);
+    res.json(stats);
+  } catch (error) {
+    console.error('Ошибка обработки запроса:', error);
+    res.status(500).json({ error: 'Не удалось получить статистику' });
+  }
+});
+
 
 
 // Маршрут для получения всех записей с учетом категории
-router.get('/all', async (req, res) => {
+router.get('/all', getTableName, async (req, res) => {
+
+
   try {
-    const { category } = req.query;
-    console.log('routes dreams category ... : ', category)
-    // Проверка наличия категории
-    if (!category) {
-      return res.status(400).json({ error: 'Необходимо указать категорию' });
-    }
-
-    // Определение таблицы в зависимости от категории
-    let tableName;
-    if (category === 'сны') {
-      tableName = 'dreams';
-    } else if (category === 'воспоминания') {
-      tableName = 'memories';
-    } else {
-      return res.status(400).json({ error: 'Некорректная категория' });
-    }
-
-    // Здесь вызывается функция, которая обрабатывает запрос и возвращает данные
-    const records = await getAllRecords(tableName); 
-
+    const { tableName } = req;
+    const records = await getAllRecords(tableName);
     res.json(records);
   } catch (error) {
     console.error('Ошибка обработки запроса:', error);
@@ -42,16 +43,11 @@ router.get('/all', async (req, res) => {
   }
 });
 
-// Маршрут для поиска всех ассооциаций с учетом категории
-router.get('/associationSearch', async (req, res) => {
+// Маршрут для поиска всех ассоциаций с учетом категории
+router.get('/associationSearch', getTableName, async (req, res) => {
   try {
-    const { category } = req.query;
-
-    if (!category) {
-      return res.status(400).json({ error: 'Необходимо указать категорию' });
-    }
-
-    const associations = await associationSearch(category);
+    const { tableName } = req;
+    const associations = await associationSearch(tableName);
     res.json(associations);
   } catch (error) {
     console.error('Ошибка получения ассоциаций:', error);
