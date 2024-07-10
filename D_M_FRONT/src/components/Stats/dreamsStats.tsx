@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { fetchDreamStats } from '../../API/dreamsStats';
-
 import styles from './dreamsStats.module.scss';
 
 interface DreamStats {
@@ -9,7 +8,6 @@ interface DreamStats {
 }
 
 const DreamStatsComponent: React.FC = () => {
-
   const [dreamStats, setDreamStats] = useState<DreamStats | null>(null);
   const [memoryStats, setMemoryStats] = useState<DreamStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -18,7 +16,7 @@ const DreamStatsComponent: React.FC = () => {
   const fetchStats = async () => {
     setLoading(true);
     setError(null);
-   
+
     try {
       const dreamData = await fetchDreamStats('сны');
       const memoryData = await fetchDreamStats('воспоминания');

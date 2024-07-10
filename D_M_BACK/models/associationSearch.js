@@ -1,20 +1,9 @@
 import { dbLite } from '../dbLite.js';
 
-export const associationSearch = async (category) => {
+export const associationSearch = async (tableName) => {
   try {
-    let tableName;
-    if (category === 'сны') {
-      tableName = 'dreams';
-    } else if (category === 'воспоминания') {
-      tableName = 'memories';
-    } else {
-      throw new Error('Некорректная категория');
-    }
-
-    const sql = `SELECT associations FROM ${tableName} WHERE associations != ''`;
-
+    const sql = `SELECT associations FROM ${tableName}`;
     const rows = await dbLite.all(sql);
-    // console.log('associationSearch ... :', rows);
 
     // Маппим associations, предполагая, что они хранятся в виде JSON-строк
     const associations = rows.map(row => {
@@ -24,7 +13,7 @@ export const associationSearch = async (category) => {
         console.error('Ошибка при парсинге JSON:', error);
         return null; 
       }
-    });
+    }).filter(association => association !== null); 
 
     return associations;
   } catch (error) {

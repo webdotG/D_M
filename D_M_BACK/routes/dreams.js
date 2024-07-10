@@ -4,7 +4,6 @@ import { getAllRecords, createRecord} from '../models/dreams.js';
 import { associationSearch } from '../models/associationSearch.js'
 import { getStats } from '../models/stats.js';
 import { getTableName } from '../midlewear/getTableName.js';
-// import { validateCategory } from '../midlewear/validateCategory.js';
 
 const router = express.Router();
 
@@ -27,11 +26,8 @@ router.get('/statistic', getTableName, async (req, res) => {
   }
 });
 
-
-
 // Маршрут для получения всех записей с учетом категории
 router.get('/all', getTableName, async (req, res) => {
-
 
   try {
     const { tableName } = req;
