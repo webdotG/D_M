@@ -62,7 +62,9 @@ D_M/
   ```bash
   git clone git@github.com:webdotG/D_M.git
   cd D_M
+  cd D_M_LiteSQL
   npm install
+  npm run db 
   cd D_M_BACK
   npm install
   npm run server  
