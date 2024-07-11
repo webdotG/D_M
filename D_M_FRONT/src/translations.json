@@ -15,7 +15,8 @@
     "calendar": "Календарь",
     "chat": "Чат",
     "profile": "Профиль",
-    "Список": "Список"
+    "Список": "Список",
+    "onlyOneParameterAtATime": "Пока можно искать только по одному параметру за раз"
   },
   "EN": {
     "буквы": "letters",
@@ -24,16 +25,17 @@
     "искать": "search",
     "поиск": "search",
     "сны": "dreams",
-    "воспоминания": "memorys",
+    "воспоминания": "memories",
     "Светлая": "Light",
     "Тёмная": "Dark",
-    "Мордор": "Mrdr",
+    "Мордор": "Mordor",
     "digitsAndDotOnly": "Digits and/or Dot only",
     "home": "Home",
     "calendar": "Calendar",
     "chat": "Chat",
     "profile": "Profile",
-    "Список": "List"
+    "Список": "List",
+    "onlyOneParameterAtATime": "You can only search by one parameter at a time"
   },
   "BS": {
     "буквы": "ashû",
@@ -51,6 +53,7 @@
     "calendar": "thrakatûlûk",
     "chat": "gûl",
     "profile": "ghâsh-rug",
-    "Список": "Bûb"
+    "Список": "Bûb",
+    "onlyOneParameterAtATime": "ûzg thrakat bagronk-ishi ânât"
   }
 }

@@ -14,7 +14,7 @@ type TypeProps = {
 };
 
 const CATEGORY = ['сны', 'воспоминания'];
-const LANGUAGES = ['Русский', 'Englesh', 'BlackSpeech'];
+const LANGUAGES = ['Ру', 'En', 'BS'];
 const THEMES = ["Светлая", "Тёмная", "Мордор"];
 
 export default function Layout({ children }: TypeProps) {
