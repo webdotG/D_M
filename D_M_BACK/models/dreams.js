@@ -11,6 +11,24 @@ export const getAllRecords = async (tableName) => {
   }
 };
 
+export async function getCurrentRecord(tableName, id) {
+  try {
+    const sql = `SELECT * FROM ${tableName} WHERE id = ?`;
+    const record = await dbLite.get(sql, [id]);
+
+    if (!record) {
+      return { error: 'Запись не найдена' };
+    }
+
+    console.log(`Запрос выполнен: Получение записи с ID ${id} из таблицы ${tableName}`);
+    return record;
+  } catch (error) {
+    console.error('Ошибка получения записи:', error);
+    throw new Error('Не удалось получить запись');
+  }
+}
+
+
 
 export const createRecord = async (newRecord) => {
   try {
@@ -61,38 +79,7 @@ export const createRecord = async (newRecord) => {
 };
 
 
-export async function getCurrentRecord(req, res) {
-  try {
-    const id = req.params.id;
-    const category = req.query.category;
 
-    if (!category) {
-      return res.status(400).json({ error: 'Необходимо указать категорию' });
-    }
-
-    let tableName;
-    if (category === 'сон') {
-      tableName = 'dreams';
-    } else if (category === 'воспоминание') {
-      tableName = 'memories';
-    } else {
-      return res.status(400).json({ error: 'Некорректная категория' });
-    }
-
-    const sql = `SELECT * FROM ${tableName} WHERE id = ?`;
-    const record = await dbLite.get(sql, [id]);
-
-    if (!record) {
-      return res.status(404).json({ error: 'Запись не найдена' });
-    }
-
-    console.log(`Запрос выполнен: Получение записи с ID ${id} из таблицы ${tableName}`);
-    res.json(record);
-  } catch (error) {
-    console.error('Ошибка получения записи:', error);
-    res.status(500).json({ error: 'Не удалось получить запись' });
-  }
-}
 
 export async function changeRecord(req, res) {
   try {

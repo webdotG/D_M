@@ -5,6 +5,7 @@ import { associationSearch } from '../models/associationSearch.js'
 import { getStats } from '../models/stats.js';
 import { getTableName } from '../midlewear/getTableName.js';
 import { Search } from '../models/search.js'
+import {getCurrentRecord} from '../models/dreams.js'
 
 const router = express.Router();
 
@@ -12,6 +13,22 @@ const router = express.Router();
 /* api/dreams/... */
 
 router.post('/add', createRecord )
+
+// Маршрут для получения конкретной записи по id
+router.post('/current', getTableName, async (req, res) => {
+  const { id } = req.body; 
+  const { tableName } = req;
+
+  try {
+    // Получаем конкретную запись по id из указанной таблицы и с учетом категории
+    const currentRecord = await getCurrentRecord(tableName, id);
+   
+    res.json(currentRecord);
+  } catch (error) {
+    console.error('Ошибка при получении текущей записи:', error);
+    res.status(500).json({ error: 'Ошибка при получении текущей записи' });
+  }
+});
 
 router.post('/search', getTableName, async (req, res) => {
   const { value, date } = req.body;

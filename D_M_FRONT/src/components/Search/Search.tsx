@@ -71,9 +71,6 @@ export default function SearchForm() {
     }
   };
 
-  const handleResultClick = (id: number) => {
-  console.log('id dream : ', id)
-  };
 
   return (
     <form className={style['search-header-form']} onSubmit={handleSubmit}>
@@ -141,8 +138,7 @@ export default function SearchForm() {
       searchResults.length > 0 ? (
         <SearchResult
           searchResults={searchResults}
-          onResultClick={handleResultClick}
-        />
+         />
       ) : (
         <p>Совпадений не найдено</p>
       )
