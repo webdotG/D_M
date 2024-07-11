@@ -4,14 +4,28 @@ import { getAllRecords, createRecord} from '../models/dreams.js';
 import { associationSearch } from '../models/associationSearch.js'
 import { getStats } from '../models/stats.js';
 import { getTableName } from '../midlewear/getTableName.js';
+import { Search } from '../models/search.js'
 
 const router = express.Router();
 
-// getStats('dreams')
 
 /* api/dreams/... */
 
 router.post('/add', createRecord )
+
+router.post('/search', getTableName, async (req, res) => {
+  const { value, date } = req.body;
+  const { tableName } = req;
+
+  try {
+    const searchResults = await Search(tableName, value, date);
+    res.json(searchResults);
+  } catch (error) {
+    console.error('Ошибка поиска с параметрами:', error);
+    res.status(500).json({ error: 'Ошибка поиска с параметрами' });
+  }
+});
+
 
 // Маршрут для получения статистики снов или воспоминаний
 router.get('/statistic', getTableName, async (req, res) => {

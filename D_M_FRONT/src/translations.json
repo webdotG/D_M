@@ -16,7 +16,10 @@
     "chat": "Чат",
     "profile": "Профиль",
     "Список": "Список",
-    "onlyOneParameterAtATime": "Пока можно искать только по одному параметру за раз"
+    "onlyOneParameterAtATime": "Пока можно искать только по одному параметру за раз",
+    "ничего не найдено": "ничего не найдено",
+    "только цифры и точка": "только цифры и точка",
+    "только буквы": "только буквы"
   },
   "EN": {
     "буквы": "letters",
@@ -35,7 +38,10 @@
     "chat": "Chat",
     "profile": "Profile",
     "Список": "List",
-    "onlyOneParameterAtATime": "You can only search by one parameter at a time"
+    "onlyOneParameterAtATime": "You can only search by one parameter at a time",
+    "ничего не найдено": "nothing found",
+    "только цифры и точка": "digits and dot only",
+    "только буквы": "letters only"
   },
   "BS": {
     "буквы": "ashû",
@@ -54,6 +60,9 @@
     "chat": "gûl",
     "profile": "ghâsh-rug",
     "Список": "Bûb",
-    "onlyOneParameterAtATime": "ûzg thrakat bagronk-ishi ânât"
+    "onlyOneParameterAtATime": "ûzg thrakat bagronk-ishi ânât",
+    "ничего не найдено": "ûbagronk ashkrim",
+    "только цифры и точка": "ashdûrz-ishi bagronk u Ghâsh",
+    "только буквы": "ashû gijak"
   }
 }

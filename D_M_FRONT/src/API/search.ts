@@ -1,23 +1,88 @@
+import axios from 'axios';
 
-export const searchByValue = async (value) => {
-    const response = await fetch('/api/dreams/searchByValue', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ value }),
-    });
-    return response.json();
-  };
-  
-  export const searchByDate = async (date) => {
-    const response = await fetch('/api/dreams/searchByDate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ date }),
-    });
-    return response.json();
-  };
-  
+const token = localStorage.getItem('token')
+
+// Функция для поиска по значению и дате
+export const searchByValueAndDate = async (
+  value: string,
+  date: string,
+  category: string,
+) => {
+  console.log('Executing searchByValueAndDate with:', { value, date, category });
+
+  try {
+    const response = await axios.post(
+      `/api/dreams/search?category=${category}`,
+      { value, date },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const data = response.data;
+    console.log('Response from searchByValueAndDate:', data);
+    return data;
+  } catch (error) {
+    console.error('Error in searchByValueAndDate:', error);
+    throw error;
+  }
+};
+
+// Функция для поиска по значению
+export const searchByValue = async (
+  value: string,
+  category: string,
+) => {
+  console.log('Executing searchByValue with:', { value, category });
+
+  try {
+    const response = await axios.post(
+      `/api/dreams/search?category=${category}`,
+      { value },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const data = response.data;
+    console.log('Response from searchByValue:', data);
+    return data;
+  } catch (error) {
+    console.error('Error in searchByValue:', error);
+    throw error;
+  }
+};
+
+// Функция для поиска по дате
+export const searchByDate = async (
+  date: string,
+  category: string,
+) => {
+  console.log('Executing searchByDate with:', { date, category });
+
+  try {
+    const response = await axios.post(
+      `/api/dreams/search?category=${category}`,
+      { date },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const data = response.data;
+    console.log('Response from searchByDate:', data);
+    return data;
+  } catch (error) {
+    console.error('Error in searchByDate:', error);
+    throw error;
+  }
+};
