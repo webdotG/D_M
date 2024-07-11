@@ -137,7 +137,7 @@ export default function SearchForm() {
       </button>
 
    {/* Отображение результатов поиска */}
-    {showSearchResults ? (
+   {showSearchResults && (searchValue || searchDate) ? (
       searchResults.length > 0 ? (
         <SearchResult
           searchResults={searchResults}
