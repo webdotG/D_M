@@ -18,11 +18,13 @@ export const Search = async (tableName, value, date) => {
     }
 
     // Третий блок для поиска по комбинации букв и цифр
-    if (value && date) { 
-      sql += ` AND (category LIKE ? OR associations LIKE ? OR title LIKE ? OR content LIKE ? date LIKE ? OR createdAt LIKE ? OR updatedAt LIKE ?)`;
+    if (value && date) {
+      sql += ` AND (category LIKE ? OR associations LIKE ? OR title LIKE ? OR content LIKE ? OR date LIKE ? OR createdAt LIKE ? OR updatedAt LIKE ?)`;
       const likeValueDigits = `%${value}%`;
-      params.push(likeValueDigits, likeValueDigits, likeValueDigits, likeValueDigits, likeValueDigits, likeValueDigits, likeValueDigits);
+      const likeDate = `%${date}%`;
+      params.push(likeValueDigits, likeValueDigits, likeValueDigits, likeValueDigits, likeDate, likeDate, likeDate);
     }
+    
 
     console.log('Executing SQL:', sql);
     console.log('With parameters:', params);
