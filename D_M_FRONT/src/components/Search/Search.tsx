@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './Search.module.scss'; 
 import searchIcon from '../../SVG/search.svg'; 
 import deleteIcon from '../../SVG/delete.svg'; 
+// import unlikeIcon from '../../SVG/unlike.svg'; 
 import { searchByValue, searchByDate, searchByValueAndDate } from '../../API/search'; 
 import { useCategoryStore } from '../../store'; 
 import { useTranslate } from '../../hooks/useTranslate'; 
@@ -29,49 +30,62 @@ export default function SearchForm() {
     }
   };
 
+  // Обработчик изменения даты поиска
+ const handleSearchDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const cleanedValue = event.target.value.replace(/[^\d.]/g, '');
+  setSearchDate(cleanedValue); 
+};
+
   // Обработчик очистки поля ввода
   const handleClearInput = (setValue: React.Dispatch<React.SetStateAction<string>>) => () => {
     setValue(''); 
   };
 
-  // Обработчик изменения даты поиска
-  const handleSearchDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const cleanedValue = event.target.value.replace(/[^\d.]/g, '');
-    setSearchDate(cleanedValue); 
-  };
-
-  // Обработчик формы поиска
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); 
-    try {
-      // Поиск по значению, если заданы значение поиска и выбранная категория
-      if (searchValue && selectedCategory) {
-        const valueData = await searchByValue(searchValue, selectedCategory);
-        setSearchResults(valueData); 
-        setShowSearchResults(true); 
-        console.log('Search Results by Value:', valueData);
-      }
-
-      // Поиск по дате, если задана дата поиска и выбранная категория
-      if (searchDate && selectedCategory) {
-        const dateData = await searchByDate(searchDate, selectedCategory);
-        setSearchResults(dateData); 
-        setShowSearchResults(true); 
-        console.log('Search Results by Date:', dateData);
-      }
-
-      // Поиск по значению и дате, если заданы оба параметра и выбранная категория
-      if (searchValue && searchDate && selectedCategory) {
-        const valueDateData = await searchByValueAndDate(searchValue, searchDate, selectedCategory);
-        setSearchResults(valueDateData); 
-        setShowSearchResults(true); 
-        console.log('Search Results by Value and Date:', valueDateData);
-      }
-      
-    } catch (error) {
-      console.error('Error during search:', error); 
+ 
+// Новая функция для обработки логики поиска
+const handleSearch = async () => {
+  try {
+    // Поиск по значению, если заданы значение поиска и выбранная категория
+    if (searchValue && selectedCategory) {
+      const valueData = await searchByValue(searchValue, selectedCategory);
+      setSearchResults(valueData); 
+      setShowSearchResults(true); 
+      console.log('Search Results by Value:', valueData);
     }
-  };
+
+    // Поиск по дате, если задана дата поиска и выбранная категория
+    if (searchDate && selectedCategory) {
+      const dateData = await searchByDate(searchDate, selectedCategory);
+      setSearchResults(dateData); 
+      setShowSearchResults(true); 
+      console.log('Search Results by Date:', dateData);
+    }
+
+    // Поиск по значению и дате, если заданы оба параметра и выбранная категория
+    if (searchValue && searchDate && selectedCategory) {
+      const valueDateData = await searchByValueAndDate(searchValue, searchDate, selectedCategory);
+      setSearchResults(valueDateData); 
+      setShowSearchResults(true); 
+      console.log('Search Results by Value and Date:', valueDateData);
+    }
+    
+  } catch (error) {
+    console.error('Error during search:', error); 
+  }
+};
+
+// Обработчик формы поиска
+const handleSubmit = (event: React.FormEvent) => {
+  event.preventDefault();
+  handleSearch(); 
+};
+
+// 
+useEffect(() => {
+  console.log('Категория изменилась');
+  handleSearch(); 
+}, [selectedCategory]);
+
 
 
   return (
@@ -102,7 +116,7 @@ export default function SearchForm() {
         )}
       </label>
       {isSearchValueFocused && (
-        <span className={style['search-label__help']}><p>только буквы</p></span>
+        <span className={style['search-label__help']}><p>только буквы<span>    (Регистр важен)</span></p></span>
       )}
       </div>
       
@@ -148,7 +162,14 @@ export default function SearchForm() {
           searchResults={searchResults}
          />
       ) : (
-        <p>Совпадений не найдено</p>
+        <p className={style['notFound']}>
+          Совпадений не найдено !
+          {/* <img
+            src={unlikeIcon}
+            alt="unlike icon"
+            className={style.icon}
+          /> */}
+          </p>
       )
     ) : null}
     

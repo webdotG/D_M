@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
-import style from './Search.module.scss';
+import style from './serachResult.module.scss';
 import Dream from '../dreams_memories/dreams_memories'; 
+import { useCategoryStore } from '../../store'; 
 
 interface SearchResultProps {
   searchResults: {
@@ -17,6 +18,8 @@ interface SearchResultProps {
 
 function SearchResult({ searchResults }: SearchResultProps) {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
+  
+  const { selectedCategory } = useCategoryStore();
 
   const onResultClick = async (category: string, id: number) => {
     try {
@@ -27,8 +30,13 @@ function SearchResult({ searchResults }: SearchResultProps) {
     }
   };
 
+  const handleCloseModal = () => {
+    setCurrentRecord(null);
+  };
+
   return (
-    <div>
+    <div className={style.searchResults__wrapper}>
+      <h4>Найденные {selectedCategory} :</h4>
       <ul className={style.searchResults}>
         {searchResults.map((result) => (
           <li
@@ -46,16 +54,18 @@ function SearchResult({ searchResults }: SearchResultProps) {
 
       {/* Отображение информации о текущей записи */}
       {currentRecord && (
-        <div className={style.currentRecord}>
-          <Dream
-            id={currentRecord.id}
-            category={currentRecord.category}
-            associations={currentRecord.associations}
-            title={currentRecord.title}
-            content={currentRecord.content}
-            isAnalyzed={currentRecord.isAnalyzed} 
-            date={currentRecord.createdAt} 
-          />
+        <div className={style.modalOverlay} onClick={handleCloseModal}>
+          <div className={style.modalContent} onClick={(e) => e.stopPropagation()}>
+            <Dream
+              id={currentRecord.id}
+              category={currentRecord.category}
+              associations={currentRecord.associations}
+              title={currentRecord.title}
+              content={currentRecord.content}
+              isAnalyzed={currentRecord.isAnalyzed} 
+              date={currentRecord.createdAt} 
+            />
+          </div>
         </div>
       )}
     </div>
