@@ -169,7 +169,7 @@ const AddDreams: React.FC = () => {
             <option value="">Выберите ассоциацию</option>
             {filteredAssociations.map((association) => (
               <option key={association} value={association}>
-                {association}
+                {association} 
               </option>
             ))}
             <option value="new">Добавить новую</option>

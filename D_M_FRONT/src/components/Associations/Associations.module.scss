@@ -1,23 +1,28 @@
-// Associations.module.scss
+.wrapper-category{
+
+}
 
 .category {
+  padding-top: 25px;
+  padding-bottom: 25px;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
 }
 
 .category-button {
-  padding: 10px 20px;
-  background-color: #f0f0f0; /* Светло серый цвет фона */
-  border: none;
+  width: 150px;
+  min-height: 75px;
+  padding: 5px 10px;
+  background-color: transparent; 
+  border: #333 2px solid;
   border-radius: 8px;
   font-size: 16px;
-  color: #333; /* Цвет текста */
+  color: #333; 
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease; /* Плавная анимация перехода */
+  transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
 .category-button:hover {
-  background-color: #e0e0e0; /* Темнее серый цвет при наведении */
-  color: #555; /* Темнее цвет текста при наведении */
+ opacity: 0.5;
 }

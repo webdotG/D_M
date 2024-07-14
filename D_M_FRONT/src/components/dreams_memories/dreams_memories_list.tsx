@@ -24,6 +24,7 @@ export default function DreamsList() {
     <section key={selectedCategory} className={style['dreams-memories']}>
       <h3 className={style['dreams-memories__title']}>{selectedCategory}</h3>
       <Associations />
+      <h3 className={style['list-title']} >Список</h3>
       <ul className={style['dreams-memories__list']}>
         {dreams.map((dream) => (
           <Dream key={dream.id} {...dream} />

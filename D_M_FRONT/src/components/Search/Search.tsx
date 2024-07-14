@@ -13,8 +13,10 @@ export default function SearchForm() {
 
   const [searchValue, setSearchValue] = useState(''); 
   const [searchDate, setSearchDate] = useState(''); 
-  const [showSearchResults, setShowSearchResults] = useState(false); // состояние для отображения результатов поиска
-  const [searchResults, setSearchResults] = useState([]); // состояние для хранения результатов поиска
+  const [showSearchResults, setShowSearchResults] = useState(false); 
+  const [searchResults, setSearchResults] = useState([]); 
+  const [isSearchValueFocused, setIsSearchValueFocused] = useState(false);
+  const [isSearchDateFocused, setIsSearchDateFocused] = useState(false);
 
   // Обработчик изменения в поле ввода
   const handleInputChange = (setValue: React.Dispatch<React.SetStateAction<string>>) => (
@@ -23,51 +25,51 @@ export default function SearchForm() {
     const inputValue = event.target.value;
     // Проверяем, что ввод содержит только буквы (латиница и кириллица)
     if (/^[a-zA-Zа-яА-ЯёЁ]*$/.test(inputValue) || inputValue === '') {
-      setValue(inputValue); // устанавливаем новое значение в состояние
+      setValue(inputValue); 
     }
   };
 
   // Обработчик очистки поля ввода
   const handleClearInput = (setValue: React.Dispatch<React.SetStateAction<string>>) => () => {
-    setValue(''); // очищаем значение в состоянии
+    setValue(''); 
   };
 
   // Обработчик изменения даты поиска
   const handleSearchDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const cleanedValue = event.target.value.replace(/[^\d.]/g, '');
-    setSearchDate(cleanedValue); // устанавливаем новую дату в состояние
+    setSearchDate(cleanedValue); 
   };
 
-  // Обработчик отправки формы поиска
+  // Обработчик формы поиска
   const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault(); // предотвращаем стандартное поведение отправки формы
+    event.preventDefault(); 
     try {
       // Поиск по значению, если заданы значение поиска и выбранная категория
       if (searchValue && selectedCategory) {
         const valueData = await searchByValue(searchValue, selectedCategory);
-        setSearchResults(valueData); // устанавливаем результаты поиска в состояние
-        setShowSearchResults(true); // отображаем блок с результатами поиска
+        setSearchResults(valueData); 
+        setShowSearchResults(true); 
         console.log('Search Results by Value:', valueData);
       }
 
       // Поиск по дате, если задана дата поиска и выбранная категория
       if (searchDate && selectedCategory) {
         const dateData = await searchByDate(searchDate, selectedCategory);
-        setSearchResults(dateData); // устанавливаем результаты поиска в состояние
-        setShowSearchResults(true); // отображаем блок с результатами поиска
+        setSearchResults(dateData); 
+        setShowSearchResults(true); 
         console.log('Search Results by Date:', dateData);
       }
 
       // Поиск по значению и дате, если заданы оба параметра и выбранная категория
       if (searchValue && searchDate && selectedCategory) {
         const valueDateData = await searchByValueAndDate(searchValue, searchDate, selectedCategory);
-        setSearchResults(valueDateData); // устанавливаем результаты поиска в состояние
-        setShowSearchResults(true); // отображаем блок с результатами поиска
+        setSearchResults(valueDateData); 
+        setShowSearchResults(true); 
         console.log('Search Results by Value and Date:', valueDateData);
       }
       
     } catch (error) {
-      console.error('Error during search:', error); // обработка ошибок поиска
+      console.error('Error during search:', error); 
     }
   };
 
@@ -75,6 +77,7 @@ export default function SearchForm() {
   return (
     <form className={style['search-header-form']} onSubmit={handleSubmit}>
       {/* Поле поиска по значению */}
+      <div className={style['search-label__wrapper']}>
       <label htmlFor="search" className={style['search-label']}>
         {translate('буквы')}
         <input
@@ -84,6 +87,8 @@ export default function SearchForm() {
           name="search"
           value={searchValue}
           onChange={handleInputChange(setSearchValue)}
+          onFocus={() => setIsSearchValueFocused(true)}
+          onBlur={() => setIsSearchValueFocused(false)}
         />
         {searchValue ? (
           <img
@@ -96,11 +101,12 @@ export default function SearchForm() {
           <img src={searchIcon} alt="search icon" className={style.icon} />
         )}
       </label>
-      {/* Подсказка для ввода только букв */}
-      {searchValue && !/^[a-zA-Zа-яА-ЯёЁ]*$/.test(searchValue) && (
-        <div className={style.inputHint}>{translate('только буквы')}</div>
+      {isSearchValueFocused && (
+        <span className={style['search-label__help']}><p>только буквы</p></span>
       )}
-
+      </div>
+      
+      <div className={style['search-label__wrapper']}>
       {/* Поле поиска по дате */}
       <label htmlFor="search-date" className={style['search-label']}>
         {translate('дата')}
@@ -111,11 +117,10 @@ export default function SearchForm() {
           className={style.searchInput}
           value={searchDate}
           onChange={handleSearchDateChange}
+          onFocus={() => setIsSearchDateFocused(true)}
+          onBlur={() => setIsSearchDateFocused(false)}
           pattern="[0-9]*\.?[0-9]*"
         />
-        {/* Подсказка для ввода цифр и точек */}
-
-        {/* Иконка очистки поля ввода даты */}
         {searchDate ? (
           <img
             src={deleteIcon}
@@ -127,7 +132,10 @@ export default function SearchForm() {
           <img src={searchIcon} alt="search icon" className={style.icon} />
         )}
       </label>
-
+      {isSearchDateFocused && (
+        <span className={style['search-label__help']}><p>только цифры и .</p></span>
+      )}
+      </div>
    
       <button className={style['search-submit']} type="submit">
         {translate('искать')}

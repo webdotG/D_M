@@ -15,7 +15,10 @@ const Associations: React.FC = () => {
   }, [selectedCategory, loadAssociations]);
 
   return (
+  <div className={style['wrapper-category']}>
+    <h2>Ассоциации </h2>
     <section className={style['category']}>
+     
       {
         associations.map((association: string, index: number) => (
           <button
@@ -27,6 +30,7 @@ const Associations: React.FC = () => {
         ))
       }
     </section>
+  </div>
   );
 };
 

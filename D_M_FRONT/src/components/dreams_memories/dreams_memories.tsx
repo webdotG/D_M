@@ -101,11 +101,11 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
         </button>
         <button className={style['dream-function__edit-btn']} onClick={handleAnalysisClick}>
           {editedIsAnalyzed ? (
-            <img src='' alt='1' width='12px' height='12px' />
+            <img src='' alt='' width='12px' height='12px' />
           ) : (
-            <img src='' alt='0' />
+            <img src='' alt='' />
           )}
-          {editedIsAnalyzed ? <p>подумал</p> : <p>подумать</p>}
+          {editedIsAnalyzed ? <p>анализировал</p> : <p>анализировать</p>}
         </button>
       </div>
     </li>
