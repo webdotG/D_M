@@ -14,15 +14,35 @@
       font-size: 16px;
       display: flex;
       flex-direction: column;
+      
+      .D_M{
+        width: 35px;
+      }
      
+      .category-label__wrapper{
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-around;
+
+        label{
+          display: flex;
+          font-size: 18px;
+          p{
+            padding-bottom: 10px;
+            text-align: center;
+           
+          }
+        }
+      }
 
       label{
-        font-size: 16px;
+        font-size: 18px;
         padding-bottom: 15px;
         display: flex;
         flex-direction: column;
         p{
-          padding-bottom: 5px;
+          padding-bottom: 15px;
+          text-align: center;
         }
       
       }

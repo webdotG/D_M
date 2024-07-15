@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useDreamStore } from '../../store';
 import selfAnalys from '../../SVG/medecine.svg'
 import LikeUnlikeIcon from '../../SVG/unlike.svg'; 
+import D_M from '../../SVG/d_m.svg'
 
 type DreamProps = {
   id: number;
@@ -46,22 +47,43 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
     }
   };
 
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedCategory(e.target.value);
+  };
+
   return (
     <li className={style['dream']}>
       <div className={style['dream-content']}>
         {isEditing ? (
           <>
+        
             <label>
-              <p>Категория:</p>
-              <input
-                type="text"
-                value={editedCategory}
-                onChange={(e) => setEditedCategory(e.target.value)}
-                className={style['dream-content-title']}
-              />
+              <p><img className={style['D_M']} src={D_M} /></p>
+              <div className={style['category-label__wrapper']}>
+              <label>
+              <p>Сны</p>
+                <input
+                  type="radio"
+                  value="сны"
+                  checked={editedCategory === 'сны'}
+                  onChange={handleCategoryChange}
+                />
+               </label>
+              <label>
+              <p>Воспоминания</p>
+                <input
+                  type="radio"
+                  value="воспоминания"
+                  checked={editedCategory === 'воспоминания'}
+                  onChange={handleCategoryChange}
+                />
+                
+              </label>
+              </div>
             </label>
+           
             <label>
-              <p>Ассоциации:</p>
+              <p>Ассоциации :</p>
               <input
                 type="text"
                 value={editedAssociations}
@@ -70,7 +92,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
               />
             </label>
             <label>
-              <p>Название:</p>
+              <p>Название :</p>
               <input
                 type="text"
                 value={editedTitle}
@@ -79,7 +101,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
               />
             </label>
             <label>
-              <p>Содержание:</p>
+              <p>Содержание :</p>
               <textarea
                 value={editedContent}
                 onChange={(e) => setEditedContent(e.target.value)}
@@ -99,7 +121,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
           <div className={style['dream-date']}>
             {isEditing ? (
               <label>
-                Дата:
+                Когда было :
                 <input
                   type="text"
                   value={editedDate}
