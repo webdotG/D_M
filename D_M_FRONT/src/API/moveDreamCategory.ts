@@ -4,7 +4,7 @@ const token = localStorage.getItem('token');
 
 export const moveDreamToDifferentCategory = async (
   id: number,
-  newCategory: string,
+  category: string,
   associations: string,
   title: string,
   content: string,
@@ -14,7 +14,6 @@ export const moveDreamToDifferentCategory = async (
   try {
     const response = await axios.patch(`/api/dreams/patch`, {
       id,
-      newCategory,
       associations,
       title,
       content,
@@ -23,7 +22,8 @@ export const moveDreamToDifferentCategory = async (
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
-      }
+      },
+      params: { category }
     });
     return response.data;
   } catch (error) {

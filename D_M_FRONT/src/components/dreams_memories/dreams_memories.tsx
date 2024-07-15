@@ -41,8 +41,10 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
 
   const handleEditClick = async () => {
     if (isEditing) {
+      
       try {
         if (editedCategory !== category) {
+          console.log(`Если ${editedCategory} не равна ${category}`);
           await moveDreamToDifferentCategory(
             id,
             editedCategory,
@@ -53,6 +55,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             editedDate
           );
         } else {
+          console.log(`Обновление сна с id: ${id} в текущей категории: ${editedCategory}`);
           await updateDreamMemories(
             id,
             editedCategory,
@@ -73,7 +76,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
           date: editedDate,
         });
       } catch (error) {
-        console.error('Failed to update dream category:', error);
+        console.error('Ошибка при перемещении сна в другую категорию:', error);
       }
     }
     setIsEditing(!isEditing);
@@ -200,7 +203,9 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
       </div>
       {showConfirmation && (
         <div className={style['confirmation-modal']}>
-          <p>Вы уверены, что хотите изменить категорию?</p>
+          <p>Вы уверены, что хотите изменить категорию?<br />
+            Это приведет к перезаписи в другую структуру!
+          </p>
           <button onClick={handleCategoryConfirm}>Да</button>
           <button onClick={() => setShowConfirmation(false)}>Нет</button>
         </div>

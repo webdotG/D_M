@@ -13,8 +13,6 @@ const router = express.Router();
 
 /* api/dreams/... */
 
-router.post('/add', createRecord )
-
 // Роут для редактирования записи по id
 router.patch('/patch', getTableName, async (req, res) => {
   const { tableName } = req;
