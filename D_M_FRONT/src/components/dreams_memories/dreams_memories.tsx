@@ -55,7 +55,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
     <li className={style['dream']}>
       <div className={style['dream-content']}>
         {isEditing ? (
-          <>
+          <form>
         
             <label>
               <p><img className={style['D_M']} src={D_M} /></p>
@@ -92,7 +92,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
               />
             </label>
             <label>
-              <p>Название :</p>
+              <p>Заголовок :</p>
               <input
                 type="text"
                 value={editedTitle}
@@ -106,33 +106,28 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
                 value={editedContent}
                 onChange={(e) => setEditedContent(e.target.value)}
                 className={style['dream-content-text']}
-                rows={3}
+                rows={4}
               />
             </label>
-          </>
+            <label>
+                <p>Когда было :</p>
+                <input
+                className={style['input-date']}
+                  type="date"
+                  value={editedDate}
+                  onChange={(e) => setEditedDate(e.target.value)}
+                />
+              </label>
+          </form>
         ) : (
           <>
             <h3 className={style['dream-content-title']}>{title}</h3>
             <p className={style['dream-content-associations']}>{associations}</p>
             <p className={style['dream-content-text']}>{content}</p>
+            <p>{date}</p>
           </>
         )}
-        <div className={style['dream-content-info']}>
-          <div className={style['dream-date']}>
-            {isEditing ? (
-              <label>
-                Когда было :
-                <input
-                  type="text"
-                  value={editedDate}
-                  onChange={(e) => setEditedDate(e.target.value)}
-                />
-              </label>
-            ) : (
-              <p>{date}</p>
-            )}
-          </div>
-        </div>
+
       </div>
       <div className={style['dream-function']}>
         <button className={style['dream-function__edit-btn']} onClick={handleEditClick}>
