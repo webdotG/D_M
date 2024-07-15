@@ -6,6 +6,7 @@ import { getStats } from '../models/stats.js';
 import { getTableName } from '../midlewear/getTableName.js';
 import { Search } from '../models/search.js'
 import {getCurrentRecord} from '../models/dreams.js'
+import { updateRecord } from '../models/updateDream.js';
 
 const router = express.Router();
 
@@ -13,6 +14,36 @@ const router = express.Router();
 /* api/dreams/... */
 
 router.post('/add', createRecord )
+
+// Роут для редактирования записи по id
+router.patch('/patch', getTableName, async (req, res) => {
+  const { tableName } = req;
+  const { 
+    id,
+    associations, 
+    title, 
+    content, 
+    isAnalyzed, 
+    date
+  } = req.body;
+
+  try {
+    const patchRecord = await updateRecord(
+      tableName,
+      id,
+      associations, 
+      title, 
+      content, 
+      isAnalyzed, 
+      date
+    )
+    res.json(patchRecord)
+  }catch (error) {
+    console.error('Ошибка при редактировании текущей записи:', error);
+    res.status(500).json({ error: 'Ошибка при редактировании текущей записи' });
+  }
+});
+
 
 // Маршрут для получения конкретной записи по id
 router.post('/current', getTableName, async (req, res) => {

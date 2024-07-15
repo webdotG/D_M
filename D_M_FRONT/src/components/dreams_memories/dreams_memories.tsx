@@ -1,9 +1,9 @@
 import style from './dreams_memories.module.scss';
 import { useState } from 'react';
 import { useDreamStore } from '../../store';
-import selfAnalys from '../../SVG/medecine.svg'
-import LikeUnlikeIcon from '../../SVG/unlike.svg'; 
-import D_M from '../../SVG/d_m.svg'
+import selfAnalys from '../../SVG/medecine.svg';
+import LikeUnlikeIcon from '../../SVG/unlike.svg';
+import { updateDreamMemories } from '../../API/updateDream';
 
 type DreamProps = {
   id: number;
@@ -26,17 +26,29 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
 
   const updateDream = useDreamStore((state) => state.updateDream);
 
-  const handleEditClick = () => {
+  const handleEditClick = async () => {
     if (isEditing) {
-      updateDream({
-        id,
-        category: editedCategory,
-        associations: editedAssociations,
-        title: editedTitle,
-        content: editedContent,
-        isAnalyzed: editedIsAnalyzed,
-        date: editedDate,
-      });
+      try {
+        await updateDreamMemories(id,
+           editedCategory,
+           editedAssociations,
+           editedTitle,
+           editedContent,
+           editedIsAnalyzed
+           ,editedDate,
+          ); 
+        updateDream({
+          id,
+          category: editedCategory,
+          associations: editedAssociations,
+          title: editedTitle,
+          content: editedContent,
+          isAnalyzed: editedIsAnalyzed,
+          date: editedDate,
+        });
+      } catch (error) {
+        console.error('Failed to update dream category:', error);
+      }
     }
     setIsEditing(!isEditing);
   };
@@ -55,33 +67,28 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
     <li className={style['dream']}>
       <div className={style['dream-content']}>
         {isEditing ? (
-          <form>
-        
+          <>
             <label>
-              <p><img className={style['D_M']} src={D_M} /></p>
-              <div className={style['category-label__wrapper']}>
+              <p>Категория :</p>
               <label>
-              <p>Сны</p>
                 <input
                   type="radio"
                   value="сны"
                   checked={editedCategory === 'сны'}
                   onChange={handleCategoryChange}
                 />
-               </label>
+                Сны
+              </label>
               <label>
-              <p>Воспоминания</p>
                 <input
                   type="radio"
                   value="воспоминания"
                   checked={editedCategory === 'воспоминания'}
                   onChange={handleCategoryChange}
                 />
-                
+                Воспоминания
               </label>
-              </div>
             </label>
-           
             <label>
               <p>Ассоциации :</p>
               <input
@@ -92,7 +99,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
               />
             </label>
             <label>
-              <p>Заголовок :</p>
+              <p>Название :</p>
               <input
                 type="text"
                 value={editedTitle}
@@ -106,28 +113,33 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
                 value={editedContent}
                 onChange={(e) => setEditedContent(e.target.value)}
                 className={style['dream-content-text']}
-                rows={4}
+                rows={3}
               />
             </label>
-            <label>
-                <p>Когда было :</p>
-                <input
-                className={style['input-date']}
-                  type="date"
-                  value={editedDate}
-                  onChange={(e) => setEditedDate(e.target.value)}
-                />
-              </label>
-          </form>
+          </>
         ) : (
           <>
             <h3 className={style['dream-content-title']}>{title}</h3>
             <p className={style['dream-content-associations']}>{associations}</p>
             <p className={style['dream-content-text']}>{content}</p>
-            <p>{date}</p>
           </>
         )}
-
+        <div className={style['dream-content-info']}>
+          <div className={style['dream-date']}>
+            {isEditing ? (
+              <label>
+                Когда было :
+                <input
+                  type="text"
+                  value={editedDate}
+                  onChange={(e) => setEditedDate(e.target.value)}
+                />
+              </label>
+            ) : (
+              <p>{date}</p>
+            )}
+          </div>
+        </div>
       </div>
       <div className={style['dream-function']}>
         <button className={style['dream-function__edit-btn']} onClick={handleEditClick}>
