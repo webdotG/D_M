@@ -1,148 +1,185 @@
 .dream {
-    max-width: 340px;
-    margin: 0 auto;
-    padding: 20px;
-    border: #333 2px solid;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    transition: background-color 0.3s ease;
-  
-    &-content {
-      margin-bottom: 10px;
-      font-size: 16px;
-      display: flex;
-      flex-direction: column;
-      
-      .D_M{
-        width: 35px;
-      }
-     
-      .category-label__wrapper{
-        padding-top: 10px;
-        display: flex;
-        justify-content: space-around;
+  max-width: 340px;
+  margin: 0 auto;
+  padding: 20px;
+  border: #333 2px solid;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  transition: background-color 0.3s ease;
 
-        label{
-          display: flex;
-          font-size: 18px;
-          p{
-            padding-bottom: 10px;
-            text-align: center;
-           
-          }
-        }
-      }
+  &-content {
+    margin-bottom: 10px;
+    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    
+    .D_M{
+      width: 35px;
+    }
+   
+    .category-label__wrapper{
+      padding-top: 10px;
+      display: flex;
+      justify-content: space-around;
 
       label{
+        display: flex;
         font-size: 18px;
-        padding-bottom: 15px;
-        display: flex;
-        flex-direction: column;
         p{
-          padding-bottom: 15px;
+          padding-bottom: 10px;
           text-align: center;
-        }
-      
-      }
-  
-      textarea{
-        width: 100%;
-        border-bottom: #555 1px solid;
-      }
-
-      &-title {
-        font-size: 21px;
-        font-weight: 400;
-        padding-left: 3px;
-        padding-bottom: 7px;
-        margin-bottom: 10px;
-        color: #333; 
-        border: none;
-        border-bottom: #555 1px solid;
-      }
-  
-      &-associations {
-        color: #666; 
-        font-size: 16px;
-        padding: 5px;
-        margin-bottom: 10px;
-        border: transparent 1px solid;
-        border-radius: 4px;
-        display: flex;
-        justify-content: center;
-        &:hover {
-          opacity: 0.5;
-          border: #555 1px solid;
-          }
-      }
-  
-      &-text {
-        font-size: 16px;
-        line-height: 1.5;
-        margin-bottom: 10px;
-        color: #555; 
-        border: none;
-      }
-  
-      &-info {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-  
-        & > div {
-          flex: 1;
-          margin-right: 10px;
-  
-          &:last-child {
-            font-size: 17px;
-            margin-right: 0;
-          }
+         
         }
       }
     }
-  
-    &-function {
+
+    label{
+      font-size: 18px;
+      padding-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      p{
+        padding-bottom: 15px;
+        text-align: center;
+      }
+    
+    }
+
+    textarea{
+      width: 100%;
+      border-bottom: #555 1px solid;
+    }
+
+    &-title {
+      font-size: 21px;
+      font-weight: 400;
+      padding-left: 3px;
+      padding-bottom: 7px;
+      margin-bottom: 10px;
+      color: #333; 
+      border: none;
+      border-bottom: #555 1px solid;
+    }
+
+    &-associations {
+      color: #666; 
+      font-size: 16px;
+      padding: 5px;
+      margin-bottom: 10px;
+      border: transparent 1px solid;
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      &:hover {
+        opacity: 0.5;
+        border: #555 1px solid;
+        }
+    }
+
+    &-text {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+      color: #555; 
+      border: none;
+    }
+
+    &-info {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 10px;
-  
-      &__edit-btn,
-      &__analysis-btn {
-        padding: 3px 5px;
-        background-color: transparent;
-        border: 2px solid transparent;
-        color: #333; 
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s ease, color 0.3s ease;
-        font-size: 17px;
-        text-decoration: underline;
-        
-  
-        &:hover {
-        opacity: 0.5;
-        border: #333 2px solid;
-        }
-  
-        img {
-          margin-right: 5px;
-          width: 35px;
-          height: 35px;
+
+      & > div {
+        flex: 1;
+        margin-right: 10px;
+
+        &:last-child {
+          font-size: 17px;
+          margin-right: 0;
         }
       }
     }
   }
-  
-  .LikeUnlike{
-   transform: scaleY(-1);
+
+  &-function {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+
+    &__edit-btn,
+    &__analysis-btn {
+      padding: 3px 5px;
+      background-color: transparent;
+      border: 2px solid transparent;
+      color: #333; 
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      font-size: 17px;
+      text-decoration: underline;
+      
+
+      &:hover {
+      opacity: 0.5;
+      border: #333 2px solid;
+      }
+
+      img {
+        margin-right: 5px;
+        width: 35px;
+        height: 35px;
+      }
+    }
+  }
+}
+
+.LikeUnlike{
+  transform: scaleY(-1);
+}
+
+.input-date{
+  padding-left: 5px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+.confirmation-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  border: 2px solid #333;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1000;
+
+  p {
+    font-size: 18px;
+    margin-bottom: 15px;
   }
 
-  .input-date{
-    padding-left: 5px;
-    padding-top: 7px;
-    padding-bottom: 7px;
+  button {
+    padding: 5px 10px;
+    margin-right: 10px;
+    background-color: #333;
+    border: none;
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: #555;
+      opacity: 0.5;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
   }
-  
+}

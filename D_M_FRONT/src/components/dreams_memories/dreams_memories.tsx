@@ -1,9 +1,10 @@
+import React, { useState, useEffect } from 'react';
 import style from './dreams_memories.module.scss';
-import { useState } from 'react';
-import { useDreamStore } from '../../store';
+import { useDreamStore, useCategoryStore } from '../../store';
 import selfAnalys from '../../SVG/medecine.svg';
 import LikeUnlikeIcon from '../../SVG/unlike.svg';
 import { updateDreamMemories } from '../../API/updateDream';
+import { moveDreamToDifferentCategory} from '../../API/moveDreamCategory'
 
 type DreamProps = {
   id: number;
@@ -23,20 +24,42 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
   const [editedContent, setEditedContent] = useState(content);
   const [editedIsAnalyzed, setEditedIsAnalyzed] = useState(isAnalyzed);
   const [editedDate, setEditedDate] = useState(date);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [tempCategory, setTempCategory] = useState(category);
 
+  const { selectedCategory } = useCategoryStore();
   const updateDream = useDreamStore((state) => state.updateDream);
+
+  useEffect(() => {
+    if (!isEditing) {
+      setEditedCategory(selectedCategory);
+    }
+  }, [selectedCategory, isEditing]);
 
   const handleEditClick = async () => {
     if (isEditing) {
       try {
-        await updateDreamMemories(id,
-           editedCategory,
-           editedAssociations,
-           editedTitle,
-           editedContent,
-           editedIsAnalyzed
-           ,editedDate,
-          ); 
+        if (editedCategory !== category) {
+          await moveDreamToDifferentCategory(
+            id,
+            editedCategory,
+            editedAssociations,
+            editedTitle,
+            editedContent,
+            editedIsAnalyzed,
+            editedDate
+          );
+        } else {
+          await updateDreamMemories(
+            id,
+            editedCategory,
+            editedAssociations,
+            editedTitle,
+            editedContent,
+            editedIsAnalyzed,
+            editedDate
+          );
+        }
         updateDream({
           id,
           category: editedCategory,
@@ -60,7 +83,16 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedCategory(e.target.value);
+    const newCategory = e.target.value;
+    if (newCategory !== editedCategory) {
+      setTempCategory(newCategory);
+      setShowConfirmation(true);
+    }
+  };
+
+  const handleCategoryConfirm = () => {
+    setEditedCategory(tempCategory);
+    setShowConfirmation(false);
   };
 
   return (
@@ -153,6 +185,13 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
           )}
         </button>
       </div>
+      {showConfirmation && (
+        <div className={style['confirmation-modal']}>
+          <p>Вы уверены, что хотите изменить категорию?</p>
+          <button onClick={handleCategoryConfirm}>Да</button>
+          <button onClick={() => setShowConfirmation(false)}>Нет</button>
+        </div>
+      )}
     </li>
   );
 };
