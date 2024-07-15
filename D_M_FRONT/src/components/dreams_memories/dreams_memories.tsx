@@ -4,7 +4,10 @@ import { useDreamStore, useCategoryStore } from '../../store';
 import selfAnalys from '../../SVG/medecine.svg';
 import LikeUnlikeIcon from '../../SVG/unlike.svg';
 import { updateDreamMemories } from '../../API/updateDream';
-import { moveDreamToDifferentCategory} from '../../API/moveDreamCategory'
+import { moveDreamToDifferentCategory } from '../../API/moveDreamCategory';
+import D_M from '../../SVG/d_m.svg';
+import Confirm from '../../SVG/confirm.svg';
+import Cancel from '../../SVG/delete.svg';
 
 type DreamProps = {
   id: number;
@@ -100,29 +103,45 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
       <div className={style['dream-content']}>
         {isEditing ? (
           <>
-            <label>
-              <p>Категория :</p>
-              <label>
+            <img className={style['D_M']} src={D_M} alt='категории лого' />
+            <h3>Это </h3>
+            <div className={style['category-label__wrapper']}>
+              <label className={style['category-label__dream']}>
+                <p className={style['label-title']} >Сон</p>
                 <input
                   type="radio"
                   value="сны"
                   checked={editedCategory === 'сны'}
                   onChange={handleCategoryChange}
                 />
-                Сны
+                <span>
+                  <img
+                    className={style['category-label__img']}
+                    src={editedCategory === 'сны' ? Confirm : Cancel}
+                    alt=''
+                  />
+                </span>
               </label>
+              <p className={style['tiny-p']}>или</p>
               <label>
+                <p className={style['label-title']} >Воспоминание</p>
                 <input
                   type="radio"
                   value="воспоминания"
                   checked={editedCategory === 'воспоминания'}
                   onChange={handleCategoryChange}
                 />
-                Воспоминания
+                <span>
+                  <img
+                    className={style['category-label__img']}
+                    src={editedCategory === 'воспоминания' ? Confirm : Cancel}
+                    alt=''
+                  />
+                </span>
               </label>
-            </label>
+            </div>
             <label>
-              <p>Ассоциации :</p>
+              <p className={style['label-title']} >Ассоциации :</p>
               <input
                 type="text"
                 value={editedAssociations}
@@ -131,7 +150,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
               />
             </label>
             <label>
-              <p>Название :</p>
+              <p className={style['label-title']} >Название :</p>
               <input
                 type="text"
                 value={editedTitle}
@@ -140,7 +159,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
               />
             </label>
             <label>
-              <p>Содержание :</p>
+              <p className={style['label-title']} >Содержание :</p>
               <textarea
                 value={editedContent}
                 onChange={(e) => setEditedContent(e.target.value)}
@@ -148,30 +167,24 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
                 rows={3}
               />
             </label>
+            <label>
+                <p className={style['label-title']} >Когда это было :</p>
+                <input
+                  type="date"
+                  value={editedDate}
+                  onChange={(e) => setEditedDate(e.target.value)}
+                />
+              </label>
           </>
         ) : (
           <>
             <h3 className={style['dream-content-title']}>{title}</h3>
             <p className={style['dream-content-associations']}>{associations}</p>
             <p className={style['dream-content-text']}>{content}</p>
+            <p className={style['dream-content-date']}>{date}</p>
           </>
         )}
-        <div className={style['dream-content-info']}>
-          <div className={style['dream-date']}>
-            {isEditing ? (
-              <label>
-                Когда было :
-                <input
-                  type="text"
-                  value={editedDate}
-                  onChange={(e) => setEditedDate(e.target.value)}
-                />
-              </label>
-            ) : (
-              <p>{date}</p>
-            )}
-          </div>
-        </div>
+      
       </div>
       <div className={style['dream-function']}>
         <button className={style['dream-function__edit-btn']} onClick={handleEditClick}>
