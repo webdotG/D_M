@@ -6,7 +6,7 @@ import { getStats } from '../models/stats.js';
 import { getTableName } from '../midlewear/getTableName.js';
 import { Search } from '../models/search.js'
 import {getCurrentRecord} from '../models/dreams.js'
-import { updateRecord } from '../models/updateDream.js';
+import { moveRecordToDifferentTable, updateRecord } from '../models/updateDream.js';
 
 const router = express.Router();
 
@@ -15,35 +15,27 @@ const router = express.Router();
 
 // Роут для редактирования записи по id
 router.patch('/patch', getTableName, async (req, res) => {
-  const { tableName } = req;
-  const { 
-    id,
-    category,
-    associations, 
-    title, 
-    content, 
-    isAnalyzed, 
-    date
-  } = req.body;
+  const { id, category, associations, title, content, isAnalyzed, date } = req.body;
+  const tableName = req.tableName;
 
   try {
-    const patchRecord = await updateRecord(
-      tableName,
-      id,
-      category,
-      associations, 
-      title, 
-      content, 
-      isAnalyzed, 
-      date
-    )
-    res.json(patchRecord)
-  }catch (error) {
-    console.error('Ошибка при редактировании текущей записи:', error);
-    res.status(500).json({ error: 'Ошибка при редактировании текущей записи' });
+    // Находим текущую категорию и таблицу записи
+    const currentTable = category === 'сны' ? 'dreams' : 'memories';
+    
+    // Проверяем, отличается ли новая категория от текущей
+    if (tableName !== currentTable) {
+      console.log(`Перенос записи с id ${id} из таблицы ${currentTable} в таблицу ${tableName}`);
+      await moveRecordToDifferentTable(id, currentTable, tableName, associations, title, content, isAnalyzed, date);
+      res.status(200).send({ message: 'Запись успешно перенесена' });
+    } else {
+      await updateRecord(tableName, id, category, associations, title, content, isAnalyzed, date);
+      res.status(200).send({ message: 'Запись успешно обновлена' });
+    }
+  } catch (error) {
+    console.error('Ошибка при обновлении записи:', error);
+    res.status(500).send({ error: 'Ошибка при обновлении записи' });
   }
 });
-
 
 // Маршрут для получения конкретной записи по id
 router.post('/current', getTableName, async (req, res) => {

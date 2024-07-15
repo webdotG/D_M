@@ -30,7 +30,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [tempCategory, setTempCategory] = useState(category);
 
-  const { selectedCategory } = useCategoryStore();
+  const { selectedCategory, setSelectedCategory } = useCategoryStore();
   const updateDream = useDreamStore((state) => state.updateDream);
 
   useEffect(() => {
@@ -42,9 +42,10 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
   const handleEditClick = async () => {
     if (isEditing) {
       try {
+        let result;
         if (editedCategory !== category) {
-          console.log(`Если ${editedCategory} не равно ${category}`);
-          const result = await moveDreamToDifferentCategory(
+          console.log(`Если ${editedCategory} не равно ${category}`); // Проверка изменения категории
+          result = await moveDreamToDifferentCategory(
             id,
             editedCategory,
             editedAssociations,
@@ -53,9 +54,9 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             editedIsAnalyzed,
             editedDate
           );
-          console.log('Результат перемещения записи:', result);
+          console.log('Результат перемещения записи:', result); // Вывод результата перемещения записи в консоль
         } else {
-          const result = await updateDreamMemories(
+          result = await updateDreamMemories(
             id,
             editedCategory,
             editedAssociations,
@@ -64,24 +65,29 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             editedIsAnalyzed,
             editedDate
           );
-          console.log('Результат обновления записи:', result);
+          console.log('Результат обновления записи:', result); // Вывод результата обновления записи в консоль
         }
+        
+        // Обновление состояния записи после успешного сохранения
         updateDream({
           id,
-          category: editedCategory,
+          category: result.category || editedCategory, // Обновляем категорию из ответа сервера, если доступен
           associations: editedAssociations,
           title: editedTitle,
           content: editedContent,
           isAnalyzed: editedIsAnalyzed,
           date: editedDate,
         });
+
+        setSelectedCategory(result.category || editedCategory); // Обновляем выбранную категорию в сторе
+        setIsEditing(false); // Завершаем редактирование после сохранения
       } catch (error) {
-        console.error('Ошибка при редактировании текущей записи:', error);
+        console.error('Ошибка при редактировании текущей записи:', error); // Обработка ошибок редактирования
       }
+    } else {
+      setIsEditing(true); // Начинаем редактирование
     }
-    setIsEditing(!isEditing);
   };
-  
 
   const handleAnalysisClick = () => {
     if (isEditing) {
@@ -97,7 +103,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
     }
   };
 
-  const handleCategoryConfirm = () => {
+  const handleCategoryConfirm = async () => {
     setEditedCategory(tempCategory);
     setShowConfirmation(false);
   };
@@ -172,13 +178,13 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
               />
             </label>
             <label>
-                <p className={style['label-title']} >Когда это было :</p>
-                <input
-                  type="date"
-                  value={editedDate}
-                  onChange={(e) => setEditedDate(e.target.value)}
-                />
-              </label>
+              <p className={style['label-title']} >Когда это было :</p>
+              <input
+                type="date"
+                value={editedDate}
+                onChange={(e) => setEditedDate(e.target.value)}
+              />
+            </label>
           </>
         ) : (
           <>
@@ -188,7 +194,6 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             <p className={style['dream-content-date']}>{date}</p>
           </>
         )}
-      
       </div>
       <div className={style['dream-function']}>
         <button className={style['dream-function__edit-btn']} onClick={handleEditClick}>
