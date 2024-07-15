@@ -44,10 +44,12 @@ function SearchResult({ searchResults }: SearchResultProps) {
             className={style.searchResult}
             onClick={() => onResultClick(result.category, result.id)}
           >
-            <p>{result.title}</p>
-            <p>{result.content}</p>
-            <p>Category: {result.category}</p>
-            <p>Created At: {result.createdAt}</p>
+            <h5>{result.title}</h5>
+            <p>{result.content} 
+
+              
+            </p>
+            <p>{result.createdAt}</p>
           </li>
         ))}
       </ul>

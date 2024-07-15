@@ -1,6 +1,8 @@
 import style from './dreams_memories.module.scss';
 import { useState } from 'react';
 import { useDreamStore } from '../../store';
+import selfAnalys from '../../SVG/medecine.svg'
+import LikeUnlikeIcon from '../../SVG/unlike.svg'; 
 
 type DreamProps = {
   id: number;
@@ -49,29 +51,42 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
       <div className={style['dream-content']}>
         {isEditing ? (
           <>
-            <input
-              type="text"
-              value={editedCategory}
-              onChange={(e) => setEditedCategory(e.target.value)}
-              className={style['dream-content-title']}
-            />
-            <input
-              type="text"
-              value={editedAssociations}
-              onChange={(e) => setEditedAssociations(e.target.value)}
-              className={style['dream-content-associations']}
-            />
-            <input
-              type="text"
-              value={editedTitle}
-              onChange={(e) => setEditedTitle(e.target.value)}
-              className={style['dream-content-title']}
-            />
-            <textarea
-              value={editedContent}
-              onChange={(e) => setEditedContent(e.target.value)}
-              className={style['dream-content-text']}
-            />
+            <label>
+              <p>Категория:</p>
+              <input
+                type="text"
+                value={editedCategory}
+                onChange={(e) => setEditedCategory(e.target.value)}
+                className={style['dream-content-title']}
+              />
+            </label>
+            <label>
+              <p>Ассоциации:</p>
+              <input
+                type="text"
+                value={editedAssociations}
+                onChange={(e) => setEditedAssociations(e.target.value)}
+                className={style['dream-content-associations']}
+              />
+            </label>
+            <label>
+              <p>Название:</p>
+              <input
+                type="text"
+                value={editedTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
+                className={style['dream-content-title']}
+              />
+            </label>
+            <label>
+              <p>Содержание:</p>
+              <textarea
+                value={editedContent}
+                onChange={(e) => setEditedContent(e.target.value)}
+                className={style['dream-content-text']}
+                rows={3}
+              />
+            </label>
           </>
         ) : (
           <>
@@ -83,16 +98,18 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
         <div className={style['dream-content-info']}>
           <div className={style['dream-date']}>
             {isEditing ? (
-              <input
-                type="text"
-                value={editedDate}
-                onChange={(e) => setEditedDate(e.target.value)}
-              />
+              <label>
+                Дата:
+                <input
+                  type="text"
+                  value={editedDate}
+                  onChange={(e) => setEditedDate(e.target.value)}
+                />
+              </label>
             ) : (
               <p>{date}</p>
             )}
           </div>
-
         </div>
       </div>
       <div className={style['dream-function']}>
@@ -101,11 +118,10 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
         </button>
         <button className={style['dream-function__edit-btn']} onClick={handleAnalysisClick}>
           {editedIsAnalyzed ? (
-            <img src='' alt='' width='12px' height='12px' />
+            <img src={selfAnalys} alt='Не анализировать' />
           ) : (
-            <img src='' alt='' />
+            <img className={style['LikeUnlike']} src={LikeUnlikeIcon} alt='Анализировать' />
           )}
-          {editedIsAnalyzed ? <p>анализировал</p> : <p>анализировать</p>}
         </button>
       </div>
     </li>
