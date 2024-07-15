@@ -31,12 +31,13 @@
         width: 100%;
         border-bottom: #555 1px solid;
       }
-      
+
       &-title {
         font-size: 21px;
         font-weight: 400;
         padding-left: 3px;
         padding-bottom: 7px;
+        margin-bottom: 10px;
         color: #333; 
         border: none;
         border-bottom: #555 1px solid;
@@ -49,7 +50,8 @@
         margin-bottom: 10px;
         border: transparent 1px solid;
         border-radius: 4px;
-        display: inline-block;
+        display: flex;
+        justify-content: center;
         &:hover {
           opacity: 0.5;
           border: #555 1px solid;
