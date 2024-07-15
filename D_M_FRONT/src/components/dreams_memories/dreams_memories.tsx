@@ -41,11 +41,10 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
 
   const handleEditClick = async () => {
     if (isEditing) {
-      
       try {
         if (editedCategory !== category) {
-          console.log(`Если ${editedCategory} не равна ${category}`);
-          await moveDreamToDifferentCategory(
+          console.log(`Если ${editedCategory} не равно ${category}`);
+          const result = await moveDreamToDifferentCategory(
             id,
             editedCategory,
             editedAssociations,
@@ -54,9 +53,9 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             editedIsAnalyzed,
             editedDate
           );
+          console.log('Результат перемещения записи:', result);
         } else {
-          console.log(`Обновление сна с id: ${id} в текущей категории: ${editedCategory}`);
-          await updateDreamMemories(
+          const result = await updateDreamMemories(
             id,
             editedCategory,
             editedAssociations,
@@ -65,6 +64,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             editedIsAnalyzed,
             editedDate
           );
+          console.log('Результат обновления записи:', result);
         }
         updateDream({
           id,
@@ -76,11 +76,12 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
           date: editedDate,
         });
       } catch (error) {
-        console.error('Ошибка при перемещении сна в другую категорию:', error);
+        console.error('Ошибка при редактировании текущей записи:', error);
       }
     }
     setIsEditing(!isEditing);
   };
+  
 
   const handleAnalysisClick = () => {
     if (isEditing) {

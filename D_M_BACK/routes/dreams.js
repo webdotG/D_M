@@ -18,6 +18,7 @@ router.patch('/patch', getTableName, async (req, res) => {
   const { tableName } = req;
   const { 
     id,
+    category,
     associations, 
     title, 
     content, 
@@ -29,6 +30,7 @@ router.patch('/patch', getTableName, async (req, res) => {
     const patchRecord = await updateRecord(
       tableName,
       id,
+      category,
       associations, 
       title, 
       content, 

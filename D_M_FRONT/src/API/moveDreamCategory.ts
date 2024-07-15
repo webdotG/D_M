@@ -14,6 +14,7 @@ export const moveDreamToDifferentCategory = async (
   try {
     const response = await axios.patch(`/api/dreams/patch`, {
       id,
+      category,
       associations,
       title,
       content,
