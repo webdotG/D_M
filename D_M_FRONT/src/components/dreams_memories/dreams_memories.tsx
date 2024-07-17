@@ -8,6 +8,7 @@ import { moveDreamToDifferentCategory } from '../../API/moveDreamCategory';
 import D_M from '../../SVG/d_m.svg';
 import Confirm from '../../SVG/confirm.svg';
 import Cancel from '../../SVG/delete.svg';
+import { deleteRecordById } from '../../API/dreams';
 
 type DreamProps = {
   id: number;
@@ -29,7 +30,8 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
   const [editedDate, setEditedDate] = useState(date);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [tempCategory, setTempCategory] = useState(category);
-
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // New state for delete confirmation
+  
   const { selectedCategory, setSelectedCategory } = useCategoryStore();
   const updateDream = useDreamStore((state) => state.updateDream);
 
@@ -43,8 +45,9 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
     if (isEditing) {
       try {
         let result;
+        console.log('editedCategory', editedCategory)
+        console.log('category', category)
         if (editedCategory !== category) {
-          console.log(`Если ${editedCategory} не равно ${category}`); 
           result = await moveDreamToDifferentCategory(
             id,
             editedCategory,
@@ -54,7 +57,6 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             editedIsAnalyzed,
             editedDate
           );
-          console.log('Результат перемещения записи:', result.message); 
         } else {
           result = await updateDreamMemories(
             id,
@@ -65,13 +67,11 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             editedIsAnalyzed,
             editedDate
           );
-          // console.log('Результат обновления записи:', result); 
         }
-        
-        // Обновление состояния записи после успешного сохранения
+
         updateDream({
           id,
-          category: result.category || editedCategory, // Обновляем категорию из ответа сервера, если доступен
+          category: result.category || editedCategory,
           associations: editedAssociations,
           title: editedTitle,
           content: editedContent,
@@ -79,13 +79,13 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
           date: editedDate,
         });
 
-        setSelectedCategory(result.category || editedCategory); // Обновляем выбранную категорию в сторе
-        setIsEditing(false); // Завершаем редактирование после сохранения
+        setSelectedCategory(result.category || editedCategory);
+        setIsEditing(false);
       } catch (error) {
-        console.error('Ошибка при редактировании текущей записи:', error); // Обработка ошибок редактирования
+        console.error('Ошибка при редактировании текущей записи:', error);
       }
     } else {
-      setIsEditing(true); // Начинаем редактирование
+      setIsEditing(true);
     }
   };
 
@@ -106,6 +106,25 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
   const handleCategoryConfirm = async () => {
     setEditedCategory(tempCategory);
     setShowConfirmation(false);
+  };
+
+  const handleDeleteClick = async () => {
+    setShowDeleteConfirmation(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await deleteRecordById(selectedCategory, id);
+      window.location.reload();
+    } catch (error) {
+      console.error('Ошибка при удалении записи:', error);
+    } finally {
+      setShowDeleteConfirmation(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirmation(false);
   };
 
   return (
@@ -185,6 +204,11 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
                 onChange={(e) => setEditedDate(e.target.value)}
               />
             </label>
+            <button className={style['dream-function__delete-btn']} 
+              onClick={handleDeleteClick}
+            >
+              УДАЛИТЬ ЗАПИСЬ
+            </button>
           </>
         ) : (
           <>
@@ -214,6 +238,13 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
           </p>
           <button onClick={handleCategoryConfirm}>Да</button>
           <button onClick={() => setShowConfirmation(false)}>Нет</button>
+        </div>
+      )}
+      {showDeleteConfirmation && (
+        <div className={style['confirmation-modal']}>
+          <p>Вы уверены, что хотите удалить эту запись?</p>
+          <button onClick={confirmDelete}>Да</button>
+          <button onClick={cancelDelete}>Нет</button>
         </div>
       )}
     </li>

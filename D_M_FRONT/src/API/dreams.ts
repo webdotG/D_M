@@ -2,6 +2,21 @@ import axios from 'axios';
 
 const token = localStorage.getItem('token'); 
 
+export const deleteRecordById = async (category: string, id: number) => {
+  try {
+    const response = await axios.delete(`/api/dreams/delete/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      params: { category },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Ошибка при удалении записи:', error);
+    throw error;
+  }
+};
+
 // запрос с параметром category
 export const loadDreams = async (category: string) => {
   try {
@@ -24,31 +39,5 @@ export const loadDreams = async (category: string) => {
   }
 };
 
-export const createDream = async (title: string, description: string) => {
-  try {
-    const response = await axios.post('/api/dreams/add', {
-      title,
-      description,
-    }, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
 
-    console.log('createDream response', response);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      // Обработка ошибки AxiosError
-      if (error.response?.data) {
-        throw error.response.data;
-      } else {
-        throw new Error('Unknown Axios Error');
-      }
-    } else {
-      // Обработка других ошибок
-      throw error;
-    }
-  }
-};
 

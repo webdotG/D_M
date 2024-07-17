@@ -5,18 +5,8 @@ export const moveRecordToDifferentCategory = async (tableName, id, category, ass
   const targetTable = tableName === 'dreams' ? 'memories' : 'dreams';
   console.log(`Перемещение записи: id-${id} из ${targetTable} в ${tableName}`);
   
-  console.log('TARGET TABLE : ', targetTable)
-  console.log('TABLE NAME : ', tableName)
   try {
-    // Используем заглушки для отсутствующих значений
-    const defaultDate = new Date().toISOString().split('T')[0]; // Текущая дата в формате YYYY-MM-DD
-    const resolvedCategory = category || 'default_category'; // или любое другое значение по умолчанию
-    const resolvedAssociations = associations || '';
-    const resolvedTitle = title || '';
-    const resolvedContent = content || '';
-    const resolvedIsAnalyzed = isAnalyzed !== undefined && isAnalyzed !== null ? isAnalyzed : false;
-    const resolvedDate = date || defaultDate;
-
+    
     // Получаем следующий доступный id в целевой таблице
     const sqlGetNextId = `SELECT MAX(id) + 1 as nextId FROM ${tableName}`;
     const { nextId } = await dbLite.get(sqlGetNextId);
@@ -27,7 +17,7 @@ export const moveRecordToDifferentCategory = async (tableName, id, category, ass
       INSERT INTO ${tableName} (id, category, associations, title, content, isAnalyzed, date, createdAt)
       VALUES (?, ?, ?, ?, ?, ?, ?, DATETIME('now'))
     `;
-    await dbLite.run(sqlInsert, [newId, resolvedCategory, resolvedAssociations, resolvedTitle, resolvedContent, resolvedIsAnalyzed, resolvedDate]);
+    await dbLite.run(sqlInsert, [newId, category, associations, title, content, isAnalyzed, date]);
     console.log(`Создана новая запись в ${tableName} с id-${newId}`);
 
     // Удаляем запись из исходной таблицы

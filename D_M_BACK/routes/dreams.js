@@ -8,11 +8,28 @@ import {getCurrentRecord} from '../models/dreams.js'
 import { getAllRecords} from '../models/dreams.js'; 
 import {moveRecordToDifferentCategory} from '../models/moveRecord.js'
 import {updateRecordById} from '../models/updateRecord.js'
+import {deleteRecordById} from '../models/deleteRecord.js'
 
 const router = express.Router();
 
 
 /* api/dreams/... */
+
+router.delete('/delete/:id', getTableName, async (req, res) => {
+  const { id } = req.params; // Retrieve id from URL parameters
+  const { tableName } = req; // Retrieve tableName from middleware
+
+  console.log(`Incoming data /delete : tableName-${tableName}, id-${id}`);
+
+  try {
+    // Implement your deleteRecordById function here
+    const result = await deleteRecordById(tableName, id);
+    res.json(result);
+  } catch (error) {
+    console.error('Error deleting record:', error);
+    res.status(500).json({ error: 'Error deleting record' });
+  }
+});
 
 // Роут для перемещения записи по id
 router.patch('/move', getTableName, async (req, res) => {
