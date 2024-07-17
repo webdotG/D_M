@@ -9,7 +9,7 @@ import MyPage from './PAGES/myPage/myPage';
 
 function App() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  console.log('APP ... >>>  ... state.isAuth: ', isAuthenticated);
+  console.log('isAuth ... >>>  ... : ', isAuthenticated);
   
   return (
     <Routes>

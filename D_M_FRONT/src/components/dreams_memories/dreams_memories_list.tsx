@@ -17,7 +17,9 @@ export default function DreamsList() {
   }, [selectedCategory, loadDreams]);
 
   useEffect(() => {
-    console.log('Dreams List ... >>> ... :', dreams);
+    if(dreams){
+      console.log('Список загружен ... >>> ... ');
+    }
   }, [dreams]);
 
   return (

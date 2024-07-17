@@ -54,7 +54,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             editedIsAnalyzed,
             editedDate
           );
-          console.log('Результат перемещения записи:', result); // Вывод результата перемещения записи в консоль
+          console.log('Результат перемещения записи:', result); 
         } else {
           result = await updateDreamMemories(
             id,
@@ -65,7 +65,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             editedIsAnalyzed,
             editedDate
           );
-          console.log('Результат обновления записи:', result); // Вывод результата обновления записи в консоль
+          // console.log('Результат обновления записи:', result); 
         }
         
         // Обновление состояния записи после успешного сохранения

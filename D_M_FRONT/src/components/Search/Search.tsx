@@ -82,7 +82,6 @@ const handleSubmit = (event: React.FormEvent) => {
 
 // 
 useEffect(() => {
-  console.log('Категория изменилась');
   handleSearch(); 
 }, [selectedCategory]);
 

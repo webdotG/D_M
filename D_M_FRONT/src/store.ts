@@ -96,7 +96,7 @@ export const useDreamStore = create<DreamState>((set) => ({
         throw new Error(`Error loading associations: ${response.statusText}`);
       }
       const associations = await response.json();
-      console.log('Associations loaded ... >>> ... ', associations);
+      console.log('Ассоциации загружены ... >>> ... ', associations);
     } catch (error) {
       console.error('Failed to load associations:', error);
       throw error;
@@ -106,7 +106,7 @@ export const useDreamStore = create<DreamState>((set) => ({
     set((state) => ({
       dreams: state.dreams.map((dream) => (dream.id === updatedDream.id ? updatedDream : dream)),
     }));
-    console.log('Dream updated successfully:', updatedDream);
+    console.log(`Запись c id - ${updatedDream.id} обовлена в сторе`);
   },
   addDream: async (newDream) => {
     try {
