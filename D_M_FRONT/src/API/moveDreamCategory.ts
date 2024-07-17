@@ -11,8 +11,9 @@ export const moveDreamToDifferentCategory = async (
   isAnalyzed: boolean,
   date: string
 ) => {
+  console.log('Входящие данные на /move ... : ', id, category, associations, title, content, isAnalyzed, date)
   try {
-    const response = await axios.patch(`/api/dreams/patch`, {
+    const response = await axios.patch(`/api/dreams/move`, {
       id,
       category,
       associations,

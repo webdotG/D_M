@@ -10,8 +10,8 @@ export const updateDreamMemories = async (
     content: string,
     isAnalyzed: boolean,
     date: string) => {
-      console.log('Входящие данные на /patch ... : ', id, category, associations, title, content, isAnalyzed, date)
-  
+      console.log(`Входящие данные /patch : category-${category}, id-${id}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);
+
       try {
       console.log('Запрос /patch ... ')
     const response = await axios.patch(`/api/dreams/patch`, {

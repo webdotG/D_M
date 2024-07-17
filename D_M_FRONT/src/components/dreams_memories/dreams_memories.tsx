@@ -44,7 +44,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
       try {
         let result;
         if (editedCategory !== category) {
-          console.log(`Если ${editedCategory} не равно ${category}`); // Проверка изменения категории
+          console.log(`Если ${editedCategory} не равно ${category}`); 
           result = await moveDreamToDifferentCategory(
             id,
             editedCategory,
@@ -54,7 +54,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
             editedIsAnalyzed,
             editedDate
           );
-          console.log('Результат перемещения записи:', result); 
+          console.log('Результат перемещения записи:', result.message); 
         } else {
           result = await updateDreamMemories(
             id,

@@ -1,12 +1,11 @@
 import express from 'express';
-import { getAllRecords, createRecord} from '../models/dreams.js'; 
 // import Auth from '../midlewear/auth.js'; 
 import { associationSearch } from '../models/associationSearch.js'
 import { getStats } from '../models/stats.js';
 import { getTableName } from '../midlewear/getTableName.js';
 import { Search } from '../models/search.js'
 import {getCurrentRecord} from '../models/dreams.js'
-import { moveRecordToDifferentTable, updateRecord } from '../models/updateDream.js';
+import { getAllRecords, updateRecordById} from '../models/dreams.js'; 
 
 const router = express.Router();
 
@@ -15,27 +14,31 @@ const router = express.Router();
 
 // Роут для редактирования записи по id
 router.patch('/patch', getTableName, async (req, res) => {
-  const { id, category, associations, title, content, isAnalyzed, date } = req.body;
+  const { id, associations, title, content, isAnalyzed, date } = req.body;
   const tableName = req.tableName;
 
+  console.log(`Входящие данные /patch : tableName-${tableName}, id-${id}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);
+  
   try {
-    // Находим текущую категорию и таблицу записи
-    const currentTable = category === 'сны' ? 'dreams' : 'memories';
-    
-    // Проверяем, отличается ли новая категория от текущей
-    if (tableName !== currentTable) {
-      console.log(`Перенос записи с id ${id} из таблицы ${currentTable} в таблицу ${tableName}`);
-      await moveRecordToDifferentTable(id, currentTable, tableName, associations, title, content, isAnalyzed, date);
-      res.status(200).send({ message: 'Запись успешно перенесена' });
-    } else {
-      await updateRecord(tableName, id, category, associations, title, content, isAnalyzed, date);
-      res.status(200).send({ message: 'Запись успешно обновлена' });
-    }
+    // Получаем конкретную запись по id из указанной таблицы и с учетом категории
+    const updateRecord = await updateRecordById(tableName, id, associations, title, content, isAnalyzed, date);
+   
+    res.json(updateRecord);
   } catch (error) {
     console.error('Ошибка при обновлении записи:', error);
-    res.status(500).send({ error: 'Ошибка при обновлении записи' });
+    res.status(500).json({ error: 'Ошибка при обновлении записи' });
   }
 });
+
+// Роут для перемещения записи по id
+router.patch('/move', getTableName, async (req, res) => {
+  const { id, category, associations, title, content, isAnalyzed, date } = req.body;
+  const tableName = req.tableName;
+  console.log(`Входящие данные /move : tableName-${tableName},id-${id}, category-${category}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`)
+ 
+});
+
+
 
 // Маршрут для получения конкретной записи по id
 router.post('/current', getTableName, async (req, res) => {
