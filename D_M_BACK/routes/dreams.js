@@ -5,12 +5,32 @@ import { getStats } from '../models/stats.js';
 import { getTableName } from '../midlewear/getTableName.js';
 import { Search } from '../models/search.js'
 import {getCurrentRecord} from '../models/dreams.js'
-import { getAllRecords, updateRecordById} from '../models/dreams.js'; 
+import { getAllRecords} from '../models/dreams.js'; 
+import {moveRecordToDifferentCategory} from '../models/moveRecord.js'
+import {updateRecordById} from '../models/updateRecord.js'
 
 const router = express.Router();
 
 
 /* api/dreams/... */
+
+// Роут для перемещения записи по id
+router.patch('/move', getTableName, async (req, res) => {
+  const { id, associations, title, content, isAnalyzed, date } = req.body;
+  const tableName = req.tableName;
+
+  console.log(`Входящие данные /move : tableName-${tableName}, id-${id}, category-${req.query.category}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);
+  
+  try {
+    // Перемещаем запись в другую категорию
+    const moveRecord = await moveRecordToDifferentCategory(tableName, id, associations, title, content, isAnalyzed, date);
+    
+    res.json(moveRecord);
+  } catch (error) {
+    console.error('Ошибка при перемещении записи:', error);
+    res.status(500).json({ error: 'Ошибка при перемещении записи' });
+  }
+});
 
 // Роут для редактирования записи по id
 router.patch('/patch', getTableName, async (req, res) => {
@@ -29,16 +49,6 @@ router.patch('/patch', getTableName, async (req, res) => {
     res.status(500).json({ error: 'Ошибка при обновлении записи' });
   }
 });
-
-// Роут для перемещения записи по id
-router.patch('/move', getTableName, async (req, res) => {
-  const { id, category, associations, title, content, isAnalyzed, date } = req.body;
-  const tableName = req.tableName;
-  console.log(`Входящие данные /move : tableName-${tableName},id-${id}, category-${category}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`)
- 
-});
-
-
 
 // Маршрут для получения конкретной записи по id
 router.post('/current', getTableName, async (req, res) => {
