@@ -6,18 +6,23 @@ export const moveRecordToDifferentCategory = async (tableName, id, category, ass
   console.log(`Перемещение записи: id-${id} из ${targetTable} в ${tableName}`);
   
   try {
-    
+    // Используем текущее время, если date равно нулю
+    const currentDate = date || new Date().toISOString().split('T')[0]; 
+
     // Получаем следующий доступный id в целевой таблице
     const sqlGetNextId = `SELECT MAX(id) + 1 as nextId FROM ${tableName}`;
     const { nextId } = await dbLite.get(sqlGetNextId);
     const newId = nextId || 1; // Если таблица пустая, начать с 1
+
+    // Преобразуем ассоциации в JSON-строку
+    const associationsJson = JSON.stringify(associations.split(','));
 
     // Создаем новую запись в целевой таблице
     const sqlInsert = `
       INSERT INTO ${tableName} (id, category, associations, title, content, isAnalyzed, date, createdAt)
       VALUES (?, ?, ?, ?, ?, ?, ?, DATETIME('now'))
     `;
-    await dbLite.run(sqlInsert, [newId, category, associations, title, content, isAnalyzed, date]);
+    await dbLite.run(sqlInsert, [newId, category, associationsJson, title, content, isAnalyzed, currentDate]);
     console.log(`Создана новая запись в ${tableName} с id-${newId}`);
 
     // Удаляем запись из исходной таблицы

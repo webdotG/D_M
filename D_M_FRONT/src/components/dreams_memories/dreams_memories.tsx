@@ -20,18 +20,21 @@ type DreamProps = {
   date: string;
 };
 
-const Dream = ({ id, category, associations, title, content, isAnalyzed, date }: DreamProps) => {
+const Dream: React.FC<DreamProps> = ({ id, category, associations, title, content, isAnalyzed, date }: DreamProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedCategory, setEditedCategory] = useState(category);
-  const [editedAssociations, setEditedAssociations] = useState(associations);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedContent, setEditedContent] = useState(content);
   const [editedIsAnalyzed, setEditedIsAnalyzed] = useState(isAnalyzed);
   const [editedDate, setEditedDate] = useState(date);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [tempCategory, setTempCategory] = useState(category);
-  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false); // New state for delete confirmation
-  
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+
+  // Парсинг строки JSON в массив строк
+  const parsedAssociations: string[] = JSON.parse(associations);
+  const [editedAssociations, setEditedAssociations] = useState(parsedAssociations.join(',')); // Преобразование массива в строку для редактирования
+
   const { selectedCategory, setSelectedCategory } = useCategoryStore();
   const updateDream = useDreamStore((state) => state.updateDream);
 
@@ -45,13 +48,16 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
     if (isEditing) {
       try {
         let result;
-        console.log('editedCategory', editedCategory)
-        console.log('category', category)
+        // Разделяем строку ассоциаций на массив
+        const associationsArray = editedAssociations.split(',').map(item => item.trim());
+        // Преобразуем массив в строку JSON
+        const associationsString = JSON.stringify(associationsArray);
+  
         if (editedCategory !== category) {
           result = await moveDreamToDifferentCategory(
             id,
             editedCategory,
-            editedAssociations,
+            associationsString, // Передаем строку JSON
             editedTitle,
             editedContent,
             editedIsAnalyzed,
@@ -61,24 +67,24 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
           result = await updateDreamMemories(
             id,
             editedCategory,
-            editedAssociations,
+            associationsString, // Передаем строку JSON
             editedTitle,
             editedContent,
             editedIsAnalyzed,
             editedDate
           );
         }
-
+  
         updateDream({
           id,
           category: result.category || editedCategory,
-          associations: editedAssociations,
+          associations: associationsString, // Сохраняем как строку JSON
           title: editedTitle,
           content: editedContent,
           isAnalyzed: editedIsAnalyzed,
           date: editedDate,
         });
-
+  
         setSelectedCategory(result.category || editedCategory);
         setIsEditing(false);
       } catch (error) {
@@ -88,6 +94,8 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
       setIsEditing(true);
     }
   };
+  
+  
 
   const handleAnalysisClick = () => {
     if (isEditing) {
@@ -213,7 +221,7 @@ const Dream = ({ id, category, associations, title, content, isAnalyzed, date }:
         ) : (
           <>
             <h3 className={style['dream-content-title']}>{title}</h3>
-            <p className={style['dream-content-associations']}>{associations}</p>
+            <p className={style['dream-content-associations']}>{parsedAssociations.join(', ')}</p> {/* Отображаем массив как строку с запятыми */}
             <p className={style['dream-content-text']}>{content}</p>
             <p className={style['dream-content-date']}>{date}</p>
           </>

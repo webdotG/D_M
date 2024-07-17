@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Add_dreams_memories.module.scss';
 import { useDreamStore } from '../../store';
 import { fetchAssociations } from '../../API/associationSearch';
-import Category from '../Associations/Association';
+// import { addAssociationsJSON } from '../../hooks/associationJSON'; 
 
 const AddDreams: React.FC = () => {
   const [title, setTitle] = useState<string>('');
@@ -17,32 +17,55 @@ const AddDreams: React.FC = () => {
   const [selectedAssociation, setSelectedAssociation] = useState<string>('');
   const [newAssociation, setNewAssociation] = useState<string>('');
   const [isAddingNewAssociation, setIsAddingNewAssociation] = useState<boolean>(false);
-  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const addDream = useDreamStore((state) => state.addDream);
   const navigate = useNavigate();
 
-  const handleTitle = (event: React.ChangeEvent<HTMLInputElement>) => {
+  useEffect(() => {
+    async function loadAssociations() {
+      try {
+        const fetchedAssociations = await fetchAssociations(category);
+        setAssociationsList(fetchedAssociations);
+      } catch (error) {
+        console.error('Failed to fetch associations:', error);
+        setAssociationsList([]);
+      }
+    }
+    loadAssociations();
+  }, [category]);
+
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
 
-  const handleContent = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleContentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(event.target.value);
   };
 
-  const handleIsAnalyzed = () => {
+  const handleIsAnalyzedChange = () => {
     setIsAnalyzed(!isAnalyzed);
   };
 
   const handleCategoryChange = (newCategory: string) => {
     setCategory(newCategory);
+    fetchAndSetAssociations(newCategory);
   };
 
-  const handleDateChange = (date: Date | null) => {
-    setDate(date);
+  const fetchAndSetAssociations = async (newCategory: string) => {
+    try {
+      const fetchedAssociations = await fetchAssociations(newCategory);
+      setAssociationsList(fetchedAssociations);
+    } catch (error) {
+      console.error('Failed to fetch associations:', error);
+      setAssociationsList([]);
+    }
   };
 
-  const handleAssociation = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleDateChange = (newDate: Date | null) => {
+    setDate(newDate);
+  };
+
+  const handleAssociationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedAssociation(event.target.value);
     setIsAddingNewAssociation(event.target.value === 'new');
   };
@@ -51,13 +74,12 @@ const AddDreams: React.FC = () => {
     setNewAssociation(event.target.value);
   };
 
-  const now = new Date().toISOString();
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const newDream = {
-      id: Date.now(),
+    const now = new Date().toISOString();
+
+    let newDream = {
       title,
       content,
       isAnalyzed,
@@ -65,9 +87,33 @@ const AddDreams: React.FC = () => {
       date: date ? date.toISOString() : '',
       createdAt: now,
       updatedAt: now,
-      associations: isAddingNewAssociation ? newAssociation : selectedAssociation,
+      associations: '',
+      video: '',
+      img: ''
     };
-    await addDream(newDream);
+
+    try {
+      newDream = await addAssociationsJSON(newDream, selectedAssociation, newAssociation);
+      await addDream(newDream);
+
+      // Reset form fields
+      setTitle('');
+      setContent('');
+      setIsAnalyzed(false);
+      setDate(null);
+      setSelectedAssociation('');
+      setNewAssociation('');
+      setIsAddingNewAssociation(false);
+
+      navigate('/D_M/');
+    } catch (error) {
+      console.error('Error adding dream:', error);
+      // Handle error as needed
+    }
+  };
+
+  const handleReset = () => {
+    // Reset all form fields
     setTitle('');
     setContent('');
     setIsAnalyzed(false);
@@ -76,60 +122,21 @@ const AddDreams: React.FC = () => {
     setSelectedAssociation('');
     setNewAssociation('');
     setIsAddingNewAssociation(false);
-    navigate('/D_M/');
+
+    // Fetch associations again for the default category 'сны'
+    fetchAndSetAssociations('сны');
   };
-
-  useEffect(() => {
-    async function loadAssociations() {
-      const fetchedAssociations = await fetchAssociations(category);
-      setAssociationsList(fetchedAssociations);
-    }
-    loadAssociations();
-  }, [category]);
-
-  const handleBackToHome = () => {
-    navigate('/D_M/');
-  };
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
-  const filteredAssociations = associationsList.filter((association) =>
-    association.toLowerCase().includes(searchQuery.toLowerCase())
-  );
 
   return (
     <div className={styles['add-dreams-container']}>
       <form onSubmit={handleSubmit} className={styles['add-dreams-form']}>
-        <div className={styles['category-buttons']}>
-          <button
-            type="button"
-            onClick={() => handleCategoryChange('сны')}
-            className={`
-              ${styles['category-button']}
-              ${category === 'сны' ? styles['selected'] : ''}`}
-          >
-            <h2>Сон</h2>
-          </button>
-          <p>или</p>
-          <button
-            type="button"
-            onClick={() => handleCategoryChange('воспоминания')}
-            className={`
-              ${styles['category-button']}
-              ${category === 'воспоминания' ? styles['selected'] : ''}`}
-          >
-            <h2>Воспоминание</h2>
-          </button>
-        </div>
         <div className={styles['form-group']}>
           <label htmlFor="title">Заголовок</label>
           <input
             type="text"
             id="title"
             value={title}
-            onChange={handleTitle}
+            onChange={handleTitleChange}
             required
           />
         </div>
@@ -138,7 +145,7 @@ const AddDreams: React.FC = () => {
           <textarea
             id="content"
             value={content}
-            onChange={handleContent}
+            onChange={handleContentChange}
             required
           />
         </div>
@@ -147,59 +154,70 @@ const AddDreams: React.FC = () => {
             <input
               type="checkbox"
               checked={isAnalyzed}
-              onChange={handleIsAnalyzed}
+              onChange={handleIsAnalyzedChange}
             />
             Анализировано
           </label>
         </div>
         <div className={styles['form-group']}>
-          <label htmlFor="associations">Ассоциации</label>
-          <input
-            type="text"
-            id="search"
-            placeholder="Поиск ассоциаций"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
+          <label htmlFor="category">Категория</label>
           <select
-            id="associations"
-            value={selectedAssociation}
-            onChange={handleAssociation}
+            id="category"
+            value={category}
+            onChange={(e) => handleCategoryChange(e.target.value)}
           >
-            <option value="">Выберите ассоциацию</option>
-            {filteredAssociations.map((association) => (
-              <option key={association} value={association}>
-                {association} 
-              </option>
-            ))}
-            <option value="new">Добавить новую</option>
+            <option value="сны">Сон</option>
+            <option value="воспоминания">Воспоминание</option>
           </select>
-          {isAddingNewAssociation && (
+        </div>
+        <div className={styles['form-group']}>
+          <label htmlFor="associations">Ассоциации</label>
+          {isAddingNewAssociation ? (
             <input
               type="text"
               value={newAssociation}
               onChange={handleNewAssociationChange}
               placeholder="Введите новую ассоциацию"
+              required
             />
+          ) : (
+            <select
+              id="associations"
+              value={selectedAssociation}
+              onChange={handleAssociationChange}
+              required
+            >
+              <option value="">Выберите ассоциацию</option>
+              {associationsList.map((association) => (
+                <option key={association} value={association}>
+                  {association}
+                </option>
+              ))}
+              <option value="new">Добавить новую</option>
+            </select>
           )}
         </div>
         <div className={styles['form-group']}>
           <label htmlFor="date">Дата</label>
           <DatePicker
+            id="date"
             selected={date}
             onChange={handleDateChange}
             dateFormat="dd/MM/yyyy"
             isClearable
+            placeholderText="Выберите дату"
+            required
           />
         </div>
-        <button type="submit" className={styles['submit-button']}>
-          Сохранить
-        </button>
-        <button type="button" className={styles['back-button']} onClick={handleBackToHome}>
-          На главную
-        </button>
+        <div className={styles['form-group']}>
+          <button type="submit" className={styles['submit-button']}>
+            Сохранить
+          </button>
+          <button type="button" className={styles['reset-button']} onClick={handleReset}>
+            Сбросить
+          </button>
+        </div>
       </form>
-      <Category />
     </div>
   );
 };

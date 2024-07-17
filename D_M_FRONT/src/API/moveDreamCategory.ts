@@ -5,22 +5,25 @@ const token = localStorage.getItem('token');
 export const moveDreamToDifferentCategory = async (
   id: number,
   category: string,
-  associations: string,
+  associations: string[], 
   title: string,
   content: string,
   isAnalyzed: boolean,
   date: string
 ) => {
+
+  const currentDate = date || new Date().toISOString().split('T')[0]; // Используем текущее время, если date равно нулю
   console.log('Входящие данные на /move ... : ', id, category, associations, title, content, isAnalyzed, date)
+
   try {
     const response = await axios.patch(`/api/dreams/move`, {
       id,
       category,
-      associations,
+      associations: JSON.stringify(associations), // Преобразуем массив в JSON-строку
       title,
       content,
       isAnalyzed,
-      date
+      date: currentDate
     }, {
       headers: {
         Authorization: `Bearer ${token}`,

@@ -14,7 +14,7 @@ async function setup() {
     const dbPath = path.resolve(__dirname, 'dreams_memories.db');
     const db = await openDb(dbPath);
     
-    // Создание таблицы dreams
+    // Создание таблицы dreams с video и с триггерами для createdAt и updatedAt
     await db.exec(`
       CREATE TABLE IF NOT EXISTS dreams (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -24,12 +24,14 @@ async function setup() {
         content TEXT NOT NULL,
         isAnalyzed BOOLEAN NOT NULL,
         date TEXT NOT NULL,
-        createdAt TEXT NOT NULL,
-        updatedAt TEXT
+        createdAt TEXT DEFAULT (DATETIME('now')),
+        updatedAt TEXT DEFAULT (DATETIME('now')),
+        video TEXT DEFAULT '',
+        img TEXT DEFAULT ''
       );
     `);
 
-    // Создание таблицы memories
+    // Создание таблицы memories с video и с триггерами для createdAt и updatedAt
     await db.exec(`
       CREATE TABLE IF NOT EXISTS memories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,27 +41,29 @@ async function setup() {
         content TEXT NOT NULL,
         isAnalyzed BOOLEAN NOT NULL,
         date TEXT NOT NULL,
-        createdAt TEXT NOT NULL,
-        updatedAt TEXT
+        createdAt TEXT DEFAULT (DATETIME('now')),
+        updatedAt TEXT DEFAULT (DATETIME('now')),
+        video TEXT DEFAULT '',
+        img TEXT DEFAULT ''
       );
     `);
     
     // Вставка тестовых данных в dreams
     await db.exec(`
-      INSERT INTO dreams (category, associations, title, content, isAnalyzed, date, createdAt, updatedAt)
+      INSERT INTO dreams (category, associations, title, content, isAnalyzed, date)
       VALUES
-        ('сны', 'контроль, полет', 'Полет над городом', 'Я летал над городом и контролировал всё.', 1, '2024-07-04', '2024-07-04', '2024-07-04'),
-        ('сны', 'магия, приключение', 'Магический квест', 'Я был на магическом квесте в поисках скрытого сокровища.', 1, '2024-07-02', '2024-07-02', '2024-07-02'),
-        ('сны', 'секс, страсть', 'Интим с незнакомцем', 'Мне приснился страстный секс с незнакомцем.', 0, '2024-07-01', '2024-07-01', '2024-07-01');
+        ('сны', '["контроль", "полет"]', 'Полет над городом', 'Я летал над городом и контролировал всё.', 1, '2024-07-04'),
+        ('сны', '["магия", "приключение"]', 'Магический квест', 'Я был на магическом квесте в поисках скрытого сокровища.', 1, '2024-07-02'),
+        ('сны', '["секс", "страсть"]', 'Интим с незнакомцем', 'Мне приснился страстный секс с незнакомцем.', 0, '2024-07-01');
     `);
     
     // Вставка тестовых данных в memories
     await db.exec(`
-      INSERT INTO memories (category, associations, title, content, isAnalyzed, date, createdAt, updatedAt)
+      INSERT INTO memories (category, associations, title, content, isAnalyzed, date)
       VALUES
-        ('воспоминания', 'школа, друзья', 'Первый день в школе', 'Я пошёл в школу в первый раз и познакомился с новыми друзьями.', 0, '2000-09-01', '2024-07-05', '2024-07-05'),
-        ('воспоминания', 'семья, отпуск', 'Путешествие на море', 'Наша семья поехала на море, и мы отлично провели время.', 0, '2005-07-15', '2024-07-05', '2024-07-05'),
-        ('воспоминания', 'друзья, праздник', '18-й день рождения', 'Я отпраздновал свой 18-й день рождения с друзьями.', 0, '2010-05-20', '2024-07-05', '2024-07-05');
+        ('воспоминания', '["школа", "друзья"]', 'Первый день в школе', 'Я пошёл в школу в первый раз и познакомился с новыми друзьями.', 0, '2000-09-01'),
+        ('воспоминания', '["семья", "отпуск"]', 'Путешествие на море', 'Наша семья поехала на море, и мы отлично провели время.', 0, '2005-07-15'),
+        ('воспоминания', '["друзья", "праздник"]', '18-й день рождения', 'Я отпраздновал свой 18-й день рождения с друзьями.', 0, '2010-05-20');
     `);
     
     console.log('Database and tables created successfully with test data');
