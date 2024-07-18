@@ -48,14 +48,16 @@ const DreamStatsComponent: React.FC = () => {
   return (
     <div className={styles.container}>
       <div className={styles.stats}>
-        <h3>Dreams Stats</h3>
-        <p>Total: {dreamStats.total}</p>
-        <p>Analyzed: {dreamStats.analyzed}</p>
+        <h3>Сны</h3>
+        <p>Всего : {dreamStats.total}</p>
+        <p>Анализировано : {dreamStats.analyzed}</p>
+        <p>Видео :</p>
       </div>
       <div className={styles.stats}>
-        <h3>Memories Stats</h3>
-        <p>Total: {memoryStats.total}</p>
-        <p>Analyzed: {memoryStats.analyzed}</p>
+        <h3>Воспоминания</h3>
+        <p>Всего : {memoryStats.total}</p>
+        <p>Анализировано : {memoryStats.analyzed}</p>
+        <p>Видео :</p>
       </div>
     </div>
   );

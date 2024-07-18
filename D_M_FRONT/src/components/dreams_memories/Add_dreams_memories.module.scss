@@ -1,7 +1,8 @@
 .add-dreams-container {
-  max-width: 600px;
+  max-width: 340px;
   margin: 0 auto;
   padding: 20px;
+  margin-top: 35px;
   border: 1px solid #ccc;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -18,8 +19,15 @@
       margin-bottom: 15px;
 
       label {
-        display: block;
-        margin-bottom: 5px;
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+
+        p{
+          padding-bottom: 5px;
+          text-align: center;
+          font-size: 18px;
+        }
       }
 
       input[type="text"],
@@ -27,9 +35,11 @@
       select {
         width: 100%;
         padding: 8px;
+        margin-bottom: 10px;
         font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        cursor: pointer;
       }
 
       select {
@@ -70,13 +80,13 @@
       }
     }
 
-    .submit-button, .back-button {
+    .submit-button, .reset-button {
       padding: 10px 20px;
       font-size: 16px;
       background-color: #888; 
       color: #fff;
       border: none;
-      border-radius: 3px;
+      border-radius: 6px;
       cursor: pointer;
       margin-top: 10px;
 

@@ -3,6 +3,7 @@ import axios from 'axios';
 const token = localStorage.getItem('token');
 // Функция для добавления записи
 export const AddRecord = async (newDream) => {
+  
     console.log('NEW DREAM :', newDream)
     try {
       const response = await axios.post(`/api/dreams/add`, {

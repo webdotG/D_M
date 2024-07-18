@@ -25,6 +25,7 @@ const MyPage: React.FC = () => {
     return (
         <>
             <div className={style['my-page-container']}>
+                
                 <div className={style['profile-section']}>
                     <h1>Профиль</h1>
                     <p>Имя</p>

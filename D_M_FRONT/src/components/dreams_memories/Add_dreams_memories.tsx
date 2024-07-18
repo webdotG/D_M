@@ -6,6 +6,7 @@ import styles from './Add_dreams_memories.module.scss';
 import { useDreamStore } from '../../store';
 import { fetchAssociations } from '../../API/associationSearch';
 import { AddRecord } from '../../API/AddRecord';
+import Footer from '../footer/footer';
 
 const AddDreams: React.FC = () => {
   const [title, setTitle] = useState<string>('');
@@ -103,8 +104,6 @@ const AddDreams: React.FC = () => {
     try {
       const createdDream = await AddRecord(newDream);
       await addDream(createdDream);
-
-      // Reset form fields
       setTitle('');
       setContent('');
       setIsAnalyzed(false);
@@ -132,39 +131,14 @@ const AddDreams: React.FC = () => {
   };
 
   return (
+    <>
     <div className={styles['add-dreams-container']}>
       <form onSubmit={handleSubmit} className={styles['add-dreams-form']}>
-        <div className={styles['form-group']}>
-          <label htmlFor="title">Заголовок</label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={handleTitleChange}
-            required
-          />
-        </div>
-        <div className={styles['form-group']}>
-          <label htmlFor="content">Текст</label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={handleContentChange}
-            required
-          />
-        </div>
-        <div className={styles['form-group']}>
-          <label>
-            <input
-              type="checkbox"
-              checked={isAnalyzed}
-              onChange={handleIsAnalyzedChange}
-            />
-            Анализировано
+      
+      <div className={styles['form-group']}>
+          <label htmlFor="category">
+            <p>Категория</p>
           </label>
-        </div>
-        <div className={styles['form-group']}>
-          <label htmlFor="category">Категория</label>
           <select
             id="category"
             value={category}
@@ -174,8 +148,35 @@ const AddDreams: React.FC = () => {
             <option value="воспоминания">Воспоминание</option>
           </select>
         </div>
+
         <div className={styles['form-group']}>
-          <label htmlFor="associations">Ассоциации</label>
+          <label htmlFor="title">
+            <p>Заголовок</p>
+            </label>
+          <input
+            type="text"
+            id="title"
+            value={title}
+            onChange={handleTitleChange}
+            required
+          />
+        </div>
+        <div className={styles['form-group']}>
+          <label htmlFor="content">
+            <p>Текст</p>
+            </label>
+          <textarea
+            id="content"
+            value={content}
+            onChange={handleContentChange}
+            required
+          />
+        </div>
+        
+        <div className={styles['form-group']}>
+          <label htmlFor="associations">
+            <p>Ассоциации</p>
+            </label>
           {isAddingNewAssociation ? (
             <input
               type="text"
@@ -201,8 +202,23 @@ const AddDreams: React.FC = () => {
             </select>
           )}
         </div>
+        
         <div className={styles['form-group']}>
-          <label htmlFor="date">Дата</label>
+          <label>
+          <p>Анализировано</p>
+            <input
+              type="checkbox"
+              checked={isAnalyzed}
+              onChange={handleIsAnalyzedChange}
+            />
+          </label>
+        </div>
+        
+        
+        <div className={styles['form-group']}>
+          <label htmlFor="date">
+            <p>Дата</p>
+            </label>
           <DatePicker
             id="date"
             selected={date}
@@ -214,15 +230,18 @@ const AddDreams: React.FC = () => {
           />
         </div>
         <div className={styles['form-group']}>
-          <button type="submit" className={styles['submit-button']}>
-            Сохранить
-          </button>
-          <button type="button" className={styles['reset-button']} onClick={handleReset}>
+        <button type="button" className={styles['reset-button']} onClick={handleReset}>
             Сбросить
           </button>
+          <button type="submit" className={styles['submit-button']}>
+            Сохранить
+          </button> 
         </div>
       </form>
+      
     </div>
+    <Footer />
+    </>
   );
 };
 
