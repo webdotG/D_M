@@ -215,7 +215,7 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
             <button className={style['dream-function__delete-btn']} 
               onClick={handleDeleteClick}
             >
-              УДАЛИТЬ ЗАПИСЬ
+              удалить
             </button>
           </>
         ) : (

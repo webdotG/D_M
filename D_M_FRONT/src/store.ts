@@ -110,28 +110,37 @@ export const useDreamStore = create<DreamState>((set) => ({
     }));
     console.log(`Запись c id - ${updatedDream.id} обовлена в сторе`);
   },
-  addDream: async (newDream) => {
-    try {
-      const response = await fetch('/api/dreams/add', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newDream),
-      });
-      if (!response.ok) {
-        throw new Error(`Error adding dream: ${response.statusText}`);
-      }
-      const addedDreamFromDB = await response.json();
-      set((state) => ({
-        dreams: [...state.dreams, addedDreamFromDB],
-      }));
-      console.log('Dream added successfully:', addedDreamFromDB);
-    } catch (error) {
-      console.error('Failed to add dream:', error);
-      throw error;
+  // Пример исправленной функции addDream
+addDream: async (newDream) => {
+  try {
+    // Преобразование associations в массив, если оно строка
+    if (typeof newDream.associations === 'string') {
+      newDream.associations = JSON.parse(newDream.associations);
     }
-  },
+
+    const response = await fetch('/api/dreams/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newDream),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error adding dream: ${response.statusText}`);
+    }
+
+    const addedDreamFromDB = await response.json();
+    set((state) => ({
+      dreams: [...state.dreams, addedDreamFromDB],
+    }));
+    console.log('Dream added successfully:', addedDreamFromDB);
+  } catch (error) {
+    console.error('Failed to add dream:', error);
+    throw error;
+  }
+},
+
 }));
 
 export const useAuthStore = create<AuthState>((set) => ({

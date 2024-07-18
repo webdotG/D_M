@@ -2,6 +2,7 @@
   width: 340px;
   margin: 0 auto;
   padding: 20px;
+  padding-bottom: 42px;
   border: #333 2px solid;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -9,12 +10,30 @@
   background-color: #fff;
   transition: background-color 0.3s ease;
 
+
   &-content {
     margin-bottom: 10px;
     font-size: 16px;
     display: flex;
     flex-direction: column;
+    position: relative;
  
+    .dream-function__delete-btn{
+      position: absolute;
+      bottom: -89px;
+      right: 112px;
+      font-size: 15.5px;
+      border: none;
+      text-decoration: underline;
+      background-color: transparent;
+      font-weight: 400;
+    
+
+      &:hover{
+        opacity: 0.5;
+      }
+    }
+
     
     .D_M{
       width: 35px;
@@ -65,10 +84,12 @@
         p{
           padding-bottom: 10px;
           text-align: center;
+          cursor: pointer;
          }
 
          input{
           appearance: none;
+          cursor: pointer;
          }
 
         .category-label__img{
@@ -85,6 +106,7 @@
           border: #555 1px solid;
           opacity: 0.75;
           border-radius: 6px;
+          cursor: pointer;
         }
 
       }
@@ -98,6 +120,7 @@
       display: flex;
       flex-direction: column;
       cursor: pointer;
+      
       p{
         padding-bottom: 15px;
         text-align: center;
@@ -178,7 +201,7 @@
       border-radius: 4px;
       cursor: pointer;
       transition: background-color 0.3s ease, color 0.3s ease;
-      font-size: 17px;
+      font-size: 21px;
       text-decoration: underline;
       
 
@@ -224,7 +247,7 @@
   }
 
   button {
-    padding: 5px 10px;
+    padding: 6px 12px;
     margin-right: 10px;
     background-color: #333;
     border: none;

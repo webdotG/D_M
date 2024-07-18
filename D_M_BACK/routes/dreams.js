@@ -4,8 +4,7 @@ import { associationSearch } from '../models/associationSearch.js'
 import { getStats } from '../models/stats.js';
 import { getTableName } from '../midlewear/getTableName.js';
 import { Search } from '../models/search.js'
-import {getCurrentRecord} from '../models/dreams.js'
-import { getAllRecords} from '../models/dreams.js'; 
+import {getCurrentRecord,getAllRecords, addRecord} from '../models/dreams.js'
 import {moveRecordToDifferentCategory} from '../models/moveRecord.js'
 import {updateRecordById} from '../models/updateRecord.js'
 import {deleteRecordById} from '../models/deleteRecord.js'
@@ -15,14 +14,44 @@ const router = express.Router();
 
 /* api/dreams/... */
 
+  // Маршрут для добавления записи с учетом категории
+  router.post('/add', getTableName, async (req, res) => {
+    const { associations, title, content, isAnalyzed, date, img, video } = req.body;
+    const { tableName } = req;
+
+    try {
+      // Собираем новую запись для добавления
+      const newRecord = {
+        category: tableName,
+        associations,
+        title,
+        content,
+        isAnalyzed,
+        date,
+        img,
+        video
+      };
+      console.log('NEW RECORD', newRecord )
+      // Вызываем функцию для добавления записи в таблицу
+      const records = await addRecord(tableName, newRecord);
+
+      // Отправляем ответ с добавленными записями
+      res.json(records);
+    } catch (error) {
+      console.error('Ошибка обработки запроса:', error);
+      res.status(500).json({ error: 'Не удалось выполнить запрос' });
+    }
+  });
+
+
 router.delete('/delete/:id', getTableName, async (req, res) => {
-  const { id } = req.params; // Retrieve id from URL parameters
-  const { tableName } = req; // Retrieve tableName from middleware
+  const { id } = req.params; 
+  const { tableName } = req; 
 
   console.log(`Incoming data /delete : tableName-${tableName}, id-${id}`);
 
   try {
-    // Implement your deleteRecordById function here
+    
     const result = await deleteRecordById(tableName, id);
     res.json(result);
   } catch (error) {

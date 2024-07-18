@@ -1,5 +1,27 @@
 import { dbLite } from '../dbLite.js';
 
+
+export const addRecord = async (tableName, newRecord) => {
+  try {
+    const columns = Object.keys(newRecord).join(', ');
+    const placeholders = Object.keys(newRecord).map(() => '?').join(', ');
+
+    const sql = `INSERT INTO ${tableName} (${columns}) VALUES (${placeholders})`;
+    const values = Object.values(newRecord);
+
+    await dbLite.run(sql, values);
+
+    console.log(`Новая запись добавлена в таблицу ${tableName}`);
+
+    // Возвращаем новую запись, если это необходимо
+    return newRecord;
+  } catch (error) {
+    console.error('Ошибка при добавлении записи:', error);
+    throw new Error('Не удалось добавить запись');
+  }
+};
+
+
 export const getAllRecords = async (tableName) => {
   try {
     const sql = `SELECT * FROM ${tableName}`;

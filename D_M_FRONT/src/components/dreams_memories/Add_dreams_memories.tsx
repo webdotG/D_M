@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './Add_dreams_memories.module.scss';
 import { useDreamStore } from '../../store';
 import { fetchAssociations } from '../../API/associationSearch';
-// import { addAssociationsJSON } from '../../hooks/associationJSON'; 
+import { AddRecord } from '../../API/AddRecord';
 
 const AddDreams: React.FC = () => {
   const [title, setTitle] = useState<string>('');
@@ -25,7 +25,12 @@ const AddDreams: React.FC = () => {
     async function loadAssociations() {
       try {
         const fetchedAssociations = await fetchAssociations(category);
-        setAssociationsList(fetchedAssociations);
+        if (Array.isArray(fetchedAssociations)) {
+          setAssociationsList(fetchedAssociations);
+        } else {
+          console.error('fetchAssociations returned non-array data:', fetchedAssociations);
+          setAssociationsList([]);
+        }
       } catch (error) {
         console.error('Failed to fetch associations:', error);
         setAssociationsList([]);
@@ -77,24 +82,27 @@ const AddDreams: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const now = new Date().toISOString();
+    let associations: string[] = [];
+    if (isAddingNewAssociation && newAssociation) {
+      associations = [newAssociation];
+    } else if (selectedAssociation) {
+      associations = [selectedAssociation];
+    }
 
-    let newDream = {
+    const newDream = {
       title,
       content,
       isAnalyzed,
       category,
       date: date ? date.toISOString() : '',
-      createdAt: now,
-      updatedAt: now,
-      associations: '',
+      associations,
       video: '',
       img: ''
     };
 
     try {
-      newDream = await addAssociationsJSON(newDream, selectedAssociation, newAssociation);
-      await addDream(newDream);
+      const createdDream = await AddRecord(newDream);
+      await addDream(createdDream);
 
       // Reset form fields
       setTitle('');
@@ -108,12 +116,10 @@ const AddDreams: React.FC = () => {
       navigate('/D_M/');
     } catch (error) {
       console.error('Error adding dream:', error);
-      // Handle error as needed
     }
   };
 
   const handleReset = () => {
-    // Reset all form fields
     setTitle('');
     setContent('');
     setIsAnalyzed(false);
@@ -122,8 +128,6 @@ const AddDreams: React.FC = () => {
     setSelectedAssociation('');
     setNewAssociation('');
     setIsAddingNewAssociation(false);
-
-    // Fetch associations again for the default category 'сны'
     fetchAndSetAssociations('сны');
   };
 
