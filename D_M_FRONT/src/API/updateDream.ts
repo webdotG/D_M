@@ -16,13 +16,10 @@ export const updateDreamMemories = async (
     try {
         console.log('Запрос /patch ... ');
 
-        // Преобразуем массив ассоциаций в JSON-строку перед отправкой на сервер
-        const associationsString = JSON.stringify(associations);
-
         const response = await axios.patch(`/api/dreams/patch`, {
             id,
             category,
-            associations: associationsString, // Передаем JSON-строку
+            associations, 
             title,
             content,
             isAnalyzed,
@@ -31,7 +28,6 @@ export const updateDreamMemories = async (
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-            params: { category }
         });
         console.log('Ответ запроса /patch ... :', response.data.message);
 

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const token = localStorage.getItem('token')
+const token = localStorage.getItem('token');
 
 // Функция для поиска по значению и дате
 export const searchByValueAndDate = async (
@@ -12,8 +12,8 @@ export const searchByValueAndDate = async (
 
   try {
     const response = await axios.post(
-      `/api/dreams/search?category=${category}`,
-      { value, date },
+      `/api/dreams/search`,
+      { value, date, category },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -40,8 +40,8 @@ export const searchByValue = async (
 
   try {
     const response = await axios.post(
-      `/api/dreams/search?category=${category}`,
-      { value },
+      `/api/dreams/search`,
+      { value, category },
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -68,8 +68,8 @@ export const searchByDate = async (
 
   try {
     const response = await axios.post(
-      `/api/dreams/search?category=${category}`,
-      { date },
+      `/api/dreams/search`,
+      { date, category },
       {
         headers: {
           Authorization: `Bearer ${token}`,

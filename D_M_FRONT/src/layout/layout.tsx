@@ -1,8 +1,8 @@
-import { ReactNode, useState, useEffect  } from 'react';
+import { ReactNode, useState } from 'react';
 import style from './layout.module.scss';
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
-import { useCategoryStore, useLanguageStore, useThemeStore , useDreamStore } from '../store.ts';
+import { useCategoryStore, useLanguageStore, useThemeStore} from '../store.ts';
 import translations from '../translations.json';
 import { TranslationMap } from '../types';
 import ToggleTheme from '../SVG/toggle.svg'
@@ -24,14 +24,7 @@ export default function Layout({ children }: TypeProps) {
   const [modalVisible, setModalVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const [themeModalVisible, setThemeModalVisible] = useState(false);
-  const { loadDreams, loadAssociations } = useDreamStore(); 
-
-
-  useEffect(() => {
-    loadDreams(selectedCategory);
-    loadAssociations(selectedCategory);
-  }, [selectedCategory]);
-
+ 
 
   const toggleCategoryModal = () => {
     setModalVisible(!modalVisible);

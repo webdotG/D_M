@@ -1,42 +1,58 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from './Associations.module.scss';
-import { useDreamStore, useCategoryStore } from '../../store';
+import { useCategoryStore } from '../../store';
+import { fetchAssociations } from '../../API/associationSearch'; 
+
+type AssociationType = string[]; 
 
 const Associations: React.FC = () => {
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
-  const loadAssociations = useDreamStore((state) => state.loadAssociations);
-  const associations = useDreamStore((state) =>
-    state.dreams.map((dream) => {
-      if (Array.isArray(dream.associations)) {
-        return dream.associations;
-      } else if (typeof dream.associations === 'string') {
-        try {
-          return JSON.parse(dream.associations);
-        } catch (error) {
-          console.error(`Error parsing associations JSON for dream with id ${dream.id}:`, error);
-          return [];
-        }
-      } else {
-        return [];
-      }
-    })
-  );
+  
+  // Локальное состояние для хранения ассоциаций
+  const [associations, setAssociations] = useState<AssociationType[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (selectedCategory) {
-      loadAssociations(selectedCategory);
-    }
-  }, [selectedCategory, loadAssociations]);
+    const loadAssociations = async () => {
+      if (selectedCategory) {
+        setLoading(true);
+        try {
+          const data = await fetchAssociations(selectedCategory);
+          setAssociations(data.flat()); 
+        } catch (error) {
+          console.error('Ошибка при загрузке ассоциаций:', error);
+          setError('Не удалось загрузить ассоциации.');
+        } finally {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadAssociations();
+  }, [selectedCategory]);
+
+  if (loading) {
+    return <p>Загрузка...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div className={style['wrapper-category']}>
       <h2>Ассоциации</h2>
       <section className={style['category']}>
-        {associations.map((association: string[], index: number) => (
-          <button className={style['category-button']} key={index}>
-            {association.join(', ')}
-          </button>
-        ))}
+        {associations.length > 0 ? (
+          associations.map((association, index) => (
+            <button className={style['category-button']} key={index}>
+              {association.join(', ')}
+            </button>
+          ))
+        ) : (
+          <p>Нет ассоциаций.</p>
+        )}
       </section>
     </div>
   );

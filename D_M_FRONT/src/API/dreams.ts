@@ -1,14 +1,17 @@
 import axios from 'axios';
 
-const token = localStorage.getItem('token'); 
+const token = localStorage.getItem('token');
 
+// Функция для удаления записи по ID с учетом категории
 export const deleteRecordById = async (category: string, id: number) => {
   try {
-    const response = await axios.delete(`/api/dreams/delete/${id}`, {
+    const response = await axios.post(`/api/dreams/delete`, {
+      id,
+      category
+    }, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-      params: { category },
     });
     return response.data;
   } catch (error) {
@@ -17,14 +20,15 @@ export const deleteRecordById = async (category: string, id: number) => {
   }
 };
 
-// запрос с параметром category
+// Функция для загрузки записей с учетом категории
 export const loadDreams = async (category: string) => {
   try {
-    const response = await axios.get(`/api/dreams/all`, {
+    const response = await axios.post(`/api/dreams/all`, {
+      category
+    }, {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
-      params: { category }
+      }
     });
 
     if (response.status !== 200) {
@@ -38,6 +42,3 @@ export const loadDreams = async (category: string) => {
     throw error;
   }
 };
-
-
-

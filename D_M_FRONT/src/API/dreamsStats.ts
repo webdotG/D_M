@@ -11,11 +11,10 @@ export const fetchDreamStats = async (category: string): Promise<{ total: number
     try {
         console.log('GET /api/dreams/statistic category = ', category);
 
-        const response = await axios.get(`/api/dreams/statistic`, {
+        const response = await axios.post(`/api/dreams/statistic`, {category }, {
             headers: {
                 Authorization: `Bearer ${token}`,
-            },
-            params: { category }
+            }
         });
 
         if (response.status !== 200) {

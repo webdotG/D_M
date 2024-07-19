@@ -3,7 +3,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
 import styles from './Add_dreams_memories.module.scss';
-import { useDreamStore } from '../../store';
 import { fetchAssociations } from '../../API/associationSearch';
 import { AddRecord } from '../../API/AddRecord';
 import Footer from '../footer/footer';
@@ -19,7 +18,6 @@ const AddDreams: React.FC = () => {
   const [newAssociation, setNewAssociation] = useState<string>('');
   const [isAddingNewAssociation, setIsAddingNewAssociation] = useState<boolean>(false);
 
-  const addDream = useDreamStore((state) => state.addDream);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -97,13 +95,14 @@ const AddDreams: React.FC = () => {
       category,
       date: date ? date.toISOString() : '',
       associations,
-      video: '',
-      img: ''
+      video: '', 
+      img: ''    
     };
 
     try {
-      const createdDream = await AddRecord(newDream);
-      await addDream(createdDream);
+      await AddRecord(newDream);
+
+      // Сброс состояния формы
       setTitle('');
       setContent('');
       setIsAnalyzed(false);
@@ -132,115 +131,115 @@ const AddDreams: React.FC = () => {
 
   return (
     <>
-    <div className={styles['add-dreams-container']}>
-      <form onSubmit={handleSubmit} className={styles['add-dreams-form']}>
-      
-      <div className={styles['form-group']}>
-          <label htmlFor="category">
-            <p>Категория</p>
-          </label>
-          <select
-            id="category"
-            value={category}
-            onChange={(e) => handleCategoryChange(e.target.value)}
-          >
-            <option value="сны">Сон</option>
-            <option value="воспоминания">Воспоминание</option>
-          </select>
-        </div>
+      <div className={styles['add-dreams-container']}>
+        <form onSubmit={handleSubmit} className={styles['add-dreams-form']}>
 
-        <div className={styles['form-group']}>
-          <label htmlFor="title">
-            <p>Заголовок</p>
+          <div className={styles['form-group']}>
+            <label htmlFor="category">
+              <p>Категория</p>
             </label>
-          <input
-            type="text"
-            id="title"
-            value={title}
-            onChange={handleTitleChange}
-            required
-          />
-        </div>
-        <div className={styles['form-group']}>
-          <label htmlFor="content">
-            <p>Текст</p>
+            <select
+              id="category"
+              value={category}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+            >
+              <option value="сны">Сон</option>
+              <option value="воспоминания">Воспоминание</option>
+            </select>
+          </div>
+
+          <div className={styles['form-group']}>
+            <label htmlFor="title">
+              <p>Заголовок</p>
             </label>
-          <textarea
-            id="content"
-            value={content}
-            onChange={handleContentChange}
-            required
-          />
-        </div>
-        
-        <div className={styles['form-group']}>
-          <label htmlFor="associations">
-            <p>Ассоциации</p>
-            </label>
-          {isAddingNewAssociation ? (
             <input
               type="text"
-              value={newAssociation}
-              onChange={handleNewAssociationChange}
-              placeholder="Введите новую ассоциацию"
+              id="title"
+              value={title}
+              onChange={handleTitleChange}
               required
             />
-          ) : (
-            <select
-              id="associations"
-              value={selectedAssociation}
-              onChange={handleAssociationChange}
-              required
-            >
-              <option value="">Выберите ассоциацию</option>
-              {associationsList.map((association) => (
-                <option key={association} value={association}>
-                  {association}
-                </option>
-              ))}
-              <option value="new">Добавить новую</option>
-            </select>
-          )}
-        </div>
-        
-        <div className={styles['form-group']}>
-          <label>
-          <p>Анализировано</p>
-            <input
-              type="checkbox"
-              checked={isAnalyzed}
-              onChange={handleIsAnalyzedChange}
-            />
-          </label>
-        </div>
-        
-        
-        <div className={styles['form-group']}>
-          <label htmlFor="date">
-            <p>Дата</p>
+          </div>
+
+          <div className={styles['form-group']}>
+            <label htmlFor="content">
+              <p>Текст</p>
             </label>
-          <DatePicker
-            id="date"
-            selected={date}
-            onChange={handleDateChange}
-            dateFormat="dd/MM/yyyy"
-            isClearable
-            placeholderText="Выберите дату"
-            required
-          />
-        </div>
-        <div className={styles['form-group']}>
-        <button type="button" className={styles['reset-button']} onClick={handleReset}>
-            Сбросить
-          </button>
-          <button type="submit" className={styles['submit-button']}>
-            Сохранить
-          </button> 
-        </div>
-      </form>
-      
-    </div>
-    <Footer />
+            <textarea
+              id="content"
+              value={content}
+              onChange={handleContentChange}
+              required
+            />
+          </div>
+
+          <div className={styles['form-group']}>
+            <label htmlFor="associations">
+              <p>Ассоциации</p>
+            </label>
+            {isAddingNewAssociation ? (
+              <input
+                type="text"
+                value={newAssociation}
+                onChange={handleNewAssociationChange}
+                placeholder="Введите новую ассоциацию"
+                required
+              />
+            ) : (
+              <select
+                id="associations"
+                value={selectedAssociation}
+                onChange={handleAssociationChange}
+                required
+              >
+                <option value="">Выберите ассоциацию</option>
+                {associationsList.map((association) => (
+                  <option key={association} value={association}>
+                    {association}
+                  </option>
+                ))}
+                <option value="new">Добавить новую</option>
+              </select>
+            )}
+          </div>
+
+          <div className={styles['form-group']}>
+            <label>
+              <p>Анализировано</p>
+              <input
+                type="checkbox"
+                checked={isAnalyzed}
+                onChange={handleIsAnalyzedChange}
+              />
+            </label>
+          </div>
+
+          <div className={styles['form-group']}>
+            <label htmlFor="date">
+              <p>Дата</p>
+            </label>
+            <DatePicker
+              id="date"
+              selected={date}
+              onChange={handleDateChange}
+              dateFormat="dd/MM/yyyy"
+              isClearable
+              placeholderText="Выберите дату"
+              required
+            />
+          </div>
+
+          <div className={styles['form-group']}>
+            <button type="button" className={styles['reset-button']} onClick={handleReset}>
+              Сбросить
+            </button>
+            <button type="submit" className={styles['submit-button']}>
+              Сохранить
+            </button> 
+          </div>
+        </form>
+      </div>
+      <Footer />
     </>
   );
 };

@@ -19,7 +19,7 @@ export const moveDreamToDifferentCategory = async (
     const response = await axios.patch(`/api/dreams/move`, {
       id,
       category,
-      associations: JSON.stringify(associations), // Преобразуем массив в JSON-строку
+      associations,
       title,
       content,
       isAnalyzed,
@@ -27,8 +27,7 @@ export const moveDreamToDifferentCategory = async (
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
-      },
-      params: { category }
+      }
     });
     return response.data;
   } catch (error) {

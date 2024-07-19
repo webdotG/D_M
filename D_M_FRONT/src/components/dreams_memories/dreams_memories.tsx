@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import style from './dreams_memories.module.scss';
-import { useDreamStore, useCategoryStore } from '../../store';
 import selfAnalys from '../../SVG/medecine.svg';
 import LikeUnlikeIcon from '../../SVG/unlike.svg';
 import { updateDreamMemories } from '../../API/updateDream';
@@ -9,6 +8,7 @@ import D_M from '../../SVG/d_m.svg';
 import Confirm from '../../SVG/confirm.svg';
 import Cancel from '../../SVG/delete.svg';
 import { deleteRecordById } from '../../API/dreams';
+import { useCategoryStore } from '../../store';
 
 type DreamProps = {
   id: number;
@@ -35,8 +35,8 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
   const parsedAssociations: string[] = JSON.parse(associations);
   const [editedAssociations, setEditedAssociations] = useState(parsedAssociations.join(',')); // Преобразование массива в строку для редактирования
 
-  const { selectedCategory, setSelectedCategory } = useCategoryStore();
-  const updateDream = useDreamStore((state) => state.updateDream);
+  const selectedCategory = useCategoryStore((state) => state.selectedCategory);
+  const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
 
   useEffect(() => {
     if (!isEditing) {
@@ -57,7 +57,7 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
           result = await moveDreamToDifferentCategory(
             id,
             editedCategory,
-            associationsString, // Передаем строку JSON
+            associationsString, 
             editedTitle,
             editedContent,
             editedIsAnalyzed,
@@ -67,23 +67,13 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
           result = await updateDreamMemories(
             id,
             editedCategory,
-            associationsString, // Передаем строку JSON
+            associationsString, 
             editedTitle,
             editedContent,
             editedIsAnalyzed,
             editedDate
           );
         }
-  
-        updateDream({
-          id,
-          category: result.category || editedCategory,
-          associations: associationsString, // Сохраняем как строку JSON
-          title: editedTitle,
-          content: editedContent,
-          isAnalyzed: editedIsAnalyzed,
-          date: editedDate,
-        });
   
         setSelectedCategory(result.category || editedCategory);
         setIsEditing(false);
@@ -94,8 +84,6 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
       setIsEditing(true);
     }
   };
-  
-  
 
   const handleAnalysisClick = () => {
     if (isEditing) {
@@ -123,7 +111,7 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
   const confirmDelete = async () => {
     try {
       await deleteRecordById(selectedCategory, id);
-      window.location.reload();
+      window.location.reload(); // Перезагружаем страницу, чтобы обновить список
     } catch (error) {
       console.error('Ошибка при удалении записи:', error);
     } finally {
