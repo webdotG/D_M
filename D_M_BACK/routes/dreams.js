@@ -1,15 +1,55 @@
 import express from 'express';
 import { getTableName } from '../midlewear/getTableName.js'; 
-import { associationSearch } from '../models/associationSearch.js';
+import { associationSearch } from '../models/associationAll.js';
 import { getStats } from '../models/stats.js';
 import { Search } from '../models/search.js';
 import { getCurrentRecord, addRecord } from '../models/dreams.js';
 import { moveRecordToDifferentCategory } from '../models/moveRecord.js';
 // import { updateRecordById } from '../models/updateRecord.js';
 import { deleteRecordById } from '../models/deleteRecord.js';
-import { getAllRecords } from '../models/getAll.js'
+import { getAllRecords } from '../models/getAllRecord.js'
+import {fetchAssociationsByRecordId} from '../models/associationByID.js'
 
 const router = express.Router();
+
+// для получения ассоциаций по id
+router.post('/associationId', getTableName, async (req, res) => {
+  const { recordId } = req.body;
+  const { tableName } = req;
+
+  console.log(tableName, recordId)
+  if (!recordId || !tableName) {
+    return res.status(400).json({ error: 'recordId и tableName обязательны' });
+  }
+
+  try {
+    // Передаем tableName и recordId в функцию
+    const associations = await fetchAssociationsByRecordId(tableName, recordId);
+    res.json({ associations });
+  } catch (error) {
+    console.error('Ошибка получения ассоциаций:', error);
+    res.status(500).json({ error: 'Не удалось получить ассоциации' });
+  }
+});
+
+// для поиска всех ассоциаций 
+router.post('/associationSearch', getTableName, async (req, res) => {
+  const { tableName } = req; 
+
+  try {
+    const associations = await associationSearch(tableName);
+    const processedAssociations = associations.map(assoc => ({
+      id: assoc.id,
+      associations: assoc.associations // Используйте правильное поле
+    }));
+
+    res.json(processedAssociations);
+  } catch (error) {
+    console.error('Ошибка получения ассоциаций:', error);
+    res.status(500).json({ error: 'Не удалось получить ассоциации' });
+  }
+});
+
 
 // для добавления записи с учетом категории
 router.post('/add', getTableName, async (req, res) => {
@@ -152,17 +192,5 @@ router.post('/all', getTableName, async (req, res) => {
   }
 });
 
-// для поиска всех ассоциаций с учетом категории
-router.post('/associationSearch', getTableName, async (req, res) => {
-  const { tableName } = req; 
-
-  try {
-    const associations = await associationSearch(tableName);
-    res.json(associations);
-  } catch (error) {
-    console.error('Ошибка получения ассоциаций:', error);
-    res.status(500).json({ error: 'Не удалось получить ассоциации' });
-  }
-});
 
 export default router;

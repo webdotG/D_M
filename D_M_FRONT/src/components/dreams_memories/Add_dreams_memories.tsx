@@ -3,7 +3,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useNavigate } from 'react-router-dom';
 import styles from './Add_dreams_memories.module.scss';
-import { fetchAssociations } from '../../API/associationSearch';
+import { fetchAssociations } from '../../API/associationALL';
 import { AddRecord } from '../../API/AddRecord';
 import Footer from '../footer/footer';
 

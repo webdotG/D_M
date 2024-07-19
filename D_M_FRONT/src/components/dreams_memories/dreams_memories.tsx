@@ -9,11 +9,12 @@ import Confirm from '../../SVG/confirm.svg';
 import Cancel from '../../SVG/delete.svg';
 import { deleteRecordById } from '../../API/dreams';
 import { useCategoryStore } from '../../store';
+import { fetchAssociationsById } from '../../API/associationByID'; 
 
 type DreamProps = {
   id: number;
   category: string;
-  associations: string; 
+  associations: string;
   title: string;
   content: string;
   isAnalyzed: boolean;
@@ -38,45 +39,64 @@ const Dream: React.FC<DreamProps> = ({
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [tempCategory, setTempCategory] = useState(category);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-
-  // Мы храним ассоциации как строку, разделенную запятыми
   const [editedAssociations, setEditedAssociations] = useState(associations);
 
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
   const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
 
   useEffect(() => {
-    if (!isEditing) {
-      setEditedCategory(selectedCategory);
-    }
-  }, [selectedCategory, isEditing]);
+    const loadAssociations = async () => {
+      try {
+        // Фетчинг ассоциаций по id и category
+        const fetchedAssociations = await fetchAssociationsById(category, id);
+        setEditedAssociations(fetchedAssociations.associations); // Обновляем ассоциации
+      } catch (error) {
+        console.error('Ошибка при загрузке ассоциаций:', error);
+      }
+    };
+
+    loadAssociations();
+  }, [id, category]); // Добавляем зависимости, чтобы загрузить ассоциации при изменении id или category
 
   const handleEditClick = async () => {
+    console.log("Editing Clicked. Is Editing:", isEditing);
+    console.log("Edited Values:", {
+      editedCategory,
+      editedAssociations,
+      editedTitle,
+      editedContent,
+      editedIsAnalyzed,
+      editedDate
+    });
+
     if (isEditing) {
       try {
         let result;
         if (editedCategory !== category) {
+          console.log("Moving dream to different category.");
           result = await moveDreamToDifferentCategory(
             id,
             editedCategory,
-            editedAssociations, 
+            editedAssociations,
             editedTitle,
             editedContent,
             editedIsAnalyzed,
             editedDate
           );
         } else {
+          console.log("Updating dream memories.");
           result = await updateDreamMemories(
             id,
             editedCategory,
-            editedAssociations, 
+            editedAssociations,
             editedTitle,
             editedContent,
             editedIsAnalyzed,
             editedDate
           );
         }
-  
+
+        console.log("Update Result:", result);
         setSelectedCategory(result.category || editedCategory);
         setIsEditing(false);
       } catch (error) {
@@ -88,6 +108,7 @@ const Dream: React.FC<DreamProps> = ({
   };
 
   const handleAnalysisClick = () => {
+    console.log("Analysis Clicked. Is Analyzed:", editedIsAnalyzed);
     if (isEditing) {
       setEditedIsAnalyzed(!editedIsAnalyzed);
     }
@@ -95,6 +116,7 @@ const Dream: React.FC<DreamProps> = ({
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newCategory = e.target.value;
+    console.log("Category Changed to:", newCategory);
     if (newCategory !== editedCategory) {
       setTempCategory(newCategory);
       setShowConfirmation(true);
@@ -102,18 +124,21 @@ const Dream: React.FC<DreamProps> = ({
   };
 
   const handleCategoryConfirm = async () => {
+    console.log("Category Change Confirmed. New Category:", tempCategory);
     setEditedCategory(tempCategory);
     setShowConfirmation(false);
   };
 
   const handleDeleteClick = async () => {
+    console.log("Delete Clicked");
     setShowDeleteConfirmation(true);
   };
 
   const confirmDelete = async () => {
+    console.log("Delete Confirmed");
     try {
       await deleteRecordById(selectedCategory, id);
-      window.location.reload(); 
+      window.location.reload();
     } catch (error) {
       console.error('Ошибка при удалении записи:', error);
     } finally {
@@ -122,6 +147,7 @@ const Dream: React.FC<DreamProps> = ({
   };
 
   const cancelDelete = () => {
+    console.log("Delete Canceled");
     setShowDeleteConfirmation(false);
   };
 
@@ -172,7 +198,10 @@ const Dream: React.FC<DreamProps> = ({
               <input
                 type="text"
                 value={editedAssociations}
-                onChange={(e) => setEditedAssociations(e.target.value)}
+                onChange={(e) => {
+                  console.log("Associations Changed to:", e.target.value);
+                  setEditedAssociations(e.target.value)
+                }}
                 className={style['dream-content-associations']}
               />
             </label>
@@ -211,7 +240,7 @@ const Dream: React.FC<DreamProps> = ({
         ) : (
           <>
             <h3 className={style['dream-content-title']}>{title}</h3>
-            <p className={style['dream-content-associations']}>{associations}</p> 
+            <p className={style['dream-content-associations']}>{editedAssociations}</p> {/* Обновляем строку */}
             <p className={style['dream-content-text']}>{content}</p>
             <p className={style['dream-content-date']}>{date}</p>
           </>
