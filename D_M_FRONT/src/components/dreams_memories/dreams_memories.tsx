@@ -7,7 +7,7 @@ import { moveDreamToDifferentCategory } from '../../API/moveDreamCategory';
 import D_M from '../../SVG/d_m.svg';
 import Confirm from '../../SVG/confirm.svg';
 import Cancel from '../../SVG/delete.svg';
-import { deleteRecordById } from '../../API/dreams';
+import { deleteRecordById } from '../../API/deleteRecord';
 import { useCategoryStore } from '../../store';
 import { fetchAssociationsById } from '../../API/associationByID'; 
 

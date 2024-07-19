@@ -82,10 +82,9 @@ const AddDreams: React.FC = () => {
     event.preventDefault();
 
     const associations = isAddingNewAssociation && newAssociation
-    ? newAssociation
-    : selectedAssociation;
+      ? newAssociation
+      : selectedAssociation;
 
-    
     const newDream = {
       title,
       content,
@@ -125,6 +124,16 @@ const AddDreams: React.FC = () => {
     setNewAssociation('');
     setIsAddingNewAssociation(false);
     fetchAndSetAssociations('сны');
+  };
+
+  // Функция для преобразования даты
+  const formatDate = (isoDate: string): string => {
+    const date = new Date(isoDate);
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    
+    return `${day}.${month}.${year}`;
   };
 
   return (

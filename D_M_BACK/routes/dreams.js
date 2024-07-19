@@ -82,14 +82,12 @@ router.post('/associationSearch', getTableName, async (req, res) => {
   }
 });
 
+// для удаления записи по ID с учетом категории
+router.post('/delete', getTableName, async (req, res) => {
+  const { id, category } = req.body;
+  const { tableName } = req;
 
-
-// для удаления записи по ID
-router.delete('/delete/:id', getTableName, async (req, res) => {
-  const { id } = req.params;
-  const { tableName } = req; 
-
-  console.log(`Incoming data /delete : category-${req.body.category}, id-${id}`);
+  console.log(`Incoming data /delete : category-${category}, id-${id}`);
 
   try {
     const result = await deleteRecordById(tableName, id);

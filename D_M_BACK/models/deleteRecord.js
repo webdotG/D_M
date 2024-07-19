@@ -2,13 +2,15 @@ import { dbLite } from '../dbLite.js';
 
 export const deleteRecordById = async (tableName, id) => {
   try {
-    // Удаляем запись из указанной таблицы по id
-    const sqlDelete = `DELETE FROM ${tableName} WHERE id = ?`;
-    await dbLite.run(sqlDelete, [id]);
+    // Удаление записи из основной таблицы
+    await dbLite.run(`DELETE FROM ${tableName} WHERE id = ?`, [id]);
 
-    return { success: true, message: `Запись с id-${id} успешно удалена из ${tableName}` };
+    // Если нужно удалить связанные записи из других таблиц, добавьте код здесь
+
+    return { success: true };
   } catch (error) {
-    console.error('Ошибка при удалении записи:', error);
-    throw new Error('Ошибка при удалении записи');
+    console.error('Error in deleteRecordById:', error);
+    throw error;
   }
 };
+
