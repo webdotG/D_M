@@ -2,28 +2,37 @@ import axios from 'axios';
 
 const token = localStorage.getItem('token');
 
-export const fetchAssociationsById = async (category: string, recordId: number ) => {
-
+export const fetchAssociationsById = async (category: string, recordId: number) => {
   try {
-    const response = await axios.post(`/api/dreams/associationId`, {
+    // Логируем начальные параметры
+    console.log(`Запрос ассоциаций для категории: ${category}, recordId: ${recordId}`);
+    
+    // Выполняем запрос
+    const response = await axios.post('/api/dreams/associationId', {
       recordId,
       category
     }, {
       headers: {
-        // 'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       }
     });
-
+    
+    // Логируем статус ответа
+    console.log(`Получен статус ответа: ${response.status}`);
+    
+    // Проверяем статус ответа и логируем данные
     if (response.status !== 200) {
+      console.error(`Ошибка при загрузке ассоциаций: ${response.statusText}`);
       throw new Error(`Error loading associations: ${response.statusText}`);
     }
+    
+    console.log("Полученные ассоциации:", response.data);
 
-    console.log("Fetched Associations By Id:", response.data);
+    // Возвращаем ассоциации
     return response.data.associations;
   } catch (error) {
+    // Логируем ошибку, если она произошла
     console.error('Ошибка при получении ассоциаций:', error);
-    return '';
+    return [];
   }
 };
-

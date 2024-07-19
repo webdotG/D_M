@@ -49,7 +49,7 @@ const Dream: React.FC<DreamProps> = ({
       try {
         // Фетчинг ассоциаций по id и category
         const fetchedAssociations = await fetchAssociationsById(category, id);
-        setEditedAssociations(fetchedAssociations.associations); // Обновляем ассоциации
+        setEditedAssociations(fetchedAssociations.associations); 
       } catch (error) {
         console.error('Ошибка при загрузке ассоциаций:', error);
       }
