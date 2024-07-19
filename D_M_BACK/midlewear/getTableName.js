@@ -1,8 +1,8 @@
 // Middleware для определения имени таблицы на основе категории
 export const getTableName = (req, res, next) => {
-  const { category } = req.query; 
+  const { category } = req.body || {};
   // console.log('getTableName middleware:', category);
-  
+
   let tableName;
   if (category === 'сны') {
     tableName = 'dreams';
@@ -11,7 +11,7 @@ export const getTableName = (req, res, next) => {
     tableName = 'memories';
     // console.log('ВОСПОМИНАНИЯ tablename = ',tableName)
   } else {
-    return res.status(400).json({ error: 'Некорректная категория' });
+    return res
   }
   
   req.tableName = tableName;
