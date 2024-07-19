@@ -21,115 +21,115 @@ async function setup() {
     // Создание таблицы 'dreams' если она не существует
     await db.exec(`
       CREATE TABLE IF NOT EXISTS dreams (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, -- Уникальный идентификатор записи
-        category TEXT NOT NULL, -- Категория записи
-        title TEXT NOT NULL, -- Заголовок записи
-        content TEXT NOT NULL, -- Содержимое записи
-        isAnalyzed BOOLEAN NOT NULL, -- Флаг анализа записи
-        date TEXT NOT NULL, -- Дата записи
-        createdAt TEXT DEFAULT (DATETIME('now')), -- Дата и время создания записи
-        updatedAt TEXT DEFAULT (DATETIME('now')) -- Дата и время последнего обновления записи
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        category TEXT NOT NULL,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        isAnalyzed BOOLEAN NOT NULL,
+        date TEXT NOT NULL,
+        createdAt TEXT DEFAULT (DATETIME('now')),
+        updatedAt TEXT DEFAULT (DATETIME('now'))
       );
     `);
 
     // Создание таблицы 'memories' если она не существует
     await db.exec(`
       CREATE TABLE IF NOT EXISTS memories (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, -- Уникальный идентификатор записи
-        category TEXT NOT NULL, -- Категория записи
-        title TEXT NOT NULL, -- Заголовок записи
-        content TEXT NOT NULL, -- Содержимое записи
-        isAnalyzed BOOLEAN NOT NULL, -- Флаг анализа записи
-        date TEXT NOT NULL, -- Дата записи
-        createdAt TEXT DEFAULT (DATETIME('now')), -- Дата и время создания записи
-        updatedAt TEXT DEFAULT (DATETIME('now')) -- Дата и время последнего обновления записи
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        category TEXT NOT NULL,
+        title TEXT NOT NULL,
+        content TEXT NOT NULL,
+        isAnalyzed BOOLEAN NOT NULL,
+        date TEXT NOT NULL,
+        createdAt TEXT DEFAULT (DATETIME('now')),
+        updatedAt TEXT DEFAULT (DATETIME('now'))
       );
     `);
 
     // Создание таблицы 'association' для хранения ассоциаций
     await db.exec(`
       CREATE TABLE IF NOT EXISTS association (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, -- Уникальный идентификатор ассоциации
-        links TEXT DEFAULT '[]', -- Список ассоциаций в формате JSON (массив строк)
-        createdAt TEXT DEFAULT (DATETIME('now')) -- Дата и время создания ассоциации
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        link TEXT DEFAULT '', -- Список ассоциаций в виде обычной строки
+        createdAt TEXT DEFAULT (DATETIME('now'))
       );
     `);
 
     // Создание таблицы 'video' для хранения ссылок на видео
     await db.exec(`
       CREATE TABLE IF NOT EXISTS video (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, -- Уникальный идентификатор видео
-        link TEXT DEFAULT '', -- Ссылка на видео
-        createdAt TEXT DEFAULT (DATETIME('now')) -- Дата и время создания записи
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        link TEXT DEFAULT '',
+        createdAt TEXT DEFAULT (DATETIME('now'))
       );
     `);
 
     // Создание таблицы 'img' для хранения ссылок на изображения
     await db.exec(`
       CREATE TABLE IF NOT EXISTS img (
-        id INTEGER PRIMARY KEY AUTOINCREMENT, -- Уникальный идентификатор изображения
-        link TEXT DEFAULT '', -- Ссылка на изображение
-        createdAt TEXT DEFAULT (DATETIME('now')) -- Дата и время создания записи
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        link TEXT DEFAULT '',
+        createdAt TEXT DEFAULT (DATETIME('now'))
       );
     `);
 
     // Создание таблицы для связи 'dreams' с 'associations'
     await db.exec(`
       CREATE TABLE IF NOT EXISTS dream_associations (
-        dream_id INTEGER, -- Идентификатор записи из таблицы 'dreams'
-        association_id INTEGER, -- Идентификатор записи из таблицы 'association'
-        FOREIGN KEY (dream_id) REFERENCES dreams(id), -- Внешний ключ для связи с таблицей 'dreams'
-        FOREIGN KEY (association_id) REFERENCES association(id) -- Внешний ключ для связи с таблицей 'association'
+        dream_id INTEGER,
+        association_id INTEGER,
+        FOREIGN KEY (dream_id) REFERENCES dreams(id),
+        FOREIGN KEY (association_id) REFERENCES association(id)
       );
     `);
 
     // Создание таблицы для связи 'dreams' с 'videos'
     await db.exec(`
       CREATE TABLE IF NOT EXISTS dream_videos (
-        dream_id INTEGER, -- Идентификатор записи из таблицы 'dreams'
-        video_id INTEGER, -- Идентификатор записи из таблицы 'video'
-        FOREIGN KEY (dream_id) REFERENCES dreams(id), -- Внешний ключ для связи с таблицей 'dreams'
-        FOREIGN KEY (video_id) REFERENCES video(id) -- Внешний ключ для связи с таблицей 'video'
+        dream_id INTEGER,
+        video_id INTEGER,
+        FOREIGN KEY (dream_id) REFERENCES dreams(id),
+        FOREIGN KEY (video_id) REFERENCES video(id)
       );
     `);
 
     // Создание таблицы для связи 'dreams' с 'images'
     await db.exec(`
       CREATE TABLE IF NOT EXISTS dream_imgs (
-        dream_id INTEGER, -- Идентификатор записи из таблицы 'dreams'
-        img_id INTEGER, -- Идентификатор записи из таблицы 'img'
-        FOREIGN KEY (dream_id) REFERENCES dreams(id), -- Внешний ключ для связи с таблицей 'dreams'
-        FOREIGN KEY (img_id) REFERENCES img(id) -- Внешний ключ для связи с таблицей 'img'
+        dream_id INTEGER,
+        img_id INTEGER,
+        FOREIGN KEY (dream_id) REFERENCES dreams(id),
+        FOREIGN KEY (img_id) REFERENCES img(id)
       );
     `);
 
     // Создание таблицы для связи 'memories' с 'associations'
     await db.exec(`
       CREATE TABLE IF NOT EXISTS memory_associations (
-        memory_id INTEGER, -- Идентификатор записи из таблицы 'memories'
-        association_id INTEGER, -- Идентификатор записи из таблицы 'association'
-        FOREIGN KEY (memory_id) REFERENCES memories(id), -- Внешний ключ для связи с таблицей 'memories'
-        FOREIGN KEY (association_id) REFERENCES association(id) -- Внешний ключ для связи с таблицей 'association'
+        memory_id INTEGER,
+        association_id INTEGER,
+        FOREIGN KEY (memory_id) REFERENCES memories(id),
+        FOREIGN KEY (association_id) REFERENCES association(id)
       );
     `);
 
     // Создание таблицы для связи 'memories' с 'videos'
     await db.exec(`
       CREATE TABLE IF NOT EXISTS memory_videos (
-        memory_id INTEGER, -- Идентификатор записи из таблицы 'memories'
-        video_id INTEGER, -- Идентификатор записи из таблицы 'video'
-        FOREIGN KEY (memory_id) REFERENCES memories(id), -- Внешний ключ для связи с таблицей 'memories'
-        FOREIGN KEY (video_id) REFERENCES video(id) -- Внешний ключ для связи с таблицей 'video'
+        memory_id INTEGER,
+        video_id INTEGER,
+        FOREIGN KEY (memory_id) REFERENCES memories(id),
+        FOREIGN KEY (video_id) REFERENCES video(id)
       );
     `);
 
     // Создание таблицы для связи 'memories' с 'images'
     await db.exec(`
       CREATE TABLE IF NOT EXISTS memory_imgs (
-        memory_id INTEGER, -- Идентификатор записи из таблицы 'memories'
-        img_id INTEGER, -- Идентификатор записи из таблицы 'img'
-        FOREIGN KEY (memory_id) REFERENCES memories(id), -- Внешний ключ для связи с таблицей 'memories'
-        FOREIGN KEY (img_id) REFERENCES img(id) -- Внешний ключ для связи с таблицей 'img'
+        memory_id INTEGER,
+        img_id INTEGER,
+        FOREIGN KEY (memory_id) REFERENCES memories(id),
+        FOREIGN KEY (img_id) REFERENCES img(id)
       );
     `);
 
@@ -151,10 +151,10 @@ async function setup() {
 
     // Вставка тестовых данных в таблицу 'association'
     await db.exec(`
-      INSERT INTO association (links)
+      INSERT INTO association (link)
       VALUES
-        ('["контроль", "полет"]'), 
-        ('["магия", "приключение"]');
+        ('полет'), 
+        ('магия');
     `);
 
     // Вставка тестовых данных в таблицу 'video'
@@ -272,5 +272,4 @@ async function setup() {
   }
 }
 
-// Запуск функции настройки
 setup();
