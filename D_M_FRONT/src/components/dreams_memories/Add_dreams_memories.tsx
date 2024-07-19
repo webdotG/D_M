@@ -13,7 +13,7 @@ const AddDreams: React.FC = () => {
   const [isAnalyzed, setIsAnalyzed] = useState<boolean>(false);
   const [category, setCategory] = useState<string>('сны');
   const [date, setDate] = useState<Date | null>(null);
-  const [associationsList, setAssociationsList] = useState<string[]>([]);
+  const [associationsList, setAssociationsList] = useState<{ id: string, associations: string }[]>([]);
   const [selectedAssociation, setSelectedAssociation] = useState<string>('');
   const [newAssociation, setNewAssociation] = useState<string>('');
   const [isAddingNewAssociation, setIsAddingNewAssociation] = useState<boolean>(false);
@@ -194,8 +194,8 @@ const AddDreams: React.FC = () => {
               >
                 <option value="">Выберите ассоциацию</option>
                 {associationsList.map((association) => (
-                  <option key={association} value={association}>
-                    {association}
+                  <option key={association.id} value={association.associations}>
+                    {association.associations}
                   </option>
                 ))}
                 <option value="new">Добавить новую</option>
