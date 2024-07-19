@@ -13,14 +13,22 @@ import { useCategoryStore } from '../../store';
 type DreamProps = {
   id: number;
   category: string;
-  associations: string;
+  associations: string; 
   title: string;
   content: string;
   isAnalyzed: boolean;
   date: string;
 };
 
-const Dream: React.FC<DreamProps> = ({ id, category, associations, title, content, isAnalyzed, date }: DreamProps) => {
+const Dream: React.FC<DreamProps> = ({
+  id,
+  category,
+  associations,
+  title,
+  content,
+  isAnalyzed,
+  date
+}: DreamProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedCategory, setEditedCategory] = useState(category);
   const [editedTitle, setEditedTitle] = useState(title);
@@ -31,9 +39,8 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
   const [tempCategory, setTempCategory] = useState(category);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
-  // Парсинг строки JSON в массив строк
-  const parsedAssociations: string[] = JSON.parse(associations);
-  const [editedAssociations, setEditedAssociations] = useState(parsedAssociations.join(',')); // Преобразование массива в строку для редактирования
+  // Мы храним ассоциации как строку, разделенную запятыми
+  const [editedAssociations, setEditedAssociations] = useState(associations);
 
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
   const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
@@ -48,16 +55,11 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
     if (isEditing) {
       try {
         let result;
-        // Разделяем строку ассоциаций на массив
-        const associationsArray = editedAssociations.split(',').map(item => item.trim());
-        // Преобразуем массив в строку JSON
-        const associationsString = JSON.stringify(associationsArray);
-  
         if (editedCategory !== category) {
           result = await moveDreamToDifferentCategory(
             id,
             editedCategory,
-            associationsString, 
+            editedAssociations, 
             editedTitle,
             editedContent,
             editedIsAnalyzed,
@@ -67,7 +69,7 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
           result = await updateDreamMemories(
             id,
             editedCategory,
-            associationsString, 
+            editedAssociations, 
             editedTitle,
             editedContent,
             editedIsAnalyzed,
@@ -111,7 +113,7 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
   const confirmDelete = async () => {
     try {
       await deleteRecordById(selectedCategory, id);
-      window.location.reload(); // Перезагружаем страницу, чтобы обновить список
+      window.location.reload(); 
     } catch (error) {
       console.error('Ошибка при удалении записи:', error);
     } finally {
@@ -209,7 +211,7 @@ const Dream: React.FC<DreamProps> = ({ id, category, associations, title, conten
         ) : (
           <>
             <h3 className={style['dream-content-title']}>{title}</h3>
-            <p className={style['dream-content-associations']}>{parsedAssociations.join(', ')}</p> {/* Отображаем массив как строку с запятыми */}
+            <p className={style['dream-content-associations']}>{associations}</p> 
             <p className={style['dream-content-text']}>{content}</p>
             <p className={style['dream-content-date']}>{date}</p>
           </>

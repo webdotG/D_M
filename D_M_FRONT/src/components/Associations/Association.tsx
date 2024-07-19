@@ -3,13 +3,17 @@ import style from './Associations.module.scss';
 import { useCategoryStore } from '../../store';
 import { fetchAssociations } from '../../API/associationSearch'; 
 
-type AssociationType = string[]; 
+// Тип для ассоциаций, где каждый элемент массива содержит id и массив строк
+type AssociationType = {
+  id: string; // или number, если id числовой
+  associations: string[];
+}[];
 
 const Associations: React.FC = () => {
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
   
   // Локальное состояние для хранения ассоциаций
-  const [associations, setAssociations] = useState<AssociationType[]>([]);
+  const [associations, setAssociations] = useState<AssociationType>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -19,7 +23,7 @@ const Associations: React.FC = () => {
         setLoading(true);
         try {
           const data = await fetchAssociations(selectedCategory);
-          setAssociations(data.flat()); 
+          setAssociations(data); // Устанавливаем ассоциации как массив объектов
         } catch (error) {
           console.error('Ошибка при загрузке ассоциаций:', error);
           setError('Не удалось загрузить ассоциации.');
@@ -45,9 +49,9 @@ const Associations: React.FC = () => {
       <h2>Ассоциации</h2>
       <section className={style['category']}>
         {associations.length > 0 ? (
-          associations.map((association, index) => (
-            <button className={style['category-button']} key={index}>
-              {association.join(', ')}
+          associations.map((association) => (
+            <button className={style['category-button']} key={association.id}>
+              {association.associations.join(', ')} {/* Используем join для массива строк */}
             </button>
           ))
         ) : (

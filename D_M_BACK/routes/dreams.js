@@ -3,10 +3,11 @@ import { getTableName } from '../midlewear/getTableName.js';
 import { associationSearch } from '../models/associationSearch.js';
 import { getStats } from '../models/stats.js';
 import { Search } from '../models/search.js';
-import { getCurrentRecord, getAllRecords, addRecord } from '../models/dreams.js';
+import { getCurrentRecord, addRecord } from '../models/dreams.js';
 import { moveRecordToDifferentCategory } from '../models/moveRecord.js';
-import { updateRecordById } from '../models/updateRecord.js';
+// import { updateRecordById } from '../models/updateRecord.js';
 import { deleteRecordById } from '../models/deleteRecord.js';
+import { getAllRecords } from '../models/getAll.js'
 
 const router = express.Router();
 

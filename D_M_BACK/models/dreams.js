@@ -22,17 +22,6 @@ export const addRecord = async (tableName, newRecord) => {
 };
 
 
-export const getAllRecords = async (tableName) => {
-  try {
-    const sql = `SELECT * FROM ${tableName}`;
-    const rows = await dbLite.all(sql);
-    return rows;
-  } catch (error) {
-    console.error('Ошибка получения записей:', error);
-    throw error;
-  }
-};
-
 export async function getCurrentRecord(tableName, id) {
   try {
     const sql = `SELECT * FROM ${tableName} WHERE id = ?`;
