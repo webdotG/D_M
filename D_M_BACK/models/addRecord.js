@@ -5,7 +5,7 @@ export const addRecord = async (tableName, newRecord) => {
   const db = await dbLite; // Открываем соединение с базой данных
 
   const {
-    associations = [],
+    associations = '', // Значение по умолчанию - пустая строка
     title,
     content,
     isAnalyzed,
@@ -39,11 +39,22 @@ export const addRecord = async (tableName, newRecord) => {
     const result = await db.run(sqlInsert, values);
     const recordId = result.lastID;
 
+    // Логи для отладки
+    console.log('New record inserted:', {
+      id: recordId,
+      columns,
+      values,
+    });
+
     // 2. Обработка ассоциаций
-    for (const association of associations) {
-      let associationId = await getAssociationId(association, db);
+    if (associations) {
+      // Логируем ассоциации перед использованием
+      console.log('Associations to process:', associations);
+
+      // Поскольку associations - это строка, обрабатываем её как строку
+      let associationId = await getAssociationId(associations, db);
       if (!associationId) {
-        associationId = await addAssociation(association, db);
+        associationId = await addAssociation(associations, db);
       }
       await addRecordAssociation(recordId, associationId, tableName, db);
     }

@@ -4,7 +4,6 @@ const token = localStorage.getItem('token');
 
 export const fetchAssociationsById = async (category: string, recordId: number ) => {
 
-  console.log(category, recordId)
   try {
     const response = await axios.post(`/api/dreams/associationId`, {
       recordId,

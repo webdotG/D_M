@@ -7,6 +7,11 @@ import { fetchAssociations } from '../../API/associationALL';
 import { AddRecord } from '../../API/AddRecord';
 import Footer from '../footer/footer';
 
+// Функция для удаления лишних пробелов между буквами и сохранения пробелов между словами
+const removeExtraSpaces = (text: string): string => {
+  return text.replace(/\s+/g, ' ').trim();
+};
+
 const AddDreams: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
@@ -20,12 +25,18 @@ const AddDreams: React.FC = () => {
 
   const navigate = useNavigate();
 
+  // Загрузка ассоциаций при изменении категории
   useEffect(() => {
     async function loadAssociations() {
       try {
         const fetchedAssociations = await fetchAssociations(category);
         if (Array.isArray(fetchedAssociations)) {
-          setAssociationsList(fetchedAssociations);
+          // Очищаем ассоциации от лишних пробелов
+          const cleanedAssociations = fetchedAssociations.map(association => ({
+            id: association.id,
+            associations: removeExtraSpaces(association.associations)
+          }));
+          setAssociationsList(cleanedAssociations);
         } else {
           console.error('fetchAssociations returned non-array data:', fetchedAssociations);
           setAssociationsList([]);
@@ -58,7 +69,12 @@ const AddDreams: React.FC = () => {
   const fetchAndSetAssociations = async (newCategory: string) => {
     try {
       const fetchedAssociations = await fetchAssociations(newCategory);
-      setAssociationsList(fetchedAssociations);
+      // Очищаем ассоциации от лишних пробелов
+      const cleanedAssociations = fetchedAssociations.map(association => ({
+        id: association.id,
+        associations: removeExtraSpaces(association.associations)
+      }));
+      setAssociationsList(cleanedAssociations);
     } catch (error) {
       console.error('Failed to fetch associations:', error);
       setAssociationsList([]);
@@ -70,27 +86,38 @@ const AddDreams: React.FC = () => {
   };
 
   const handleAssociationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedAssociation(event.target.value);
-    setIsAddingNewAssociation(event.target.value === 'new');
+    // Удаляем лишние пробелы из выбранной ассоциации
+    setSelectedAssociation(removeExtraSpaces(event.target.value));
+    setIsAddingNewAssociation(event.target.value.trim() === 'new');
   };
 
   const handleNewAssociationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewAssociation(event.target.value);
+    // Удаляем лишние пробелы из новой ассоциации
+    setNewAssociation(removeExtraSpaces(event.target.value));
+  };
+
+  const formatDateToDDMMYYYY = (date: Date | null): string => {
+    if (!date) return '';
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}.${month}.${year}`;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    // Удаляем лишние пробелы из ассоциации перед отправкой
     const associations = isAddingNewAssociation && newAssociation
-      ? newAssociation
-      : selectedAssociation;
+      ? removeExtraSpaces(newAssociation)
+      : removeExtraSpaces(selectedAssociation);
 
     const newDream = {
       title,
       content,
       isAnalyzed,
       category,
-      date: date ? date.toISOString() : '',
+      date: date ? formatDateToDDMMYYYY(date) : '',
       associations,
       video: '', 
       img: ''    
@@ -124,16 +151,6 @@ const AddDreams: React.FC = () => {
     setNewAssociation('');
     setIsAddingNewAssociation(false);
     fetchAndSetAssociations('сны');
-  };
-
-  // Функция для преобразования даты
-  const formatDate = (isoDate: string): string => {
-    const date = new Date(isoDate);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    
-    return `${day}.${month}.${year}`;
   };
 
   return (

@@ -48,7 +48,6 @@ router.post('/associationId', getTableName, async (req, res) => {
   const { recordId } = req.body;
   const { tableName } = req;
 
-  console.log(tableName, recordId)
   if (!recordId || !tableName) {
     return res.status(400).json({ error: 'recordId и tableName обязательны' });
   }
@@ -97,7 +96,6 @@ router.post('/delete', getTableName, async (req, res) => {
     res.status(500).json({ error: 'Error deleting record' });
   }
 });
-
 
 // Роут для перемещения записи по id
 router.patch('/move', async (req, res) => {
