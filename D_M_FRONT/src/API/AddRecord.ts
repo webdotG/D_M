@@ -7,7 +7,7 @@ interface NewDream {
   content: string;
   isAnalyzed: boolean;
   date: string;
-  associations: string[]; 
+  associations: string; 
   category: string;
   video?: string; 
   img?: string; 

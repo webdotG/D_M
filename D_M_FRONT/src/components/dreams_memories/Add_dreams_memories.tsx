@@ -81,13 +81,11 @@ const AddDreams: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    let associations: string[] = [];
-    if (isAddingNewAssociation && newAssociation) {
-      associations = [newAssociation];
-    } else if (selectedAssociation) {
-      associations = [selectedAssociation];
-    }
+    const associations = isAddingNewAssociation && newAssociation
+    ? newAssociation
+    : selectedAssociation;
 
+    
     const newDream = {
       title,
       content,
