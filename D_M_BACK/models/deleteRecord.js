@@ -7,9 +7,22 @@ const deleteRecordById = async (tableName, id) => {
     // Удаляем запись из основной таблицы
     await db.run(`DELETE FROM ${tableName} WHERE id = ?`, [id]);
 
+    // Определяем таблицу и столбец для ассоциаций
+    let associationTable;
+    let columnId;
+    
+    if (tableName === 'dreams') {
+      associationTable = 'dream_associations';
+      columnId = 'dream_id';
+    } else if (tableName === 'memories') {
+      associationTable = 'memory_associations';
+      columnId = 'memory_id';
+    } else {
+      throw new Error('Unknown table name');
+    }
+
     // Получаем все ассоциации, связанные с удаляемой записью
-    const associationTable = tableName === 'dreams' ? 'dream_associations' : 'memory_associations';
-    const associatedIds = await db.all(`SELECT association_id FROM ${associationTable} WHERE ${tableName.slice(0, -1)}_id = ?`, [id]);
+    const associatedIds = await db.all(`SELECT association_id FROM ${associationTable} WHERE ${columnId} = ?`, [id]);
 
     for (const row of associatedIds) {
       const { association_id } = row;
@@ -23,7 +36,7 @@ const deleteRecordById = async (tableName, id) => {
       }
 
       // Удаляем запись из таблицы связей
-      await db.run(`DELETE FROM ${associationTable} WHERE ${tableName.slice(0, -1)}_id = ? AND association_id = ?`, [id, association_id]);
+      await db.run(`DELETE FROM ${associationTable} WHERE ${columnId} = ? AND association_id = ?`, [id, association_id]);
     }
 
     return { success: true };
