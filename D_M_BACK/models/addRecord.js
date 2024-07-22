@@ -1,11 +1,10 @@
-import { dbLite } from '../dbLite.js'; // Используем подключение к базе данных
+import { dbLite } from '../dbLite.js'; 
 
-// Функция для добавления записи и связанных данных
 export const addRecord = async (tableName, newRecord) => {
-  const db = await dbLite; // Открываем соединение с базой данных
+  const db = await dbLite;
 
   const {
-    associations = '', // Значение по умолчанию - пустая строка
+    associations = '', 
     title,
     content,
     isAnalyzed,
@@ -45,6 +44,10 @@ export const addRecord = async (tableName, newRecord) => {
       columns,
       values,
     });
+
+    // Логируем значение категории после вставки
+    const insertedRecord = await db.get(`SELECT category FROM ${tableName} WHERE id = ?`, [recordId]);
+    console.log('Inserted record category:', insertedRecord.category);
 
     // 2. Обработка ассоциаций
     if (associations) {
@@ -102,7 +105,22 @@ const addRecordAssociation = async (recordId, associationId, tableName, db) => {
   const sql = tableName === 'dreams'
     ? 'INSERT INTO dream_associations (dream_id, association_id) VALUES (?, ?)'
     : 'INSERT INTO memory_associations (memory_id, association_id) VALUES (?, ?)';
+  
+  // Логируем запрос перед выполнением
+  console.log('SQL for association:', {
+    sql,
+    recordId,
+    associationId
+  });
+  
   await db.run(sql, [recordId, associationId]);
+
+  // Логируем информацию о добавленной ассоциации
+  console.log('Association added:', {
+    tableName,
+    recordId,
+    associationId
+  });
 };
 
 // Вспомогательные функции для работы с видео

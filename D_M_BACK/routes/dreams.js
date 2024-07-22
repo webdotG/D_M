@@ -55,6 +55,7 @@ router.post('/associationId', getTableName, async (req, res) => {
   try {
     // Передаем tableName и recordId в функцию
     const associations = await fetchAssociationsByRecordId(tableName, recordId);
+    
     res.json({ associations });
   } catch (error) {
     console.error('Ошибка получения ассоциаций:', error);

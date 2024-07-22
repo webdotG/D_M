@@ -47,16 +47,17 @@ const Dream: React.FC<DreamProps> = ({
   useEffect(() => {
     const loadAssociations = async () => {
       try {
-        // Фетчинг ассоциаций по id и category
+        console.log(`Fetching associations for category: ${category}, id: ${id}`);
         const fetchedAssociations = await fetchAssociationsById(category, id);
-        setEditedAssociations(fetchedAssociations.associations); 
+        console.log(`Fetched associations: ${fetchedAssociations}`);
+        setEditedAssociations(fetchedAssociations);
       } catch (error) {
         console.error('Ошибка при загрузке ассоциаций:', error);
       }
     };
 
     loadAssociations();
-  }, [id, category]); // Добавляем зависимости, чтобы загрузить ассоциации при изменении id или category
+  }, [id, category]);
 
   const handleEditClick = async () => {
     console.log("Editing Clicked. Is Editing:", isEditing);
@@ -74,6 +75,7 @@ const Dream: React.FC<DreamProps> = ({
         let result;
         if (editedCategory !== category) {
           console.log("Moving dream to different category.");
+          console.log('editAssociation ... : ', editedAssociations)
           result = await moveDreamToDifferentCategory(
             id,
             editedCategory,
@@ -152,6 +154,7 @@ const Dream: React.FC<DreamProps> = ({
   };
 
   return (
+
     <li className={style['dream']}>
       <div className={style['dream-content']}>
         {isEditing ? (
@@ -240,7 +243,7 @@ const Dream: React.FC<DreamProps> = ({
         ) : (
           <>
             <h3 className={style['dream-content-title']}>{title}</h3>
-            <p className={style['dream-content-associations']}>{editedAssociations}</p> {/* Обновляем строку */}
+            <p className={style['dream-content-associations']}>{editedAssociations}</p> {/* Отображение ассоциаций */}
             <p className={style['dream-content-text']}>{content}</p>
             <p className={style['dream-content-date']}>{date}</p>
           </>

@@ -2,36 +2,64 @@ import axios from 'axios';
 
 const token = localStorage.getItem('token');
 
+const normalizeCategory = (category: string) => {
+  // Функция для нормализации категории
+  return category === 'dreams' ? 'сны' : 'воспоминания';
+};
+
 export const fetchAssociationsById = async (category: string, recordId: number) => {
   try {
-    // Логируем начальные параметры
-    console.log(`Запрос ассоциаций для категории: ${category}, recordId: ${recordId}`);
+    // Нормализуем категорию перед отправкой запроса
+    const normalizedCategory = normalizeCategory(category);
+
+    console.log(`Запрос ассоциаций для категории: ${normalizedCategory}, recordId: ${recordId}`);
     
-    // Выполняем запрос
     const response = await axios.post('/api/dreams/associationId', {
       recordId,
-      category
+      category: normalizedCategory, // Используем нормализованную категорию
     }, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
-    
-    // Логируем статус ответа
-    console.log(`Получен статус ответа: ${response.status}`);
-    
-    // Проверяем статус ответа и логируем данные
+
+    // Логируем полученные данные для проверки
+    console.log("Полученные данные:", response.data);
+
     if (response.status !== 200) {
       console.error(`Ошибка при загрузке ассоциаций: ${response.statusText}`);
       throw new Error(`Error loading associations: ${response.statusText}`);
     }
-    
-    console.log("Полученные ассоциации:", response.data);
 
-    // Возвращаем ассоциации
-    return response.data.associations;
+    // Обработка данных в зависимости от их типа
+    const associationsData = response.data.associations;
+
+    if (associationsData && Array.isArray(associationsData)) {
+      // Если это массив объектов
+      const associations = associationsData.map((assoc: any) => {
+        return typeof assoc === 'string' ? assoc : JSON.stringify(assoc);
+      });
+      console.log("Ассоциации (массив):", associations);
+      return associations;
+
+    } else if (associationsData && typeof associationsData === 'string') {
+      // Если это строка
+      const associations = [associationsData];
+      console.log("Ассоциации (строка):", associations);
+      return associations;
+
+    } else if (associationsData && typeof associationsData === 'object' && associationsData.associations) {
+      // Если это объект с полем associations как строка
+      const associations = [associationsData.associations];
+      console.log("Ассоциации (объект):", associations);
+      return associations;
+
+    } else {
+      // Если формат данных не соответствует ожидаемому
+      console.error('Неверный формат данных:', response.data);
+      throw new Error('Invalid data format');
+    }
   } catch (error) {
-    // Логируем ошибку, если она произошла
     console.error('Ошибка при получении ассоциаций:', error);
     return [];
   }
