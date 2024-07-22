@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import style from './Associations.module.scss';
 import { useCategoryStore } from '../../store';
-import { fetchAssociations } from '../../API/associationALL'; 
+import { fetchAssociations } from '../../API/associationALL';
 
-// Тип для ассоциаций, где каждый элемент массива содержит id и строку ассоциаций
+// Тип для ассоциаций
 type AssociationType = {
   id: string; // или number, если id числовой
   associations: string; // строка, а не массив строк
@@ -11,7 +11,7 @@ type AssociationType = {
 
 const Associations: React.FC = () => {
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
-  
+
   // Локальное состояние для хранения ассоциаций
   const [associations, setAssociations] = useState<AssociationType>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -23,7 +23,13 @@ const Associations: React.FC = () => {
         setLoading(true);
         try {
           const data = await fetchAssociations(selectedCategory);
-          setAssociations(data); // Устанавливаем ассоциации как массив объектов
+
+          // Проверяем, что данные соответствуют ожидаемому типу
+          if (Array.isArray(data) && data.every(item => typeof item.id === 'string' && typeof item.associations === 'string')) {
+            setAssociations(data); // Устанавливаем ассоциации как массив объектов
+          } else {
+            throw new Error('Некорректный формат данных ассоциаций');
+          }
         } catch (error) {
           console.error('Ошибка при загрузке ассоциаций:', error);
           setError('Не удалось загрузить ассоциации.');

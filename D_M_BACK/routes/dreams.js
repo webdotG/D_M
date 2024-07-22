@@ -1,6 +1,6 @@
 import express from 'express';
 import { getTableName } from '../midlewear/getTableName.js'; 
-import { associationSearch } from '../models/associationAll.js';
+import { associationAll } from '../models/associationAll.js';
 import { getStats } from '../models/stats.js';
 import { Search } from '../models/search.js';
 import { getCurrentRecord} from '../models/dreams.js';
@@ -32,9 +32,10 @@ router.post('/add', getTableName, async (req, res) => {
       video,
     };
 
-    console.log('NEW RECORD', newRecord);
+    console.log('ROUT REQ NEW RECORD', newRecord);
 
     const records = await addRecord(tableName, newRecord);
+    console.log('ROUT RES NEW RECORD', newRecord);
     res.json(records);
   } catch (error) {
     console.error('Ошибка обработки запроса:', error);
@@ -64,18 +65,15 @@ router.post('/associationId', getTableName, async (req, res) => {
 });
 
 
-// для поиска всех ассоциаций 
-router.post('/associationSearch', getTableName, async (req, res) => {
+// Для поиска всех ассоциаций
+router.post('/associationAll', getTableName, async (req, res) => {
   const { tableName } = req; 
 
   try {
-    const associations = await associationSearch(tableName);
-    const processedAssociations = associations.map(assoc => ({
-      id: assoc.id,
-      associations: assoc.associations // Используйте правильное поле
-    }));
+    const { result } = await associationAll(tableName); //result,содержит массив ассоциаций
 
-    res.json(processedAssociations);
+    // Устанавливаем ассоциации как массив объектов
+    res.json(result);
   } catch (error) {
     console.error('Ошибка получения ассоциаций:', error);
     res.status(500).json({ error: 'Не удалось получить ассоциации' });

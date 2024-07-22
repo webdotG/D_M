@@ -10,7 +10,8 @@ const deleteRecordById = async (tableName, id) => {
     // Определяем таблицу и столбец для ассоциаций
     let associationTable;
     let columnId;
-    
+
+    // Устанавливаем соответствие между таблицами и колонками
     if (tableName === 'dreams') {
       associationTable = 'dream_associations';
       columnId = 'dream_id';
@@ -28,7 +29,7 @@ const deleteRecordById = async (tableName, id) => {
       const { association_id } = row;
 
       // Проверяем, используется ли ассоциация в других записях
-      const count = await db.get(`SELECT COUNT(*) as count FROM ${associationTable} WHERE association_id = ?`, [association_id]);
+      const count = await db.get(`SELECT COUNT(*) as count FROM ${associationTable} WHERE association_id = ? AND ${columnId} != ?`, [association_id, id]);
 
       if (count.count === 0) {
         // Если ассоциация не используется, удаляем её

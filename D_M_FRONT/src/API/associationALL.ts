@@ -3,7 +3,7 @@ import axios from 'axios';
 export async function fetchAssociations(category: string) {
   try {
     
-    const response = await axios.post('/api/dreams/associationSearch', { category });
+    const response = await axios.post('/api/dreams/associationAll', { category });
     console.log('associationSearch response.data', response.data);
 
     const data = response.data; 

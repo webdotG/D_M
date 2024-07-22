@@ -30,26 +30,17 @@ export const fetchAssociationsById = async (category: string, recordId: number) 
       throw new Error(`Error loading associations: ${response.statusText}`);
     }
 
-    // Обработка данных в зависимости от их типа
     const associationsData = response.data.associations;
 
-    if (associationsData && Array.isArray(associationsData)) {
-      
-      // Если это массив объектов
-      const associations = associationsData.map((assoc: any) => {
-        return typeof assoc === 'string' ? assoc : JSON.stringify(assoc);
-      });
-      console.log("Ассоциации (массив):", associations);
-      return associations;
-
-    } else if (associationsData && typeof associationsData === 'string') {
+    // Обработка данных в зависимости от их типа
+    if (typeof associationsData === 'string') {
       
       // Если это строка
       const associations = [associationsData];
       console.log("Ассоциации (строка):", associations);
       return associations;
 
-    } else if (associationsData && typeof associationsData === 'object' && associationsData.associations) {
+    } else if (typeof associationsData === 'object' && associationsData.associations) {
       
       // Если это объект с полем associations как строка
       const associations = [associationsData.associations];

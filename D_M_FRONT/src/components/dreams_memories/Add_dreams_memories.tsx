@@ -86,13 +86,12 @@ const AddDreams: React.FC = () => {
   };
 
   const handleAssociationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    // Удаляем лишние пробелы из выбранной ассоциации
-    setSelectedAssociation(removeExtraSpaces(event.target.value));
-    setIsAddingNewAssociation(event.target.value.trim() === 'new');
+    const value = event.target.value;
+    setSelectedAssociation(value);
+    setIsAddingNewAssociation(value === 'new');
   };
 
   const handleNewAssociationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    // Удаляем лишние пробелы из новой ассоциации
     setNewAssociation(removeExtraSpaces(event.target.value));
   };
 
@@ -107,10 +106,10 @@ const AddDreams: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Удаляем лишние пробелы из ассоциации перед отправкой
+    // Если выбран новый ассоциация, используем её
     const associations = isAddingNewAssociation && newAssociation
-      ? removeExtraSpaces(newAssociation)
-      : removeExtraSpaces(selectedAssociation);
+      ? newAssociation
+      : selectedAssociation;
 
     const newDream = {
       title,
@@ -118,7 +117,7 @@ const AddDreams: React.FC = () => {
       isAnalyzed,
       category,
       date: date ? formatDateToDDMMYYYY(date) : '',
-      associations,
+      associations: removeExtraSpaces(associations),  // Удаляем лишние пробелы
       video: '', 
       img: ''    
     };

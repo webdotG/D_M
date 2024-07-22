@@ -14,19 +14,19 @@ interface NewDream {
 }
 
 // Функция для добавления записи
-export const AddRecord = async (newDream:  NewDream) => {
+export const AddRecord = async (newDream: NewDream) => {
   console.log('NEW DREAM :', newDream);
   
   try {
-    const response = await axios.post(`/api/dreams/add`, {
+    const response = await axios.post('/api/dreams/add', {
       title: newDream.title,
       content: newDream.content,
       isAnalyzed: newDream.isAnalyzed,
       date: newDream.date,
       associations: newDream.associations,
       category: newDream.category,
-      video: '',
-      img: '',
+      video: newDream.video || '', // Убедитесь, что значения по умолчанию пустые строки
+      img: newDream.img || '',    // Если значения не заданы, передаем пустые строки
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -37,7 +37,6 @@ export const AddRecord = async (newDream:  NewDream) => {
       throw new Error(`Error adding record: ${response.statusText}`);
     }
 
-    console.log('Record added successfully:', response.data);
     return response.data;
   } catch (error) {
     console.error('Failed to add record:', error);
