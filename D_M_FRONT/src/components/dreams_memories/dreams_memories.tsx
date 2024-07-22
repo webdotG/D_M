@@ -45,6 +45,9 @@ const Dream: React.FC<DreamProps> = ({
   const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
 
   useEffect(() => {
+    // Инициализация состояния editedCategory из стора при монтировании
+    setEditedCategory(selectedCategory);
+
     const loadAssociations = async () => {
       try {
         console.log(`Fetching associations for category: ${category}, id: ${id}`);
@@ -57,7 +60,7 @@ const Dream: React.FC<DreamProps> = ({
     };
 
     loadAssociations();
-  }, [id, category]);
+  }, [id, category, selectedCategory]);
 
   const handleEditClick = async () => {
     console.log("Editing Clicked. Is Editing:", isEditing);
@@ -154,7 +157,6 @@ const Dream: React.FC<DreamProps> = ({
   };
 
   return (
-
     <li className={style['dream']}>
       <div className={style['dream-content']}>
         {isEditing ? (

@@ -133,140 +133,41 @@ async function setup() {
       );
     `);
 
-    // Вставка тестовых данных в таблицу 'dreams'
-    await db.exec(`
-      INSERT INTO dreams (category, title, content, isAnalyzed, date)
-      VALUES
-        ('сны', 'Полет над городом', 'Я летал над городом и контролировал всё.', 1, '2024-07-04'),
-        ('сны', 'Магический квест', 'Я был на магическом квесте в поисках скрытого сокровища.', 1, '2024-07-02');
-    `);
-
-    // Вставка тестовых данных в таблицу 'memories'
-    await db.exec(`
-      INSERT INTO memories (category, title, content, isAnalyzed, date)
-      VALUES
-        ('воспоминания', 'Первый день в школе', 'Я пошёл в школу в первый раз и познакомился с новыми друзьями.', 0, '2000-09-01'),
-        ('воспоминания', 'Путешествие на море', 'Наша семья поехала на море, и мы отлично провели время.', 0, '2005-07-15');
-    `);
-
-    // Вставка тестовых данных в таблицу 'association'
-    await db.exec(`
-      INSERT INTO association (link)
-      VALUES
-        ('полет'), 
-        ('магия');
-    `);
-
-    // Вставка тестовых данных в таблицу 'video'
-    await db.exec(`
-      INSERT INTO video (link)
-      VALUES
-        ('video_link_1'), 
-        ('video_link_2');
-    `);
-
-    // Вставка тестовых данных в таблицу 'img'
-    await db.exec(`
-      INSERT INTO img (link)
-      VALUES
-        ('img_link_1'), 
-        ('img_link_2');
-    `);
-
-    // Вставка тестовых данных в таблицу 'dream_associations'
-    await db.exec(`
-      INSERT INTO dream_associations (dream_id, association_id)
-      VALUES
-        (1, 1),
-        (2, 2);
-    `);
-
-    // Вставка тестовых данных в таблицу 'dream_videos'
-    await db.exec(`
-      INSERT INTO dream_videos (dream_id, video_id)
-      VALUES
-        (1, 1),
-        (2, 2);
-    `);
-
-    // Вставка тестовых данных в таблицу 'dream_imgs'
-    await db.exec(`
-      INSERT INTO dream_imgs (dream_id, img_id)
-      VALUES
-        (1, 1),
-        (2, 2);
-    `);
-
-    // Вставка тестовых данных в таблицу 'memory_associations'
-    await db.exec(`
-      INSERT INTO memory_associations (memory_id, association_id)
-      VALUES
-        (1, 1),
-        (2, 2);
-    `);
-
-    // Вставка тестовых данных в таблицу 'memory_videos'
-    await db.exec(`
-      INSERT INTO memory_videos (memory_id, video_id)
-      VALUES
-        (1, 1),
-        (2, 2);
-    `);
-
-    // Вставка тестовых данных в таблицу 'memory_imgs'
-    await db.exec(`
-      INSERT INTO memory_imgs (memory_id, img_id)
-      VALUES
-        (1, 1),
-        (2, 2);
-    `);
-
     // Вывод данных из таблиц для проверки
     const dreamRows = await db.all('SELECT * FROM dreams');
-    console.log('Текущие данные в таблице dreams:');
-    console.log(dreamRows);
-
+    console.log('Данные в таблице dreams:', dreamRows);
+   
     const memoryRows = await db.all('SELECT * FROM memories');
-    console.log('Текущие данные в таблице memories:');
-    console.log(memoryRows);
-
+    console.log('Данные в таблице memories:', memoryRows);
+ 
     const associationRows = await db.all('SELECT * FROM association');
-    console.log('Текущие данные в таблице association:');
-    console.log(associationRows);
+    console.log('Данные в таблице association:', associationRows);
 
     const videoRows = await db.all('SELECT * FROM video');
-    console.log('Текущие данные в таблице video:');
-    console.log(videoRows);
+    console.log('Данные в таблице video:', videoRows);
 
     const imgRows = await db.all('SELECT * FROM img');
-    console.log('Текущие данные в таблице img:');
-    console.log(imgRows);
-
+    console.log('Данные в таблице img:',imgRows);
+    
     const dreamAssociationRows = await db.all('SELECT * FROM dream_associations');
-    console.log('Текущие данные в таблице dream_associations:');
-    console.log(dreamAssociationRows);
-
+    console.log('Данные в таблице dream_associations:', dreamAssociationRows);
+ 
     const dreamVideoRows = await db.all('SELECT * FROM dream_videos');
-    console.log('Текущие данные в таблице dream_videos:');
-    console.log(dreamVideoRows);
-
+    console.log('Данные в таблице dream_videos:', dreamVideoRows);
+  
     const dreamImgRows = await db.all('SELECT * FROM dream_imgs');
-    console.log('Текущие данные в таблице dream_imgs:');
-    console.log(dreamImgRows);
+    console.log('Данные в таблице dream_imgs:', dreamImgRows);
 
     const memoryAssociationRows = await db.all('SELECT * FROM memory_associations');
-    console.log('Текущие данные в таблице memory_associations:');
-    console.log(memoryAssociationRows);
+    console.log('Данные в таблице memory_associations:', memoryAssociationRows);
 
     const memoryVideoRows = await db.all('SELECT * FROM memory_videos');
-    console.log('Текущие данные в таблице memory_videos:');
-    console.log(memoryVideoRows);
+    console.log('Данные в таблице memory_videos:', memoryVideoRows);
 
     const memoryImgRows = await db.all('SELECT * FROM memory_imgs');
-    console.log('Текущие данные в таблице memory_imgs:');
-    console.log(memoryImgRows);
+    console.log('Данные в таблице memory_imgs:', memoryImgRows);
 
-    console.log('База данных и таблицы успешно созданы и заполнены тестовыми данными');
+    console.log('База данных и таблицы успешно созданы');
   } catch (error) {
     console.error('Ошибка настройки базы данных:', error);
   }

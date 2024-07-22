@@ -16,14 +16,13 @@ export const fetchAssociationsById = async (category: string, recordId: number) 
     
     const response = await axios.post('/api/dreams/associationId', {
       recordId,
-      category: normalizedCategory, // Используем нормализованную категорию
+      category: normalizedCategory, 
     }, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
 
-    // Логируем полученные данные для проверки
     console.log("Полученные данные:", response.data);
 
     if (response.status !== 200) {
@@ -35,6 +34,7 @@ export const fetchAssociationsById = async (category: string, recordId: number) 
     const associationsData = response.data.associations;
 
     if (associationsData && Array.isArray(associationsData)) {
+      
       // Если это массив объектов
       const associations = associationsData.map((assoc: any) => {
         return typeof assoc === 'string' ? assoc : JSON.stringify(assoc);
@@ -43,18 +43,21 @@ export const fetchAssociationsById = async (category: string, recordId: number) 
       return associations;
 
     } else if (associationsData && typeof associationsData === 'string') {
+      
       // Если это строка
       const associations = [associationsData];
       console.log("Ассоциации (строка):", associations);
       return associations;
 
     } else if (associationsData && typeof associationsData === 'object' && associationsData.associations) {
+      
       // Если это объект с полем associations как строка
       const associations = [associationsData.associations];
       console.log("Ассоциации (объект):", associations);
       return associations;
 
     } else {
+      
       // Если формат данных не соответствует ожидаемому
       console.error('Неверный формат данных:', response.data);
       throw new Error('Invalid data format');
