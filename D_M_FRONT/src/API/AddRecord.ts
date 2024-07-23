@@ -25,8 +25,8 @@ export const AddRecord = async (newDream: NewDream) => {
       date: newDream.date,
       associations: newDream.associations,
       category: newDream.category,
-      video: newDream.video || '', // Убедитесь, что значения по умолчанию пустые строки
-      img: newDream.img || '',    // Если значения не заданы, передаем пустые строки
+      video: newDream.video || '', 
+      img: newDream.img || '',    
     }, {
       headers: {
         Authorization: `Bearer ${token}`,
