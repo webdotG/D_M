@@ -3,16 +3,12 @@ import style from './Associations.module.scss';
 import { useCategoryStore } from '../../store';
 import { fetchAssociations } from '../../API/associationALL';
 
-// Тип для ассоциаций
-type AssociationType = {
-  id: string; // или number, если id числовой
-  associations: string; // строка, а не массив строк
-}[];
+
+type AssociationType = string[];
 
 const Associations: React.FC = () => {
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
 
-  // Локальное состояние для хранения ассоциаций
   const [associations, setAssociations] = useState<AssociationType>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,9 +20,12 @@ const Associations: React.FC = () => {
         try {
           const data = await fetchAssociations(selectedCategory);
 
+          console.log('Loaded associations:', data);
+
           // Проверяем, что данные соответствуют ожидаемому типу
-          if (Array.isArray(data) && data.every(item => typeof item.id === 'string' && typeof item.associations === 'string')) {
-            setAssociations(data); // Устанавливаем ассоциации как массив объектов
+          if (Array.isArray(data) && data.every(item => typeof item === 'string')) {
+            console.log('Valid associations data:', data);
+            setAssociations(data); 
           } else {
             throw new Error('Некорректный формат данных ассоциаций');
           }
@@ -55,9 +54,9 @@ const Associations: React.FC = () => {
       <h2>Ассоциации</h2>
       <section className={style['category']}>
         {associations.length > 0 ? (
-          associations.map((association) => (
-            <button className={style['category-button']} key={association.id}>
-              {association.associations} {/* Просто отображаем строку */}
+          associations.map((association, index) => (
+            <button className={style['category-button']} key={index}>
+              {association} 
             </button>
           ))
         ) : (

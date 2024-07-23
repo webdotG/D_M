@@ -31,7 +31,6 @@ router.post('/add', getTableName, async (req, res) => {
       img,
       video,
     };
-
     console.log('ROUT REQ NEW RECORD', newRecord);
 
     const records = await addRecord(tableName, newRecord);
@@ -70,15 +69,15 @@ router.post('/associationAll', getTableName, async (req, res) => {
   const { tableName } = req; 
 
   try {
-    const { result } = await associationAll(tableName); //result,содержит массив ассоциаций
-
+    const { uniqueAssociations } = await associationAll(tableName); 
     // Устанавливаем ассоциации как массив объектов
-    res.json(result);
+    res.json({ uniqueAssociations });
   } catch (error) {
     console.error('Ошибка получения ассоциаций:', error);
     res.status(500).json({ error: 'Не удалось получить ассоциации' });
   }
 });
+
 
 // для удаления записи по ID с учетом категории
 router.post('/delete', getTableName, async (req, res) => {

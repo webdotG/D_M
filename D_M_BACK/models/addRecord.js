@@ -17,11 +17,11 @@ export const addRecord = async (tableName, newRecord) => {
 
     // Получаем информацию о структуре таблицы
     const tableInfo = await db.all(`PRAGMA table_info(${tableName})`);
-    console.log('addRecord tableInfo:', tableInfo);  
+    // console.log('addRecord tableInfo:', tableInfo);  
 
     // Извлекаем имена колонок из информации о таблице
     const columnNames = tableInfo.map(column => column.name);
-    console.log('addRecord columnNames:', columnNames);  
+    // console.log('addRecord columnNames:', columnNames);  
 
 
     const placeholders = columns.map(() => '?').join(', ');
@@ -29,18 +29,18 @@ export const addRecord = async (tableName, newRecord) => {
     const result = await db.run(sqlInsert, values);
     const recordId = result.lastID;
 
-    console.log('addRecord Новая запись добавлена:', {
-      id: recordId,
-      columns,
-      values,
-    });  
+    // console.log('addRecord Новая запись добавлена:', {
+    //   id: recordId,
+    //   columns,
+    //   values,
+    // });  
 
     const insertedRecord = await db.get(`SELECT category FROM ${tableName} WHERE id = ?`, [recordId]);
     console.log('addRecord Новая запись добавлена категория и айди:', insertedRecord);
 
     // Обработка ассоциаций
     if (associations) {  
-      console.log('addRecord Обрабатываем ассоциации:', associations);
+      // console.log('addRecord Обрабатываем ассоциации:', associations);
 
       // Находим уникальные ассоциации, чтобы избежать дублирования
       const uniqueAssociations = [...new Set(associations)];
@@ -70,7 +70,7 @@ export const addRecord = async (tableName, newRecord) => {
 const getAssociationId = async (association, db) => {
   const sql = 'SELECT id FROM association WHERE link = ?';
   const rows = await db.all(sql, [association]);
-  console.log('getAssociationId:', { association, rows });  
+  // console.log('getAssociationId:', { association, rows });  
   return rows.length > 0 ? rows[0].id : null;
 };
 
@@ -78,7 +78,7 @@ const getAssociationId = async (association, db) => {
 const addAssociation = async (association, db) => {
   const sql = 'INSERT INTO association (link) VALUES (?)';
   const result = await db.run(sql, [association]);
-  console.log('addAssociation:', { association, result });  
+  // console.log('addAssociation:', { association, result });  
   return result.lastID;
 };
 
@@ -89,9 +89,7 @@ const getOrAddAssociation = async (association, db) => {
   if (!associationId) {
     associationId = await addAssociation(association, db);
   }
-
-  console.log('getOrAddAssociation:', { association, associationId });  
-  
+  // console.log('getOrAddAssociation:', { association, associationId });  
   return associationId;
 };
 
@@ -101,9 +99,7 @@ const addRecordAssociation = async (recordId, associationId, tableName, db) => {
   const sql = tableName === 'dreams'
     ? 'INSERT INTO dream_associations (dream_id, association_id) VALUES (?, ?)'  
     : 'INSERT INTO memory_associations (memory_id, association_id) VALUES (?, ?)';  
-  
-  console.log('addRecordAssociation SQL:', { sql, recordId, associationId });  
-  
+    // console.log('addRecordAssociation SQL:', { sql, recordId, associationId });  
   await db.run(sql, [recordId, associationId]);
 
   console.log('addRecordAssociation Добавлено:', { tableName, recordId, associationId }); 

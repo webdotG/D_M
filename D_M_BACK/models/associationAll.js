@@ -23,16 +23,19 @@ export const associationAll = async (tableName) => {
     // Запрос для получения всех ассоциаций
     const sqlAssociations = 'SELECT id, link FROM association';
     const associationsRows = await dbLite.all(sqlAssociations);
+    console.log('Associations rows:', associationsRows);
 
     // Запрос для получения всех связей ассоциаций с записями
     const sqlLinks = `SELECT ${linkColumn} AS id, association_id FROM ${associationTable}`;
     const linksRows = await dbLite.all(sqlLinks);
+    console.log('Links rows:', linksRows);
 
     // Создаем карту ассоциаций: { association_id: link }
     const associationsMap = associationsRows.reduce((acc, record) => {
       acc[record.id] = record.link;
       return acc;
     }, {});
+    console.log('Associations map:', associationsMap);
 
     // Создаем карту связей: { id записи: Set(association_id1, association_id2, ...) }
     const linksMap = linksRows.reduce((acc, record) => {
@@ -42,33 +45,26 @@ export const associationAll = async (tableName) => {
       acc[record.id].add(record.association_id);
       return acc;
     }, {});
+    console.log('Links map:', linksMap);
 
-    // Создаем уникальный список ассоциаций
-    const uniqueAssociationsSet = new Set();
+    // Создаем уникальный список id ассоциаций для текущей таблицы
+    const uniqueAssociationIds = new Set();
     Object.values(linksMap).forEach(associationIds => {
-      associationIds.forEach(assocId => uniqueAssociationsSet.add(associationsMap[assocId]));
+      associationIds.forEach(assocId => uniqueAssociationIds.add(assocId));
     });
+    console.log('Unique association IDs:', uniqueAssociationIds);
 
-    const uniqueAssociationsArray = Array.from(uniqueAssociationsSet);
-
-    // Преобразуем карту связей в массив объектов с уникальными ассоциациями
-    const result = Object.entries(linksMap).map(([id, associationIds]) => {
-      const associationArray = Array.from(associationIds); // Преобразуем Set в массив
-      console.log('associationArray:', associationArray);
-      const uniqueAssociations = associationArray.map(assocId => associationsMap[assocId] || '').join(' ');
-      return {
-        id,
-        associations: uniqueAssociations
-      };
-    });
-
-    console.log('Processed associations:', result);
+    // Получаем тексты уникальных ассоциаций
+    const uniqueAssociationsArray = Array.from(uniqueAssociationIds).map(assocId => associationsMap[assocId]);
     console.log('Unique associations:', uniqueAssociationsArray);
 
-    return {
-      uniqueAssociations: uniqueAssociationsArray,
-      result
+    const result = {
+      uniqueAssociations: uniqueAssociationsArray
     };
+
+    console.log('Final result:', result);
+
+    return result;
   } catch (error) {
     console.error('Ошибка получения ассоциаций:', error);
     throw error;
