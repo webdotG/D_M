@@ -1,7 +1,7 @@
 import { dbLite } from '../dbLite.js';
 
 export const updateRecordById = async (tableName, id, associations, title, content, isAnalyzed, date) => {
-    console.log(`/patch updateRecord : tableName-${tableName}, id-${id}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);
+    console.log(`/update updateRecord : tableName-${tableName}, id-${id}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);
   
     try {
       // Сначала получаем существующую запись по id
@@ -12,13 +12,8 @@ export const updateRecordById = async (tableName, id, associations, title, conte
         throw new Error('Запись не найдена');
       }
 
-
-        // Преобразуем JSON-строку в массив, если это строка
-        const associationsArray = typeof associations === 'string' ? JSON.parse(associations) : associations;
-  
       // Проверяем изменения и обновляем только измененные поля
       const updatedFields = {
-        associations: associationsArray !== undefined ? associationsArray : existingRecord.associations,
         title: title !== undefined ? title : existingRecord.title,
         content: content !== undefined ? content : existingRecord.content,
         isAnalyzed: isAnalyzed !== undefined ? isAnalyzed : existingRecord.isAnalyzed,
@@ -27,12 +22,11 @@ export const updateRecordById = async (tableName, id, associations, title, conte
    // Обновляем запись в базе данных
         const sqlUpdate = `
             UPDATE ${tableName}
-            SET associations = ?, title = ?, content = ?, isAnalyzed = ?, date = ?
+            SET, title = ?, content = ?, isAnalyzed = ?, date = ?
             WHERE id = ?
         `;
   
         await dbLite.run(sqlUpdate, [
-          JSON.stringify(updatedFields.associations), // Сохраняем как JSON-строку
           updatedFields.title,
           updatedFields.content,
           updatedFields.isAnalyzed,

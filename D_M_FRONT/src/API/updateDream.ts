@@ -11,12 +11,12 @@ export const updateDreamMemories = async (
     isAnalyzed: boolean,
     date: string
 ) => {
-    console.log(`Входящие данные /patch : category-${category}, id-${id}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);
-
+    // console.log(`Входящие данные /update : category-${category}, id-${id}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);
+    console.log(id,category,associations,title,content,isAnalyzed,date)
     try {
-        console.log('Запрос /patch ... ');
+        console.log('Запрос /update ... ');
 
-        const response = await axios.patch(`/api/dreams/patch`, {
+        const response = await axios.patch(`/api/dreams/update`, {
             id,
             category,
             associations, 
@@ -29,7 +29,7 @@ export const updateDreamMemories = async (
                 Authorization: `Bearer ${token}`,
             },
         });
-        console.log('Ответ запроса /patch ... :', response.data.message);
+        console.log('Ответ запроса /update ... :', response.data.message);
 
         return response.data;
 
