@@ -264,7 +264,6 @@ const UpdateDream = ({
       {showConfirmation && (
         <div className={style['confirmation-modal']}>
           <p>Вы уверены, что хотите изменить категорию?<br />
-            Это приведет к перезаписи в другую структуру!
           </p>
           <button onClick={handleCategoryConfirm}>Да</button>
           <button onClick={() => setShowConfirmation(false)}>Нет</button>
