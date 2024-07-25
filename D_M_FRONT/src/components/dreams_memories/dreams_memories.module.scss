@@ -1,9 +1,9 @@
 .dream {
   width: 340px;
-  min-height: 280px;
+  min-height: 240px;
   margin: 0 auto;
   padding: 20px;
-  padding-bottom: 42px;
+  padding-bottom: 25px;
   border: #333 2px solid;
   border-radius: 8px;
   margin-bottom: 20px;
@@ -12,12 +12,53 @@
   transition: background-color 0.3s ease;
 
 
-  &-content {
+  .dream-content {
     margin-bottom: 10px;
     font-size: 16px;
     display: flex;
     flex-direction: column;
     position: relative;
+
+    h3{
+      font-size: 24px;
+      padding-left: 12px;
+      padding-bottom: 25px;
+      font-weight: 400;
+    }
+
+    p{
+      font-size: 18px;
+      line-height: 21px;
+      padding-left: 12px;
+      padding-bottom: 12px;
+    }
  
+  }
+
+  button{
+    margin-top: 12px;
+    padding: 7px;
+    font-size: 18px;
+    font-weight: 200;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+
+    &:hover{
+      border-bottom: 1px solid #333;
+      opacity: 0.5;
+    }
+  }
+
+  .dream-function{
+
+    p{
+      padding: 12px;
+      margin-top: 25px;
+      margin-bottom: 25px;
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 300;
+    }
   }
 }

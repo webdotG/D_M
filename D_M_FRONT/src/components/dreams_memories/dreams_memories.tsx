@@ -62,8 +62,9 @@ const Dream: React.FC<DreamProps> = ({
       </div>
       <div className={style['dream-function']}>
       {isEditing ? (
-      <button className={style['dream-function__edit-btn']} onClick={handleEditClick}>
-      </button>
+       <p className={style['dream-function__edit-btn']} >
+        Режим редактирования ... 
+      </p>
       ):(
         <button className={style['dream-function__edit-btn']} onClick={handleEditClick}>
           редактировать

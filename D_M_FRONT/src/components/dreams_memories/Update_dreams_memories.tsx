@@ -47,7 +47,7 @@ const UpdateDream = ({
   const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
 
   useEffect(() => {
-    // Инициализация состояния editedCategory из стора при монтировании
+ 
     setEditedCategory(selectedCategory);
 
     const loadAssociations = async () => {
@@ -65,7 +65,6 @@ const UpdateDream = ({
   }, [id, category, selectedCategory]);
 
   const handleEditClick = async () => {
-    console.log("Editing Clicked. Is Editing:", isEditing);
     console.log("Входящие данные на редактирование : ", {
       editedCategory,
       editedAssociations,
@@ -78,15 +77,13 @@ const UpdateDream = ({
     if (isEditing) {
       try {
         let result;
-        // console.log(editedCategory)
-        // console.log(category)
         // Проверка категории
         const editedCategoryName = editedCategory === 'dreams' ? 'сны' : editedCategory === 'memories' ? 'воспоминания' : editedCategory;
         const currentCategoryName = category === 'dreams' ? 'сны' : category === 'memories' ? 'воспоминания' : category;
   
         if (editedCategoryName !== currentCategoryName) {
-          console.log("Moving dream to different category.");
-          console.log('editAssociation ... : ', editedAssociations)
+          console.log("Запись в категорию ... ", editedAssociations);
+          console.log("Удаление из категории ... ", currentCategoryName);
           result = await moveDreamToDifferentCategory(
             id,
             editedCategory,
@@ -97,7 +94,7 @@ const UpdateDream = ({
             editedDate
           );
         } else {
-          console.log("Updating dream memories.");
+          console.log("Обновление ... ");
           result = await updateDreamMemories(
             id,
             editedCategory,
@@ -130,7 +127,7 @@ const UpdateDream = ({
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newCategory = e.target.value;
-    console.log("Category Changed to:", newCategory);
+    console.log("Категория изменена на : ", newCategory);
     if (newCategory !== editedCategory) {
       setTempCategory(newCategory);
       setShowConfirmation(true);
@@ -144,12 +141,12 @@ const UpdateDream = ({
   };
 
   const handleDeleteClick = async () => {
-    console.log("Delete Clicked");
+    // console.log("Delete Clicked");
     setShowDeleteConfirmation(true);
   };
 
   const confirmDelete = async () => {
-    console.log("Delete Confirmed");
+    // console.log("Delete Confirmed");
     try {
       await deleteRecordById(selectedCategory, id);
       window.location.reload();
@@ -161,7 +158,7 @@ const UpdateDream = ({
   };
 
   const cancelDelete = () => {
-    console.log("Delete Canceled");
+    // console.log("Delete Canceled");
     setShowDeleteConfirmation(false);
   };
 
@@ -213,7 +210,7 @@ const UpdateDream = ({
                 type="text"
                 value={editedAssociations}
                 onChange={(e) => {
-                  console.log("Associations Changed to:", e.target.value);
+                //   console.log("Associations Changed to:", e.target.value);
                   setEditedAssociations(e.target.value)
                 }}
                 className={style['dream-content-associations']}

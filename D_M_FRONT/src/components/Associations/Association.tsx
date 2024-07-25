@@ -51,7 +51,7 @@ const Associations: React.FC = () => {
 
   return (
     <div className={style['wrapper-category']}>
-      <h2>Ассоциации</h2>
+      <h2>Ассоциации {selectedCategory}</h2>
       <section className={style['category']}>
         {associations.length > 0 ? (
           associations.map((association, index) => (
