@@ -74,7 +74,7 @@ const UpdateDream = ({
       editedDate,
     });
 
-    if (isEditing) {
+  
       try {
         let result;
         // Проверка категории
@@ -113,17 +113,13 @@ const UpdateDream = ({
       } catch (error) {
         console.error('Ошибка при редактировании текущей записи:', error);
       }
-    } else {
-      setIsEditing(true);
-    }
+    
   };
 
   const handleAnalysisClick = () => {
     console.log("Analysis Clicked. Is Analyzed:", editedIsAnalyzed);
-    if (isEditing) {
-      setEditedIsAnalyzed(!editedIsAnalyzed);
-    }
-  };
+    setEditedIsAnalyzed(!editedIsAnalyzed);
+};
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newCategory = e.target.value;
@@ -163,9 +159,8 @@ const UpdateDream = ({
   };
 
   return (
-    <li className={style['dream']}>
+    <>
       <div className={style['dream-content']}>
-       
           <>
             <img className={style['D_M']} src={D_M} alt='категории лого' />
             <h3>Это </h3>
@@ -248,8 +243,8 @@ const UpdateDream = ({
               удалить
             </button>
           </>
-        
       </div>
+
       <div className={style['dream-function']}>
         <button className={style['dream-function__edit-btn']} onClick={handleEditClick}>
           Сохранить
@@ -262,6 +257,8 @@ const UpdateDream = ({
           )}
         </button>
       </div>
+      <button type="button" className={style['cancel-button']} 
+        onClick={onClose}>Отменить</button>
       {showConfirmation && (
         <div className={style['confirmation-modal']}>
           <p>Вы уверены, что хотите изменить категорию?<br />
@@ -278,8 +275,8 @@ const UpdateDream = ({
           <button onClick={cancelDelete}>Нет</button>
         </div>
       )}
-      <button type="button" className={style['cancel-button']} onClick={onClose}>Отменить</button>
-    </li>
+      
+ </>
   );
 };
 
