@@ -7,18 +7,13 @@ import { fetchAssociations } from '../../API/associationALL';
 import { AddRecord } from '../../API/AddRecord';
 import Footer from '../footer/footer';
 
-// Функция для удаления лишних пробелов между буквами и сохранения пробелов между словами
-const removeExtraSpaces = (text: string): string => {
-  return text.replace(/\s+/g, ' ').trim();
-};
-
 const AddDreams: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [isAnalyzed, setIsAnalyzed] = useState<boolean>(false);
   const [category, setCategory] = useState<string>('сны');
   const [date, setDate] = useState<Date | null>(null);
-  const [associationsList, setAssociationsList] = useState<{ id: string, associations: string }[]>([]);
+  const [associationsList, setAssociationsList] = useState<string[]>([]);
   const [selectedAssociation, setSelectedAssociation] = useState<string>('');
   const [newAssociation, setNewAssociation] = useState<string>('');
   const [isAddingNewAssociation, setIsAddingNewAssociation] = useState<boolean>(false);
@@ -31,14 +26,9 @@ const AddDreams: React.FC = () => {
       try {
         const fetchedAssociations = await fetchAssociations(category);
         if (Array.isArray(fetchedAssociations)) {
-          // Очищаем ассоциации от лишних пробелов
-          const cleanedAssociations = fetchedAssociations.map(association => ({
-            id: association.id,
-            associations: removeExtraSpaces(association.associations)
-          }));
-          setAssociationsList(cleanedAssociations);
+          setAssociationsList(fetchedAssociations);
         } else {
-          console.error('fetchAssociations returned non-array data:', fetchedAssociations);
+          console.error('fetchAssociations returned invalid data:', fetchedAssociations);
           setAssociationsList([]);
         }
       } catch (error) {
@@ -69,12 +59,12 @@ const AddDreams: React.FC = () => {
   const fetchAndSetAssociations = async (newCategory: string) => {
     try {
       const fetchedAssociations = await fetchAssociations(newCategory);
-      // Очищаем ассоциации от лишних пробелов
-      const cleanedAssociations = fetchedAssociations.map(association => ({
-        id: association.id,
-        associations: removeExtraSpaces(association.associations)
-      }));
-      setAssociationsList(cleanedAssociations);
+      if (Array.isArray(fetchedAssociations)) {
+        setAssociationsList(fetchedAssociations);
+      } else {
+        console.error('fetchAssociations returned invalid data:', fetchedAssociations);
+        setAssociationsList([]);
+      }
     } catch (error) {
       console.error('Failed to fetch associations:', error);
       setAssociationsList([]);
@@ -92,7 +82,7 @@ const AddDreams: React.FC = () => {
   };
 
   const handleNewAssociationChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewAssociation(removeExtraSpaces(event.target.value));
+    setNewAssociation(event.target.value);
   };
 
   const formatDateToDDMMYYYY = (date: Date | null): string => {
@@ -106,7 +96,6 @@ const AddDreams: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Если выбран новый ассоциация, используем её
     const associations = isAddingNewAssociation && newAssociation
       ? newAssociation
       : selectedAssociation;
@@ -117,7 +106,7 @@ const AddDreams: React.FC = () => {
       isAnalyzed,
       category,
       date: date ? formatDateToDDMMYYYY(date) : '',
-      associations: removeExtraSpaces(associations),  // Удаляем лишние пробелы
+      associations, 
       video: '', 
       img: ''    
     };
@@ -125,7 +114,6 @@ const AddDreams: React.FC = () => {
     try {
       await AddRecord(newDream);
 
-      // Сброс состояния формы
       setTitle('');
       setContent('');
       setIsAnalyzed(false);
@@ -159,7 +147,7 @@ const AddDreams: React.FC = () => {
 
           <div className={styles['form-group']}>
             <label htmlFor="category">
-              <p>Категория</p>
+              <p>Записываем : </p>
             </label>
             <select
               id="category"
@@ -205,7 +193,7 @@ const AddDreams: React.FC = () => {
                 type="text"
                 value={newAssociation}
                 onChange={handleNewAssociationChange}
-                placeholder="Введите новую ассоциацию"
+                placeholder="Новая ассоциация"
                 required
               />
             ) : (
@@ -215,13 +203,13 @@ const AddDreams: React.FC = () => {
                 onChange={handleAssociationChange}
                 required
               >
-                <option value="">Выберите ассоциацию</option>
-                {associationsList.map((association) => (
-                  <option key={association.id} value={association.associations}>
-                    {association.associations}
+                <option value="">Варианты</option>
+                {associationsList.map((association, index) => (
+                  <option key={index} value={association}>
+                    {association}
                   </option>
                 ))}
-                <option value="new">Добавить новую</option>
+                <option value="new">Записать новую ... </option>
               </select>
             )}
           </div>
@@ -253,12 +241,12 @@ const AddDreams: React.FC = () => {
           </div>
 
           <div className={styles['form-group']}>
+          <button type="submit" className={styles['submit-button']}>
+              Сохранить
+            </button> 
             <button type="button" className={styles['reset-button']} onClick={handleReset}>
               Сбросить
             </button>
-            <button type="submit" className={styles['submit-button']}>
-              Сохранить
-            </button> 
           </div>
         </form>
       </div>
