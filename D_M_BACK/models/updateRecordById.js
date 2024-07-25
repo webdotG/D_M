@@ -37,27 +37,58 @@ export const updateRecordById = async (tableName, id, associations, title, conte
         // Работа с ассоциациями
         if (associations !== undefined) {
             // Используем строку ассоциаций напрямую
-            const associationsStr = associations;
-            console.log('ASSOCIATIONS ... : ', associationsStr);
+            const newAssociationsStr = associations;
+            console.log('NEW ASSOCIATIONS: ', newAssociationsStr);
 
             // Определяем таблицу ассоциаций в зависимости от основного tableName
             let associationTable;
+            let itemIdField;
             switch (tableName) {
                 case 'dreams':
                     associationTable = 'dream_associations';
+                    itemIdField = 'dream_id';
                     break;
                 case 'memories':
                     associationTable = 'memory_associations';
+                    itemIdField = 'memory_id';
                     break;
                 default:
                     throw new Error(`Неверное имя таблицы: ${tableName}`);
             }
 
-            // Удаляем старые ассоциации
-            // const sqlDeleteOldAssociations = `DELETE FROM ${associationTable} WHERE ${tableName.slice(0, -1)}_id = ?`;
-            // await dbLite.run(sqlDeleteOldAssociations, [id]);
+            // Получаем текущие ассоциации
+            const sqlGetAssociations = `SELECT a.id, a.link FROM ${associationTable} da JOIN association a ON da.association_id = a.id WHERE da.${itemIdField} = ?`;
+            const existingAssociations = await dbLite.all(sqlGetAssociations, [id]);
+            console.log(existingAssociations)
+            // Проверяем изменения и обновляем ассоциации
+            if (existingAssociations.length > 0) {
+                const existingAssociationsMap = new Map(existingAssociations.map(assoc => [assoc.link, assoc.id]));
 
-           
+                if (!existingAssociationsMap.has(newAssociationsStr)) {
+                    // Новая ассоциация не совпадает с текущей, создаем новую
+                    const sqlInsertAssociation = `INSERT INTO association (link) VALUES (?)`;
+                    const result = await dbLite.run(sqlInsertAssociation, [newAssociationsStr]);
+                    const newAssociationId = result.lastID;
+
+                    // Удаляем старую привязку
+                    const sqlDeleteOldAssociation = `DELETE FROM ${associationTable} WHERE ${itemIdField} = ? AND association_id = ?`;
+                    await dbLite.run(sqlDeleteOldAssociation, [id, existingAssociations[0].id]);
+
+                    // Добавляем новую привязку
+                    const sqlInsertNewAssociation = `INSERT INTO ${associationTable} (${itemIdField}, association_id) VALUES (?, ?)`;
+                    await dbLite.run(sqlInsertNewAssociation, [id, newAssociationId]);
+
+                    // Проверяем, есть ли другие привязки к старой ассоциации
+                    const sqlCheckOldAssociation = `SELECT COUNT(*) as count FROM ${associationTable} WHERE association_id = ?`;
+                    const { count } = await dbLite.get(sqlCheckOldAssociation, [existingAssociations[0].id]);
+
+                    // Если нет других привязок, удаляем старую ассоциацию
+                    if (count === 0) {
+                        const sqlDeleteOldAssociationRecord = `DELETE FROM association WHERE id = ?`;
+                        await dbLite.run(sqlDeleteOldAssociationRecord, [existingAssociations[0].id]);
+                    }
+                }
+            }
         }
 
         return { success: true, message: 'Запись успешно обновлена' };
