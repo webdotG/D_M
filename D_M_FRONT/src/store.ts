@@ -25,11 +25,17 @@ type AuthState = {
   setAuthenticated: (auth: boolean, token?: string) => void;
 };
 
+// Категория по умолчанию загружается из localStorage, если она там есть
+const getStoredCategory = () => {
+  return localStorage.getItem('selectedCategory') || CATEGORY[0];
+};
+
 export const useCategoryStore = create<CategoryState>((set) => ({
-  selectedCategory: CATEGORY[0],
+  selectedCategory: getStoredCategory(),
   setSelectedCategory: (category: string) => {
     console.log(`Store selectedCategory : ${category}`);
     set({ selectedCategory: category });
+    localStorage.setItem('selectedCategory', category); 
   },
 }));
 

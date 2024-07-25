@@ -17,10 +17,19 @@ const router = express.Router();
 router.patch('/move', getTableName, async (req, res) => {
   const { id, associations, title, content, isAnalyzed, date } = req.body;
   const { tableName } = req; 
-  console.log(`Входящие данные /move : category-${req.body.category}, id-${id}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);
+  console.log(`Входящие данные /move : 
+    category-${tableName}, 
+    id-${id}, 
+    associations-${associations}, 
+    title-${title}, 
+    content-${content}, 
+    isAnalyzed-${isAnalyzed}, 
+    date-${date}`
+  );
   try {
-    const moveRecord = await moveRecordToDifferentCategory(tableName, id, associations, title, content, isAnalyzed, date);
+    const moveRecord = await moveRecordToDifferentCategory(tableName, id, tableName, associations, title, content, isAnalyzed, date);
     res.json(moveRecord);
+    console.log(`${moveRecord}`)
   } catch (error) {
     console.error('Ошибка при перемещении записи:', error);
     res.status(500).json({ error: 'Ошибка при перемещении записи' });

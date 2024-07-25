@@ -81,7 +81,7 @@ const UpdateDream = ({
         const currentCategoryName = category === 'dreams' ? 'сны' : category === 'memories' ? 'воспоминания' : category;
   
         if (editedCategoryName !== currentCategoryName) {
-          console.log("Запись в категорию ... ", editedAssociations);
+          console.log("Запись в категорию ... ", editedCategory);
           console.log("Удаление из категории ... ", currentCategoryName);
           result = await moveDreamToDifferentCategory(
             id,

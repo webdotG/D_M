@@ -22,13 +22,8 @@ const Associations: React.FC = () => {
 
           console.log('Loaded associations:', data);
 
-          // Проверяем, что данные соответствуют ожидаемому типу
-          if (Array.isArray(data) && data.every(item => typeof item === 'string')) {
-            console.log('Valid associations data:', data);
             setAssociations(data); 
-          } else {
-            throw new Error('Некорректный формат данных ассоциаций');
-          }
+        
         } catch (error) {
           console.error('Ошибка при загрузке ассоциаций:', error);
           setError('Не удалось загрузить ассоциации.');
