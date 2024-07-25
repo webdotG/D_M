@@ -131,28 +131,28 @@ CONTACT  -  <a href="https://t.me/kirillgrant" target="_blank">  @KirillGrant <i
 
     Привязка ассоциаций: Ассоциации привязываются к снам или воспоминаниям через таблицы dream_associations и memory_associations. Эти таблицы содержат пары значений (dream_id/memory_id и association_id), которые связывают конкретный сон или воспоминание с одной или несколькими ассоциациями.
 
-Пример данных
-Таблица dreams
-id	title	content	isAnalyzed	date
-1	Сон 1	Текст сна 1	0	2024-07-24
-2	Сон 2	Текст сна 2	1	2024-07-23
-Таблица memories
-id	title	content	isAnalyzed	date
-1	Воспоминание 1	Текст воспоминания 1	0	2024-07-24
-2	Воспоминание 2	Текст воспоминания 2	1	2024-07-23
-Таблица association
-id	link
-1	Ассоциация 1
-2	Ассоциация 2
-Таблица dream_associations
-dream_id	association_id
-1	1
-1	2
-2	1
-Таблица memory_associations
-memory_id	association_id
-1	1
-2	2
+Пример данных  
+Таблица dreams  
+id	title	content	isAnalyzed	date  
+1	Сон 1	Текст сна 1	0	2024-07-24  
+2	Сон 2	Текст сна 2	1	2024-07-23  
+Таблица memories  
+id	title	content	isAnalyzed	date  
+1	Воспоминание 1	Текст воспоминания 1	0	2024-07-24  
+2	Воспоминание 2	Текст воспоминания 2	1	2024-07-23  
+Таблица association  
+id	link  
+1	Ассоциация 1  
+2	Ассоциация 2  
+Таблица dream_associations  
+dream_id	association_id  
+1	1  
+1	2 
+2	1  
+Таблица memory_associations  
+memory_id	association_id  
+1	1  
+2	2  
 Входящие данные для обновления
 
     category: Например, сны или воспоминания.
