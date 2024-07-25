@@ -1,14 +1,10 @@
 import { dbLite } from '../dbLite.js';
 
 export const moveRecordToDifferentCategory = async (tableName, id, category, associations, title, content, isAnalyzed, date) => {
-  // Определяем целевую таблицу и соответствующие таблицы для ассоциаций, видео и изображений
+  // Определяем целевую таблицу и соответствующие таблицы для ассоциаций
   const targetTable = tableName === 'dreams' ? 'memories' : 'dreams';
   const sourceAssociationTable = tableName === 'dreams' ? 'dream_associations' : 'memory_associations';
   const targetAssociationTable = tableName === 'dreams' ? 'memory_associations' : 'dream_associations';
-  const sourceVideoTable = tableName === 'dreams' ? 'dream_videos' : 'memory_videos';
-  const targetVideoTable = tableName === 'dreams' ? 'memory_videos' : 'dream_videos';
-  const sourceImgTable = tableName === 'dreams' ? 'dream_imgs' : 'memory_imgs';
-  const targetImgTable = tableName === 'dreams' ? 'memory_imgs' : 'dream_imgs';
 
   const db = await dbLite;
 
@@ -22,7 +18,7 @@ export const moveRecordToDifferentCategory = async (tableName, id, category, ass
     const newId = nextId || 1; // Если таблица пустая, начать с 1
 
     // Преобразуем ассоциации в массив идентификаторов
-    const associationIds = associations.map(id => parseInt(id.trim(), 10));
+    const associationIds = associations.split(','); // Считаем, что ассоциации переданы в виде строки, разделенной запятыми
 
     // Создаем новую запись в целевой таблице
     const sqlInsert = `
@@ -34,21 +30,25 @@ export const moveRecordToDifferentCategory = async (tableName, id, category, ass
 
     // Перенос ассоциаций
     for (const association_id of associationIds) {
-      await db.run(`INSERT INTO ${targetAssociationTable} (${targetTable.slice(0, -1)}_id, association_id) VALUES (?, ?)`, [newId, association_id]);
-    }
+      // Проверяем, существует ли ассоциация в целевой таблице
+      const sqlCheckAssociation = `SELECT id FROM association WHERE link = (SELECT link FROM association WHERE id = ?)`;
+      const existingAssociation = await db.get(sqlCheckAssociation, [association_id]);
 
-    // Перенос видео
-    const videosList = await db.all(`SELECT video_id FROM ${sourceVideoTable} WHERE ${tableName.slice(0, -1)}_id = ?`, [id]);
-    for (const row of videosList) {
-      const { video_id } = row;
-      await db.run(`INSERT INTO ${targetVideoTable} (${targetTable.slice(0, -1)}_id, video_id) VALUES (?, ?)`, [newId, video_id]);
-    }
+      let newAssociationId;
+      if (existingAssociation) {
+        // Используем существующую ассоциацию
+        newAssociationId = existingAssociation.id;
+      } else {
+        // Создаем новую ассоциацию
+        const sqlGetNextAssociationId = `SELECT COALESCE(MAX(id), 0) + 1 AS nextId FROM association`;
+        const { nextId: newAssocId } = await db.get(sqlGetNextAssociationId);
+        newAssociationId = newAssocId || 1;
+        const sqlInsertAssociation = `INSERT INTO association (id, link) VALUES (?, (SELECT link FROM association WHERE id = ?))`;
+        await db.run(sqlInsertAssociation, [newAssociationId, association_id]);
+      }
 
-    // Перенос изображений
-    const imgsList = await db.all(`SELECT img_id FROM ${sourceImgTable} WHERE ${tableName.slice(0, -1)}_id = ?`, [id]);
-    for (const row of imgsList) {
-      const { img_id } = row;
-      await db.run(`INSERT INTO ${targetImgTable} (${targetTable.slice(0, -1)}_id, img_id) VALUES (?, ?)`, [newId, img_id]);
+      // Привязываем новую запись к ассоциации
+      await db.run(`INSERT INTO ${targetAssociationTable} (${targetTable.slice(0, -1)}_id, association_id) VALUES (?, ?)`, [newId, newAssociationId]);
     }
 
     // Удаляем запись из исходной таблицы
@@ -57,9 +57,17 @@ export const moveRecordToDifferentCategory = async (tableName, id, category, ass
     console.log(`Удалена запись из ${tableName} с id-${id}`);
 
     // Удаляем связанные данные из исходных таблиц
-    await db.run(`DELETE FROM ${sourceAssociationTable} WHERE ${tableName.slice(0, -1)}_id = ?`, [id]);
-    await db.run(`DELETE FROM ${sourceVideoTable} WHERE ${tableName.slice(0, -1)}_id = ?`, [id]);
-    await db.run(`DELETE FROM ${sourceImgTable} WHERE ${tableName.slice(0, -1)}_id = ?`, [id]);
+    const sourceColumn = tableName === 'dreams' ? 'dream_id' : 'memory_id';
+    await db.run(`DELETE FROM ${sourceAssociationTable} WHERE ${sourceColumn} = ?`, [id]);
+
+    // Проверяем и удаляем неиспользуемые ассоциации
+    for (const association_id of associationIds) {
+      const sqlCheckUsage = `SELECT COUNT(*) as count FROM ${sourceAssociationTable} WHERE association_id = ?`;
+      const { count } = await db.get(sqlCheckUsage, [association_id]);
+      if (count === 0) {
+        await db.run(`DELETE FROM association WHERE id = ?`, [association_id]);
+      }
+    }
 
     return { success: true, message: 'Запись успешно перемещена' };
 

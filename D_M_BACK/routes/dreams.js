@@ -13,6 +13,21 @@ import { addRecord } from '../models/addRecord.js'
 
 const router = express.Router();
 
+// для перемещения записи по id
+router.patch('/move', getTableName, async (req, res) => {
+  const { id, associations, title, content, isAnalyzed, date } = req.body;
+  const { tableName } = req; 
+  console.log(`Входящие данные /move : category-${req.body.category}, id-${id}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);
+  try {
+    const moveRecord = await moveRecordToDifferentCategory(tableName, id, associations, title, content, isAnalyzed, date);
+    res.json(moveRecord);
+  } catch (error) {
+    console.error('Ошибка при перемещении записи:', error);
+    res.status(500).json({ error: 'Ошибка при перемещении записи' });
+  }
+});
+
+
 // для редактирования записи по id
 router.patch('/update', getTableName, async (req, res) => {
   const { id, associations, title, content, isAnalyzed, date } = req.body;
@@ -97,22 +112,6 @@ router.post('/delete', getTableName, async (req, res) => {
     res.status(500).json({ error: 'Error deleting record' });
   }
 });
-
-// для перемещения записи по id
-router.patch('/move', getTableName, async (req, res) => {
-  const { id, associations, title, content, isAnalyzed, date } = req.body;
-  const { tableName } = req; 
-  console.log(`Входящие данные /move : category-${req.body.category}, id-${id}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);
-  try {
-    const moveRecord = await moveRecordToDifferentCategory(tableName, id, associations, title, content, isAnalyzed, date);
-    res.json(moveRecord);
-  } catch (error) {
-    console.error('Ошибка при перемещении записи:', error);
-    res.status(500).json({ error: 'Ошибка при перемещении записи' });
-  }
-});
-
-
 
 // для получения конкретной записи по ID
 router.post('/current', getTableName, async (req, res) => {

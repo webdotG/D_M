@@ -32,7 +32,7 @@ const UpdateDream = ({
   date,
   onClose
 }: UpadteDreamProps) => {
-  const [isEditing, setIsEditing] = useState(false);
+
   const [editedCategory, setEditedCategory] = useState(category);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedContent, setEditedContent] = useState(content);
@@ -74,7 +74,6 @@ const UpdateDream = ({
       editedDate,
     });
 
-  
       try {
         let result;
         // Проверка категории
@@ -108,8 +107,8 @@ const UpdateDream = ({
 
         console.log("Update Result:", result);
         setSelectedCategory(result.category || editedCategory);
-        setIsEditing(false);
-        onClose()
+       
+        window.location.reload();
       } catch (error) {
         console.error('Ошибка при редактировании текущей записи:', error);
       }
@@ -131,7 +130,6 @@ const UpdateDream = ({
   };
 
   const handleCategoryConfirm = async () => {
-    console.log("Category Change Confirmed. New Category:", tempCategory);
     setEditedCategory(tempCategory);
     setShowConfirmation(false);
   };
@@ -237,6 +235,13 @@ const UpdateDream = ({
                 onChange={(e) => setEditedDate(e.target.value)}
               />
             </label>
+            <button className={style['dream-function__edit-btn']} onClick={handleAnalysisClick}>
+          {editedIsAnalyzed ? (
+            <img src={selfAnalys} alt='Не анализировать' />
+          ) : (
+            <img className={style['LikeUnlike']} src={LikeUnlikeIcon} alt='Анализировать' />
+          )}
+        </button>
             <button className={style['dream-function__delete-btn']} 
               onClick={handleDeleteClick}
             >
@@ -246,19 +251,16 @@ const UpdateDream = ({
       </div>
 
       <div className={style['dream-function']}>
-        <button className={style['dream-function__edit-btn']} onClick={handleEditClick}>
+      <button type="button" className={style['cancel-button']} 
+        onClick={onClose}>
+          Отменить
+        </button>
+        <button className={style['dream-function__edit-btn']} 
+        onClick={handleEditClick}>
           Сохранить
         </button>
-        <button className={style['dream-function__edit-btn']} onClick={handleAnalysisClick}>
-          {editedIsAnalyzed ? (
-            <img src={selfAnalys} alt='Не анализировать' />
-          ) : (
-            <img className={style['LikeUnlike']} src={LikeUnlikeIcon} alt='Анализировать' />
-          )}
-        </button>
-      </div>
-      <button type="button" className={style['cancel-button']} 
-        onClick={onClose}>Отменить</button>
+        </div>
+      
       {showConfirmation && (
         <div className={style['confirmation-modal']}>
           <p>Вы уверены, что хотите изменить категорию?<br />

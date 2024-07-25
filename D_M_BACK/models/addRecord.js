@@ -40,10 +40,10 @@ export const addRecord = async (tableName, newRecord) => {
 
     // Обработка ассоциаций
     if (associations) {  
-      // console.log('addRecord Обрабатываем ассоциации:', associations);
+      console.log('addRecord Обрабатываем ассоциации:', associations);
 
-      // Находим уникальные ассоциации, чтобы избежать дублирования
-      const uniqueAssociations = [...new Set(associations)];
+      // Используем ассоциации как одну строку
+      const uniqueAssociations = [associations]; // Ассоциации передаются как одна строка
       console.log('addRecord Уникальные ассоциации:', uniqueAssociations);
 
       // Проходим по уникальным ассоциациям
@@ -76,6 +76,7 @@ const getAssociationId = async (association, db) => {
 
 // Вспомогательная функция для добавления новой ассоциации в таблицу
 const addAssociation = async (association, db) => {
+  console.log('ADD ASSOCIATION >>> ', association)
   const sql = 'INSERT INTO association (link) VALUES (?)';
   const result = await db.run(sql, [association]);
   // console.log('addAssociation:', { association, result });  
@@ -85,7 +86,7 @@ const addAssociation = async (association, db) => {
 // Вспомогательная функция для получения существующей ассоциации или создания новой
 const getOrAddAssociation = async (association, db) => {
   let associationId = await getAssociationId(association, db);
-  
+  console.log('GET OR ADD ASSOCIATION >>> ', association)
   if (!associationId) {
     associationId = await addAssociation(association, db);
   }
