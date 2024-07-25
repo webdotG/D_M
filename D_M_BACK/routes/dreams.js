@@ -18,7 +18,7 @@ router.patch('/move', getTableName, async (req, res) => {
   const { id, associations, title, content, isAnalyzed, date } = req.body;
   const { tableName } = req; 
   console.log(`Входящие данные /move : 
-    category-${tableName}, 
+    tableName-${tableName}, 
     id-${id}, 
     associations-${associations}, 
     title-${title}, 
@@ -27,7 +27,7 @@ router.patch('/move', getTableName, async (req, res) => {
     date-${date}`
   );
   try {
-    const moveRecord = await moveRecordToDifferentCategory(tableName, id, tableName, associations, title, content, isAnalyzed, date);
+    const moveRecord = await moveRecordToDifferentCategory(tableName, id, associations, title, content, isAnalyzed, date);
     res.json(moveRecord);
     console.log(`${moveRecord}`)
   } catch (error) {

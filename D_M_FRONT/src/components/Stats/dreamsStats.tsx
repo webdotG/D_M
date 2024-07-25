@@ -51,13 +51,11 @@ const DreamStatsComponent: React.FC = () => {
         <h3>Сны</h3>
         <p>Всего : {dreamStats.total}</p>
         <p>Анализировано : {dreamStats.analyzed}</p>
-        <p>Видео :</p>
       </div>
       <div className={styles.stats}>
         <h3>Воспоминания</h3>
         <p>Всего : {memoryStats.total}</p>
         <p>Анализировано : {memoryStats.analyzed}</p>
-        <p>Видео :</p>
       </div>
     </div>
   );
