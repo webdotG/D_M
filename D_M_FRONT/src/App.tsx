@@ -6,6 +6,8 @@ import HomePage from './PAGES/home/home';
 import Layout from './layout/layout';
 import AddDM from './components/dreams_memories/Add_dreams_memories';
 import MyPage from './PAGES/myPage/myPage';
+import VisualPage from './PAGES/Visual/VisualPage';
+
 
 function App() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
@@ -17,6 +19,7 @@ function App() {
       <Route path="/D_M/login" element={!isAuthenticated ? <LoginRegisterPage /> : <Navigate to="/D_M/" />} />
       <Route path="/D_M/" element={isAuthenticated ? <Layout><HomePage /></Layout> : <Navigate to="/D_M/welcome" />} />
       <Route path="/D_M/add" element={isAuthenticated ? <AddDM /> : <Navigate to="/D_M/welcome" />} />
+      <Route path="/D_M/visualPage" element={isAuthenticated ? <VisualPage/> : <Navigate to="/D_M/welcome" />} />
       <Route path="/D_M/myPage" element={isAuthenticated ? <MyPage /> : <Navigate to="/D_M/welcome" />} />
     </Routes>
   );

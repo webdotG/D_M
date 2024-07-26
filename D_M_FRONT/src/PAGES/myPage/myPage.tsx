@@ -3,6 +3,7 @@ import { useAuthStore } from '../../store';
 import style from './myPage.module.scss';  
 import Footer from '../../components/footer/footer';
 import DreamStatsComponent from '../../components/Stats/dreamsStats';
+import Graph from '../../components/Graph/Graph';
 
 const MyPage: React.FC = () => {
     const setAuthenticated = useAuthStore(state => state.setAuthenticated);
@@ -32,6 +33,9 @@ const MyPage: React.FC = () => {
                 </div>
                 <div className={style['stats-section']}>
                     <DreamStatsComponent key={key} />
+                </div>
+                <div>
+                    <Graph />
                 </div>
                 <button className={style['logout-button']} onClick={handleLogout}>
                     Выйти

@@ -7,6 +7,7 @@ import HomeIcon from '../../SVG/home.svg';
 import CalendarIcon from '../../SVG/calendar.svg';
 import ChatIcon from '../../SVG/messages.svg';
 import ProfileIcon from '../../SVG/user.svg';
+import VisualPage from '../../SVG/Visual.svg'
 
 export const BUTTONS = [
   {
@@ -18,8 +19,8 @@ export const BUTTONS = [
   {
     id: 2,
     name: 'calendar',
-    url: '/',
-    icon: CalendarIcon,
+    url: '/D_M/visualPage',
+    icon: VisualPage,
   },
   {
     id: 4,
