@@ -3,7 +3,7 @@ import { getTableName } from '../midlewear/getTableName.js';
 import { associationAll } from '../models/associationAll.js';
 import { getStats } from '../models/stats.js';
 import { Search } from '../models/search.js';
-import { getCurrentRecord} from '../models/dreams.js';
+import { getCurrentRecord} from '../models/currentRecord.js';
 import { moveRecordToDifferentCategory } from '../models/moveRecord.js';
 import { updateRecordById } from '../models/updateRecordById.js';
 import { deleteRecordById } from '../models/deleteRecord.js';
@@ -12,6 +12,22 @@ import {fetchAssociationsByRecordId} from '../models/associationByID.js'
 import { addRecord } from '../models/addRecord.js'
 
 const router = express.Router();
+
+// Для получения конкретной записи по ID
+router.post('/current', getTableName, async (req, res) => {
+  const { id } = req.body;
+  const { tableName } = req; 
+  console.log(`Входящие данные /current : category-${tableName}, id-${id}`);
+  try {
+    const currentRecord = await getCurrentRecord(tableName, id);
+    res.json(currentRecord);
+  } catch (error) {
+    console.error('Ошибка при получении текущей записи:', error);
+    res.status(500).json({ error: 'Ошибка при получении текущей записи' });
+  }
+});
+
+
 router.post('/search', getTableName, async (req, res) => {
   const { value, date } = req.body;
   const { tableName } = req; 
@@ -133,20 +149,6 @@ router.post('/delete', getTableName, async (req, res) => {
   } catch (error) {
     console.error('Error deleting record:', error);
     res.status(500).json({ error: 'Error deleting record' });
-  }
-});
-
-// для получения конкретной записи по ID
-router.post('/current', getTableName, async (req, res) => {
-  const { id } = req.body;
-  const { tableName } = req; 
-  console.log(`Входящие данные /current : category-${req.body.category}, id-${id}`);
-  try {
-    const currentRecord = await getCurrentRecord(tableName, id);
-    res.json(currentRecord);
-  } catch (error) {
-    console.error('Ошибка при получении текущей записи:', error);
-    res.status(500).json({ error: 'Ошибка при получении текущей записи' });
   }
 });
 

@@ -17,7 +17,6 @@ export const searchByValueAndDate = async (
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
         },
       }
     );
@@ -36,7 +35,7 @@ export const searchByValue = async (
   value: string,
   category: string,
 ) => {
-  console.log('Executing searchByValue with:', { value, category });
+  console.log('поиск по буквам', { value, category });
 
   try {
     const response = await axios.post(

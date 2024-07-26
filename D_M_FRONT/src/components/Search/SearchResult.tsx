@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import axios from 'axios';
-import style from './serachResult.module.scss';
-import Dream from '../dreams_memories/dreams_memories'; 
-import { useCategoryStore } from '../../store'; 
+import style from './serachResult.module.scss'; 
+import Dream from '../dreams_memories/dreams_memories';
+import { useCategoryStore } from '../../store';
 
 interface SearchResultProps {
   searchResults: {
@@ -17,17 +17,12 @@ interface SearchResultProps {
 }
 
 function SearchResult({ searchResults }: SearchResultProps) {
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
-  
+  const [currentRecord, setCurrentRecord] = useState(null);
   const { selectedCategory } = useCategoryStore();
+  console.log('SEARCH RESULTs PROPS ', searchResults)
 
-  const onResultClick = async (category: string, id: number) => {
-    try {
-      const response = await axios.post(`/api/dreams/current?category=${category}`, { id });
-      setCurrentRecord(response.data); 
-    } catch (error) {
-      console.error('Ошибка при получении текущей записи:', error);
-    }
+  const onResultClick = async () => {
+    setCurrentRecord(searchResults)
   };
 
   const handleCloseModal = () => {
@@ -37,22 +32,19 @@ function SearchResult({ searchResults }: SearchResultProps) {
   return (
     <div className={style.searchResults__wrapper}>
       <h4>Найденные {selectedCategory} :</h4>
-      <ul className={style.searchResults}>
+      <section className={style.searchResults}>
         {searchResults.map((result) => (
-          <li
+          <button
             key={result.id}
-            className={style.searchResult}
-            onClick={() => onResultClick(result.category, result.id)}
+            className={style.searchResult} 
+            onClick={() => onResultClick()}
           >
             <h5>{result.title}</h5>
-            <p>{result.content} 
-
-              
-            </p>
+            <p>{result.content}</p>
             <p>{result.createdAt}</p>
-          </li>
+          </button>
         ))}
-      </ul>
+      </section>
 
       {/* Отображение информации о текущей записи */}
       {currentRecord && (
@@ -64,8 +56,8 @@ function SearchResult({ searchResults }: SearchResultProps) {
               associations={currentRecord.associations}
               title={currentRecord.title}
               content={currentRecord.content}
-              isAnalyzed={currentRecord.isAnalyzed} 
-              date={currentRecord.createdAt} 
+              isAnalyzed={currentRecord.isAnalyzed}
+              date={currentRecord.createdAt}
             />
           </div>
         </div>
