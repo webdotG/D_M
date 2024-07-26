@@ -1,29 +1,93 @@
-.wrapper-category{
-
-}
-
-.category {
-  padding-top: 25px;
-  padding-bottom: 25px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+.wrapper-associations {
   text-align: center;
+  padding: 20px;
+
+  h2{
+    p{
+      padding-bottom: 2.5px;
+    line-height: 25px;
+  }
+}
 }
 
-.category-button {
-  width: 150px;
-  min-height: 75px;
+.slider {
+  min-width: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.slider-button--prev,
+.slider-button--next {
+  border: none;
+  padding: 5px 7px;
+  cursor: pointer;
+  background-color: transparent;
+  position: absolute;
+  bottom: 45px;
+  opacity: 0.7;
+  border-radius: 6px;
+
+  img{
+    width: 30px;
+    height: 50px;
+  }
+
+  &:hover{
+    color: #666;
+    opacity: 0.7;
+  }
+
+  &:disabled{
+    opacity: 0.12;
+  }
+}
+.slider-button--prev{
+  left: -35px; 
+}
+.slider-button--next{
+  right: -35px;
+  img{
+    transform: rotate(180deg);
+  }
+}
+
+
+
+.associations {
+  min-height: 160px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.associations__item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.association-button {
+  width: 135px;
+  height: 75px;
   padding: 5px 10px;
-  background-color: transparent; 
+  background-color: transparent;
   border: #333 2px solid;
   border-radius: 8px;
   font-size: 16px;
-  color: #333; 
+  color: #333;
   cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease; 
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow: hidden; /* Скрытие текста, который выходит за пределы кнопки */
+  white-space: nowrap; /* Запрещаем перенос текста на новую строку */
+  text-overflow: ellipsis; /* Добавляем многоточие, если текст не помещается */
+  word-wrap: break-word;   /* Перенос длинных слов */
+  overflow-wrap: break-word; /* Перенос длинных слов */
 }
 
-.category-button:hover {
- opacity: 0.5;
+.association-button:hover {
+  opacity: 0.5;
 }
