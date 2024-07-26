@@ -40,7 +40,7 @@ export default function DreamsList() {
     <section className={style['dreams-memories']}>
       <Associations />
       {/* <h3 className={style['dreams-memories__title']}></h3> */}
-      <h3 className={style['list-title']}>Список 
+      <h3 className={style['list-title']}>Список всех
       { selectedCategory === "сны" 
       ? (
          <p> снов</p>

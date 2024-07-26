@@ -10,15 +10,14 @@ interface SearchResultProps {
     associations: string;
     title: string;
     content: string;
-    createdAt: string;
-    updatedAt: string;
+    date: string;
   }[];
 }
 
 function SearchResult({ searchResults }: SearchResultProps) {
   const [currentRecord, setCurrentRecord] = useState(null);
   const { selectedCategory } = useCategoryStore();
-  console.log('SEARCH RESULTs PROPS ', searchResults)
+  // console.log('SEARCH RESULTs PROPS ', searchResults)
 
   const onResultClick = async (result) => {
     setCurrentRecord(result)
@@ -40,7 +39,7 @@ function SearchResult({ searchResults }: SearchResultProps) {
           >
             <h5>{result.title}</h5>
             <p>{result.content}</p>
-            <p>{result.createdAt}</p>
+            <p>{result.date}</p>
           </button>
         ))}
       </section>
