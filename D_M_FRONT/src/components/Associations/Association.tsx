@@ -70,7 +70,8 @@ const Associations: React.FC = () => {
 
   return (
     <div className={style['wrapper-associations']}>
-      <h2>{translateToLanguage('Ассоциации')} 
+      <h2 className={style['wrapper-associations__title']}>
+      {translateToLanguage('Ассоциации')} 
       { selectedCategory === "сны" 
       ? (
          <p>{translateToLanguage('для снов')}</p>
