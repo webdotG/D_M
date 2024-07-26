@@ -12,6 +12,20 @@ import {fetchAssociationsByRecordId} from '../models/associationByID.js'
 import { addRecord } from '../models/addRecord.js'
 
 const router = express.Router();
+router.post('/search', getTableName, async (req, res) => {
+  const { value, date } = req.body;
+  const { tableName } = req; 
+
+  console.log(`Входящие данные /search : category-${tableName}, value-${value}, date-${date}`);
+
+  try {
+    const searchResults = await Search(tableName, value, date);
+    res.json(searchResults);
+  } catch (error) {
+    console.error('Ошибка поиска с параметрами:', error);
+    res.status(500).json({ error: 'Ошибка поиска с параметрами' });
+  }
+});
 
 // для перемещения записи по id
 router.patch('/move', getTableName, async (req, res) => {
@@ -133,20 +147,6 @@ router.post('/current', getTableName, async (req, res) => {
   } catch (error) {
     console.error('Ошибка при получении текущей записи:', error);
     res.status(500).json({ error: 'Ошибка при получении текущей записи' });
-  }
-});
-
-// для поиска по записям
-router.post('/search', getTableName, async (req, res) => {
-  const { value, date } = req.body;
-  const { tableName } = req; 
-  console.log(`Входящие данные /search : category-${req.body.category}, value-${value}, date-${date}`);
-  try {
-    const searchResults = await Search(tableName, value, date);
-    res.json(searchResults);
-  } catch (error) {
-    console.error('Ошибка поиска с параметрами:', error);
-    res.status(500).json({ error: 'Ошибка поиска с параметрами' });
   }
 });
 
