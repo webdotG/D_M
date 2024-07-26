@@ -12,7 +12,15 @@ export default function Header() {
   return (
     <header className={style.header}>
       <nav className={style.headerNav}>
-        <h1>{translateToLanguage('поиск')} ... {selectedCategory}</h1>
+        <h1>{translateToLanguage('поиск')}
+        { selectedCategory === "сны" 
+      ? (
+         <p> снов</p>
+      ) : (
+        <p> воспоминаний</p>
+      )
+      }
+        </h1>
         <section className={`${style.searches} searches`}>
           <SearchForm
   
