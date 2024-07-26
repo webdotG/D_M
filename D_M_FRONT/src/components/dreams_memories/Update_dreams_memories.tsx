@@ -10,6 +10,7 @@ import Cancel from '../../SVG/delete.svg';
 import { deleteRecordById } from '../../API/deleteRecord';
 import { useCategoryStore } from '../../store';
 import { fetchAssociationsById } from '../../API/associationByID'; 
+import {fetchAssociations} from '../../API/associationALL'
 
 type UpadteDreamProps = {
   id: number;
@@ -34,6 +35,7 @@ const UpdateDream = ({
 }: UpadteDreamProps) => {
 
   const [editedCategory, setEditedCategory] = useState(category);
+  const [editedAssociations, setEditedAssociations] = useState(associations);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedContent, setEditedContent] = useState(content);
   const [editedIsAnalyzed, setEditedIsAnalyzed] = useState(isAnalyzed);
@@ -41,8 +43,9 @@ const UpdateDream = ({
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [tempCategory, setTempCategory] = useState(category);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [editedAssociations, setEditedAssociations] = useState(associations);
-
+  const [associationsList, setAssociationsList] = useState<string[]>([]);
+  console.log('ASSOCIATION LIST >>>> ', associationsList)
+  
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
   const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
 
@@ -56,7 +59,13 @@ const UpdateDream = ({
         const fetchedAssociations = await fetchAssociationsById(category, id);
         console.log(`Fetched associations: ${fetchedAssociations}`);
         setEditedAssociations(fetchedAssociations);
+
+        const fetchedAssociationsALL = await fetchAssociations(category);
+        console.log(`Fetched associations: ${fetchedAssociationsALL}`);
+        setAssociationsList(fetchedAssociations);
+        
       } catch (error) {
+        setAssociationsList([]);
         console.error('Ошибка при загрузке ассоциаций:', error);
       }
     };
@@ -198,16 +207,35 @@ const UpdateDream = ({
               </label>
             </div>
             <label>
-              <p className={style['label-title']} >Ассоциации :</p>
+              <p className={style['label-title']} >
+                Ассоциации :
+              </p>
               <input
-                type="text"
+              type="text"
+              value={editedAssociations}
+              onChange={(e) => {
+              //   console.log("Associations Changed to:", e.target.value);
+                setEditedAssociations(e.target.value)
+              }}
+              className={style['dream-content-associations']}
+            />
+           
+            {/* или выбрать из списка : 
+           <select
+                id="associations"
                 value={editedAssociations}
-                onChange={(e) => {
-                //   console.log("Associations Changed to:", e.target.value);
-                  setEditedAssociations(e.target.value)
-                }}
-                className={style['dream-content-associations']}
-              />
+                // onChange={handleAssociationChange}
+                
+              >
+                <option value="">Варианты</option>
+                {associationsList.map((association, index) => (
+                  <option key={index} value={association}>
+                    {association}
+                  </option>
+                ))}
+                <option value="new">Записать новую ...</option>
+              </select>  */}
+           
             </label>
             <label>
               <p className={style['label-title']} >Название :</p>
