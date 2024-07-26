@@ -101,14 +101,14 @@ const AddDreams: React.FC = () => {
       : selectedAssociation;
 
     const newDream = {
-      title,
-      content,
+      title: title || ' ... ',  // Передаем пустую строку, если значение отсутствует
+      content: content || ' ... ',  
       isAnalyzed,
       category,
-      date: date ? formatDateToDDMMYYYY(date) : '',
-      associations, 
+      date: date ? formatDateToDDMMYYYY(date) : '',  
+      associations: associations || ' ... ',  
       video: '', 
-      img: ''    
+      img: ''
     };
 
     try {
@@ -168,7 +168,7 @@ const AddDreams: React.FC = () => {
               id="title"
               value={title}
               onChange={handleTitleChange}
-              required
+            
             />
           </div>
 
@@ -180,7 +180,7 @@ const AddDreams: React.FC = () => {
               id="content"
               value={content}
               onChange={handleContentChange}
-              required
+              
             />
           </div>
 
@@ -194,14 +194,14 @@ const AddDreams: React.FC = () => {
                 value={newAssociation}
                 onChange={handleNewAssociationChange}
                 placeholder="Новая ассоциация"
-                required
+                
               />
             ) : (
               <select
                 id="associations"
                 value={selectedAssociation}
                 onChange={handleAssociationChange}
-                required
+                
               >
                 <option value="">Варианты</option>
                 {associationsList.map((association, index) => (
@@ -209,7 +209,7 @@ const AddDreams: React.FC = () => {
                     {association}
                   </option>
                 ))}
-                <option value="new">Записать новую ... </option>
+                <option value="new">Записать новую ...</option>
               </select>
             )}
           </div>
@@ -236,7 +236,7 @@ const AddDreams: React.FC = () => {
               dateFormat="dd/MM/yyyy"
               isClearable
               placeholderText="Выберите дату"
-              required
+         
             />
           </div>
 
