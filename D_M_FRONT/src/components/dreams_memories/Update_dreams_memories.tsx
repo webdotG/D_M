@@ -43,8 +43,8 @@ const UpdateDream = ({
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [tempCategory, setTempCategory] = useState(category);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  const [associationsList, setAssociationsList] = useState<string[]>([]);
-  console.log('ASSOCIATION LIST >>>> ', associationsList)
+  // const [associationsList, setAssociationsList] = useState<string[]>([]);
+  // console.log('ASSOCIATION LIST >>>> ', associationsList)
   
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
   const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
@@ -62,10 +62,10 @@ const UpdateDream = ({
 
         const fetchedAssociationsALL = await fetchAssociations(category);
         console.log(`Fetched associations: ${fetchedAssociationsALL}`);
-        setAssociationsList(fetchedAssociations);
+        // setAssociationsList(fetchedAssociations);
         
       } catch (error) {
-        setAssociationsList([]);
+        // setAssociationsList([]);
         console.error('Ошибка при загрузке ассоциаций:', error);
       }
     };
