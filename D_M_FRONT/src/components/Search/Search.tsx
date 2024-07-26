@@ -157,9 +157,15 @@ useEffect(() => {
    {/* Отображение результатов поиска */}
    {showSearchResults && (searchValue || searchDate) ? (
       searchResults.length > 0 ? (
-        <SearchResult
-          searchResults={searchResults}
-         />
+        <>
+          <SearchResult
+            searchResults={searchResults}/>
+          <button className={style['clearSearch-btn']}
+          onClick={() => (setSearchValue(''), setSearchDate(''))}> 
+            очистить
+            <img src={deleteIcon} alt='clear search icon' />
+          </button> 
+        </>
       ) : (
         <p className={style['notFound']}>
           Совпадений не найдено !

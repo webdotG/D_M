@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import axios from 'axios';
 import style from './serachResult.module.scss'; 
 import Dream from '../dreams_memories/dreams_memories';
 import { useCategoryStore } from '../../store';
@@ -21,8 +20,8 @@ function SearchResult({ searchResults }: SearchResultProps) {
   const { selectedCategory } = useCategoryStore();
   console.log('SEARCH RESULTs PROPS ', searchResults)
 
-  const onResultClick = async () => {
-    setCurrentRecord(searchResults)
+  const onResultClick = async (result) => {
+    setCurrentRecord(result)
   };
 
   const handleCloseModal = () => {
@@ -37,7 +36,7 @@ function SearchResult({ searchResults }: SearchResultProps) {
           <button
             key={result.id}
             className={style.searchResult} 
-            onClick={() => onResultClick()}
+            onClick={() => onResultClick(result)}
           >
             <h5>{result.title}</h5>
             <p>{result.content}</p>
@@ -62,6 +61,7 @@ function SearchResult({ searchResults }: SearchResultProps) {
           </div>
         </div>
       )}
+      
     </div>
   );
 }
