@@ -4,7 +4,6 @@ import styles from './footer.module.scss';
 
 import AddNew from '../../SVG/plus.svg'
 import HomeIcon from '../../SVG/home.svg';
-import CalendarIcon from '../../SVG/calendar.svg';
 import ChatIcon from '../../SVG/messages.svg';
 import ProfileIcon from '../../SVG/user.svg';
 import VisualPage from '../../SVG/Visual.svg'

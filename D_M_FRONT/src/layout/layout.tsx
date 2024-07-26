@@ -1,6 +1,5 @@
 import { ReactNode, useState } from 'react';
 import style from './layout.module.scss';
-import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import { useCategoryStore, useLanguageStore, useThemeStore} from '../store.ts';
 import translations from '../translations.json';
@@ -14,11 +13,11 @@ type TypeProps = {
 };
 
 const CATEGORY = ['сны', 'воспоминания'];
-const LANGUAGES = ['Ру', 'En', 'BS'];
+const LANGUAGES = ['РУ', 'EN', 'BS'];
 const THEMES = ["Светлая", "Тёмная", "Мордор"];
 
 export default function Layout({ children }: TypeProps) {
-  const { selectedCategory, setSelectedCategory } = useCategoryStore();
+  const { setSelectedCategory } = useCategoryStore();
   const { language, setLanguage } = useLanguageStore();
   const { setTheme } = useThemeStore();
   const [modalVisible, setModalVisible] = useState(false);
@@ -59,7 +58,7 @@ export default function Layout({ children }: TypeProps) {
   };
 
   const translateToLanguage = (text: string): string => {
-    const languageTranslations = translations[language as keyof typeof translations] || translations.RU;
+    const languageTranslations = translations[language as keyof typeof translations] || translations.Р;
     return languageTranslations[text as keyof typeof languageTranslations] || text;
   };
 
@@ -131,14 +130,14 @@ export default function Layout({ children }: TypeProps) {
           )}
           <button className={style['languageToggle-btn']} onClick={toggleLanguageModal}>
           <img src={ToggleLang} alt='toggleIcon' />
-            {/* {translateToLanguage(language)} */}
+            {translateToLanguage(language)}
           </button>
         </section>
 
       </div>
 
-      <Header selectedLanguage={language}  />
       {children}
+
       <Footer />
     </div>
   );

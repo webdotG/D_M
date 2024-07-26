@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 
 const CATEGORY = ['сны', 'воспоминания'];
-const LANGUAGES = ['RU', 'EN', 'BS'];
+const LANGUAGES = ['РУ', 'EN', 'BS'];
 const THEMES = ['Светлая', 'Тёмная', 'Мордер'];
 
 type CategoryState = {

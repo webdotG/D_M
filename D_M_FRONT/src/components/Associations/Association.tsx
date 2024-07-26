@@ -3,11 +3,13 @@ import style from './Associations.module.scss';
 import { useCategoryStore } from '../../store';
 import { fetchAssociations } from '../../API/associationALL';
 import BackSVG from '../../SVG/back.svg'
+import { useTranslate } from '../../hooks/useTranslate';
 
 type AssociationType = string[];
 
 const Associations: React.FC = () => {
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
+  const { translateToLanguage } = useTranslate();
 
   const [associations, setAssociations] = useState<AssociationType>([]);
   const [displayedAssociations, setDisplayedAssociations] = useState<AssociationType>([]);
@@ -68,12 +70,12 @@ const Associations: React.FC = () => {
 
   return (
     <div className={style['wrapper-associations']}>
-      <h2>Ассоциации 
+      <h2>{translateToLanguage('Ассоциации')} 
       { selectedCategory === "сны" 
       ? (
-         <p> для снов</p>
+         <p>{translateToLanguage('для снов')}</p>
       ) : (
-        <p> для воспоминаний</p>
+        <p>{translateToLanguage('для воспоминаний')}</p>
       )
       }
       </h2>

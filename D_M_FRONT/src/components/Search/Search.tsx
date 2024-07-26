@@ -90,6 +90,11 @@ useEffect(() => {
   return (
     <form className={style['search-header-form']} onSubmit={handleSubmit}>
       {/* Поле поиска по значению */}
+      {
+        selectedCategory === 'сны'
+        ? <h2>{translate('искать')} <p>{translate('сны')}</p></h2>
+        : <h2>{translate('искать')} <p>{translate('воспоминания')}</p></h2>
+      }
       <div className={style['search-label__wrapper']}>
       <label htmlFor="search" className={style['search-label']}>
         {translate('буквы')}
@@ -115,7 +120,8 @@ useEffect(() => {
         )}
       </label>
       {isSearchValueFocused && (
-        <span className={style['search-label__help']}><p>только буквы<span>    (Регистр важен)</span></p></span>
+        <span className={style['search-label__help']}>
+          <p>{translate('только буквы')}</p></span>
       )}
       </div>
       
@@ -146,7 +152,11 @@ useEffect(() => {
         )}
       </label>
       {isSearchDateFocused && (
-        <span className={style['search-label__help']}><p>только цифры и .</p></span>
+        <span className={style['search-label__help']}>
+          <p>
+            {translate('только цифры и .')}
+          </p>
+        </span>
       )}
       </div>
    
@@ -162,19 +172,14 @@ useEffect(() => {
             searchResults={searchResults}/>
           <button className={style['clearSearch-btn']}
           onClick={() => (setSearchValue(''), setSearchDate(''))}> 
-            очистить
+            <p>очистить</p>
             <img src={deleteIcon} alt='clear search icon' />
           </button> 
         </>
       ) : (
         <p className={style['notFound']}>
-          Совпадений не найдено !
-          {/* <img
-            src={unlikeIcon}
-            alt="unlike icon"
-            className={style.icon}
-          /> */}
-          </p>
+          Совпадений не найдено ! 
+        </p>
       )
     ) : null}
     

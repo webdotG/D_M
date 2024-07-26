@@ -4,6 +4,7 @@ import style from './dreams_memories_list.module.scss';
 import Associations from '../Associations/Association';
 import { loadDreams } from '../../API/dreams';
 import { useCategoryStore } from '../../store'; 
+import { useTranslate } from '../../hooks/useTranslate';
 
 export interface DreamType {
   id: number;
@@ -16,7 +17,7 @@ export interface DreamType {
 }
 
 export default function DreamsList() {
-
+  const { translateToLanguage } = useTranslate();
   const selectedCategory = useCategoryStore((state) => state.selectedCategory); 
   const [dreams, setDreams] = useState<DreamType[]>([]);
 
@@ -40,12 +41,13 @@ export default function DreamsList() {
     <section className={style['dreams-memories']}>
       <Associations />
       {/* <h3 className={style['dreams-memories__title']}></h3> */}
-      <h3 className={style['list-title']}>Список всех
+      <h3 className={style['list-title']}>
+      {translateToLanguage('Список всех')}
       { selectedCategory === "сны" 
       ? (
-         <p> снов</p>
+         <p>{translateToLanguage('снов')}</p>
       ) : (
-        <p> воспоминаний</p>
+        <p> {translateToLanguage('воспоминаний')}</p>
       )
       }
       </h3>
