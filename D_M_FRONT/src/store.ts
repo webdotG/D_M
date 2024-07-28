@@ -25,33 +25,43 @@ type AuthState = {
   setAuthenticated: (auth: boolean, token?: string) => void;
 };
 
-// Категория по умолчанию загружается из localStorage, если она там есть
+// Функции для получения значений из localStorage
 const getStoredCategory = () => {
   return localStorage.getItem('selectedCategory') || CATEGORY[0];
+};
+
+const getStoredLanguage = () => {
+  return localStorage.getItem('language') || LANGUAGES[0];
+};
+
+const getStoredTheme = () => {
+  return localStorage.getItem('theme') || THEMES[0];
 };
 
 export const useCategoryStore = create<CategoryState>((set) => ({
   selectedCategory: getStoredCategory(),
   setSelectedCategory: (category: string) => {
-    console.log(`Store selectedCategory : ${category}`);
+    console.log(`Выбранная категория : ${category}`);
     set({ selectedCategory: category });
-    localStorage.setItem('selectedCategory', category); 
+    localStorage.setItem('selectedCategory', category);
   },
 }));
 
 export const useLanguageStore = create<LanguageState>((set) => ({
-  language: LANGUAGES[0],
+  language: getStoredLanguage(),
   setLanguage: (language: string) => {
-    console.log(`Store language : ${language}`);
+    console.log(`Выбранный язык : ${language}`);
     set({ language });
+    localStorage.setItem('language', language);
   },
 }));
 
 export const useThemeStore = create<ThemeState>((set) => ({
-  theme: THEMES[1],
+  theme: getStoredTheme(),
   setTheme: (theme: string) => {
-    console.log(`Store theme :  ${theme} `);
+    console.log(`Выбранная тема : ${theme}`);
     set({ theme });
+    localStorage.setItem('theme', theme);
   },
 }));
 
@@ -72,4 +82,3 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 }));
-

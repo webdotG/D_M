@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchDreamStats } from '../../API/dreamsStats';
 import styles from './dreamsStats.module.scss';
+import {useTranslate} from '../../hooks/useTranslate'
 
 interface DreamStats {
   total: number;
@@ -12,6 +13,8 @@ const DreamStatsComponent: React.FC = () => {
   const [memoryStats, setMemoryStats] = useState<DreamStats | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const {translateToLanguage} =useTranslate()
 
   const fetchStats = async () => {
     setLoading(true);
@@ -47,15 +50,16 @@ const DreamStatsComponent: React.FC = () => {
 
   return (
     <div className={styles.container}>
+      <h2>{translateToLanguage('Статистика')}</h2>
       <div className={styles.stats}>
-        <h3>Сны</h3>
-        <p>Всего : {dreamStats.total}</p>
-        <p>Анализировано : {dreamStats.analyzed}</p>
+        <h3>{translateToLanguage('Сны')}</h3>
+        <p>{translateToLanguage('Всего')} : {dreamStats.total}</p>
+        <p>{translateToLanguage('Анализировано')} : {dreamStats.analyzed}</p>
       </div>
       <div className={styles.stats}>
-        <h3>Воспоминания</h3>
-        <p>Всего : {memoryStats.total}</p>
-        <p>Анализировано : {memoryStats.analyzed}</p>
+        <h3>{translateToLanguage('Воспоминания')}</h3>
+        <p>{translateToLanguage('Всего')} : {memoryStats.total}</p>
+        <p>{translateToLanguage('Анализировано')} :{memoryStats.analyzed}</p>
       </div>
     </div>
   );

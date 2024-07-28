@@ -130,7 +130,7 @@ export default function Layout({ children }: TypeProps) {
           )}
           <button className={style['languageToggle-btn']} onClick={toggleLanguageModal}>
           <img src={ToggleLang} alt='toggleIcon' />
-            {translateToLanguage(language)}
+            {/* {translateToLanguage(language)} */}
           </button>
         </section>
 

@@ -11,6 +11,8 @@ import { deleteRecordById } from '../../API/deleteRecord';
 import { useCategoryStore } from '../../store';
 import { fetchAssociationsById } from '../../API/associationByID'; 
 import {fetchAssociations} from '../../API/associationALL'
+import {useTranslate} from '../../hooks/useTranslate'
+
 
 type UpadteDreamProps = {
   id: number;
@@ -48,6 +50,7 @@ const UpdateDream = ({
   
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
   const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
+  const { translateToLanguage: translate } = useTranslate(); 
 
   useEffect(() => {
  
@@ -170,10 +173,12 @@ const UpdateDream = ({
       <div className={style['dream-content']}>
           <>
             <img className={style['D_M']} src={D_M} alt='категории лого' />
-            <h3>Это </h3>
+            <h3>{translate('Это')}</h3>
             <div className={style['category-label__wrapper']}>
               <label className={style['category-label__dream']}>
-                <p className={style['label-title']} >Сон</p>
+                <p className={style['label-title']} >
+                {translate('Сон')} 
+                  </p>
                 <input
                   type="radio"
                   value="сны"
@@ -188,9 +193,13 @@ const UpdateDream = ({
                   />
                 </span>
               </label>
-              <p className={style['tiny-p']}>или</p>
+              <p className={style['tiny-p']}>
+              {translate('или')}
+                </p>
               <label>
-                <p className={style['label-title']} >Воспоминание</p>
+                <p className={style['label-title']} >
+                {translate('Воспоминание')}
+                  </p>
                 <input
                   type="radio"
                   value="воспоминания"
@@ -208,7 +217,7 @@ const UpdateDream = ({
             </div>
             <label>
               <p className={style['label-title']} >
-                Ассоциации :
+              {translate('Ассоциации')}
               </p>
               <input
               type="text"
@@ -220,25 +229,11 @@ const UpdateDream = ({
               className={style['dream-content-associations']}
             />
            
-            {/* или выбрать из списка : 
-           <select
-                id="associations"
-                value={editedAssociations}
-                // onChange={handleAssociationChange}
-                
-              >
-                <option value="">Варианты</option>
-                {associationsList.map((association, index) => (
-                  <option key={index} value={association}>
-                    {association}
-                  </option>
-                ))}
-                <option value="new">Записать новую ...</option>
-              </select>  */}
-           
             </label>
             <label>
-              <p className={style['label-title']} >Название :</p>
+              <p className={style['label-title']} >
+              {translate('Заголовок')}
+              </p>
               <input
                 type="text"
                 value={editedTitle}
@@ -247,7 +242,9 @@ const UpdateDream = ({
               />
             </label>
             <label>
-              <p className={style['label-title']} >Содержание :</p>
+              <p className={style['label-title']} >
+              {translate('Текст')}
+              </p>
               <textarea
                 value={editedContent}
                 onChange={(e) => setEditedContent(e.target.value)}
@@ -256,14 +253,17 @@ const UpdateDream = ({
               />
             </label>
             <label>
-              <p className={style['label-title']} >Когда это было :</p>
+              <p className={style['label-title']} >
+                {translate('Дата')}
+              </p>
               <input
                 type="date"
                 value={editedDate}
                 onChange={(e) => setEditedDate(e.target.value)}
               />
             </label>
-            <button className={style['dream-function__edit-btn']} onClick={handleAnalysisClick}>
+            <button className={style['dream-function__edit-btn']} 
+              onClick={handleAnalysisClick}>
           {editedIsAnalyzed ? (
             <img src={selfAnalys} alt='Не анализировать' />
           ) : (
@@ -273,7 +273,7 @@ const UpdateDream = ({
             <button className={style['dream-function__delete-btn']} 
               onClick={handleDeleteClick}
             >
-              удалить
+              {translate('удалить')}
             </button>
           </>
       </div>
@@ -281,27 +281,38 @@ const UpdateDream = ({
       <div className={style['dream-function']}>
       <button type="button" className={style['cancel-button']} 
         onClick={onClose}>
-          Отменить
+          {translate('Отменить')}
         </button>
         <button className={style['dream-function__edit-btn']} 
         onClick={handleEditClick}>
-          Сохранить
+          {translate('Сохранить')}
         </button>
         </div>
       
       {showConfirmation && (
         <div className={style['confirmation-modal']}>
-          <p>Вы уверены, что хотите изменить категорию?<br />
+          <p>
+          {translate('Вы уверены, что хотите изменить категорию ?')}
           </p>
-          <button onClick={handleCategoryConfirm}>Да</button>
-          <button onClick={() => setShowConfirmation(false)}>Нет</button>
+          <button onClick={handleCategoryConfirm}>
+          {translate('Да')}
+            </button>
+          <button onClick={() => setShowConfirmation(false)}>
+          {translate('Нет')}
+            </button>
         </div>
       )}
       {showDeleteConfirmation && (
         <div className={style['confirmation-modal']}>
-          <p>Вы уверены, что хотите удалить эту запись?</p>
-          <button onClick={confirmDelete}>Да</button>
-          <button onClick={cancelDelete}>Нет</button>
+          <p>
+          {translate('Вы уверены, что хотите удалить эту запись ?')}
+          </p>
+          <button onClick={confirmDelete}>
+          {translate('Да')}
+          </button>
+          <button onClick={cancelDelete}>
+            {translate('Нет')}
+          </button>
         </div>
       )}
       

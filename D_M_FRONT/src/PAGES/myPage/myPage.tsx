@@ -4,6 +4,7 @@ import style from './myPage.module.scss';
 import Footer from '../../components/footer/footer';
 import DreamStatsComponent from '../../components/Stats/dreamsStats';
 import Graph from '../../components/Graph/Graph';
+import Layout from '../../layout/layout';
 
 const MyPage: React.FC = () => {
     const setAuthenticated = useAuthStore(state => state.setAuthenticated);
@@ -25,6 +26,7 @@ const MyPage: React.FC = () => {
 
     return (
         <>
+        
             <div className={style['my-page-container']}>
                 
                 <div className={style['profile-section']}>

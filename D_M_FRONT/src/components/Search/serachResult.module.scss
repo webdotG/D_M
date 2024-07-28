@@ -1,6 +1,7 @@
 .searchResults__wrapper {
   h4 {
-    text-align: center;
+    display: flex;
+    justify-content: center;
     padding-top: 20px;
     padding-bottom: 25px;
     font-size: 24px;

@@ -3,6 +3,7 @@ import style from './dreams_memories.module.scss';
 import { useCategoryStore } from '../../store';
 import { fetchAssociationsById } from '../../API/associationByID';
 import UpdateDream from './Update_dreams_memories';
+import { useTranslate } from '../../hooks/useTranslate'; 
 
 type DreamProps = {
   id: number;
@@ -26,6 +27,7 @@ const Dream: React.FC<DreamProps> = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editedAssociations, setEditedAssociations] = useState(associations);
 
+  const { translateToLanguage: translate } = useTranslate(); 
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
 
   useEffect(() => {
@@ -63,11 +65,12 @@ const Dream: React.FC<DreamProps> = ({
       <div className={style['dream-function']}>
       {isEditing ? (
        <p className={style['dream-function__edit-btn']} >
-        Режим редактирования ... 
+        {translate('Редактирование ...')}
       </p>
       ):(
-        <button className={style['dream-function__edit-btn']} onClick={handleEditClick}>
-          редактировать
+        <button className={style['dream-function__edit-btn']} 
+          onClick={handleEditClick}>
+          {translate('редактировать')}
         </button>
       )}
         

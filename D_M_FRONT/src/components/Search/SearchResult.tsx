@@ -2,6 +2,7 @@ import { useState } from 'react';
 import style from './serachResult.module.scss'; 
 import Dream from '../dreams_memories/dreams_memories';
 import { useCategoryStore } from '../../store';
+import { useTranslate } from '../../hooks/useTranslate'; 
 
 interface SearchResultProps {
   searchResults: {
@@ -16,6 +17,8 @@ interface SearchResultProps {
 
 function SearchResult({ searchResults }: SearchResultProps) {
   const [currentRecord, setCurrentRecord] = useState(null);
+
+  const { translateToLanguage: translate } = useTranslate();
   const { selectedCategory } = useCategoryStore();
   // console.log('SEARCH RESULTs PROPS ', searchResults)
 
@@ -29,7 +32,7 @@ function SearchResult({ searchResults }: SearchResultProps) {
 
   return (
     <div className={style.searchResults__wrapper}>
-      <h4>Найденные {selectedCategory} :</h4>
+      <h4>{translate('Найденные')} :</h4>
       <section className={style.searchResults}>
         {searchResults.map((result) => (
           <button

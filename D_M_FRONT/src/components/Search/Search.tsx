@@ -88,7 +88,8 @@ useEffect(() => {
 
 
   return (
-    <form className={style['search-header-form']} onSubmit={handleSubmit}>
+    <form className={style['search-header-form']} 
+      onSubmit={handleSubmit}>
       {/* Поле поиска по значению */}
       {
         selectedCategory === 'сны'
@@ -172,13 +173,13 @@ useEffect(() => {
             searchResults={searchResults}/>
           <button className={style['clearSearch-btn']}
           onClick={() => (setSearchValue(''), setSearchDate(''))}> 
-            <p>очистить</p>
+            <p>{translate('Очистить')}</p>
             <img src={deleteIcon} alt='clear search icon' />
           </button> 
         </>
       ) : (
         <p className={style['notFound']}>
-          Совпадений не найдено ! 
+          {translate('Совпадений не найдено !')}
         </p>
       )
     ) : null}

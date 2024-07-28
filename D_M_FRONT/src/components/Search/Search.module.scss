@@ -1,6 +1,8 @@
 .search-header-form{
   min-height: 305px;
   margin-top: 125px;
+  padding-bottom: 10px;
+  border-bottom: #666 1px solid;
 }
 
 .search-label__wrapper{
@@ -127,6 +129,6 @@
 
     &:hover{
       opacity: 0.5;
-      border-bottom: 1px solid #666;
+      // border-bottom: 1px solid #666;
     }
   }
