@@ -38,7 +38,7 @@
       }
   
       
-      .D_M{
+      svg{
         width: 35px;
         margin: 0 auto;
         padding-bottom: 25px;
@@ -95,7 +95,7 @@
             cursor: pointer;
            }
   
-          .category-label__img{
+          svg{
             width: 38px;
             padding: 5px;
             position: absolute;
@@ -192,9 +192,14 @@
     &-function {
       display: flex;
       justify-content: space-between;
-      align-items: center;
+      align-items: baseline;
       margin-top: 10px;
-  
+
+      svg {
+        margin-right: 5px;
+        width: 35px;
+        height: 35px;
+      }
       &__edit-btn,
       &__analysis-btn {
         padding: 3px 5px;
@@ -210,18 +215,11 @@
      
         }
   
-        img {
-          margin-right: 5px;
-          width: 35px;
-          height: 35px;
-        }
+        
       }
     }
   }
-  
-  .LikeUnlike{
-    transform: scaleY(-1);
-  }
+
   
   .input-date{
     padding-left: 5px;

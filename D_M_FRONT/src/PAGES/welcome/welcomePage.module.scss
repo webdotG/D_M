@@ -29,9 +29,12 @@
     background-color: transparent;
     font-size: 14px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 
-    img{
+    svg{
       width: 42px;
+      transform: rotate(180deg);
     }
 
     &:hover{
@@ -66,10 +69,21 @@
   .button-container {
     display: flex;
     justify-content: space-between;
+
+    svg{
+      width: 45px;
+      height: 45px;
+    }
+    .next-btn{
+      svg{
+       transform: rotate(180deg);
+      }
+    }
+    
   }
 
   button {
-    padding: 10px 20px;
+    padding: 10px 10px;
     font-size: 16px;
     font-weight: bold;
     border: none;

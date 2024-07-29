@@ -36,9 +36,7 @@ const MyPage: React.FC = () => {
                 <div className={style['stats-section']}>
                     <DreamStatsComponent key={key} />
                 </div>
-                <div>
-                    <Graph />
-                </div>
+              
                 <button className={style['logout-button']} onClick={handleLogout}>
                     Выйти
                 </button>
