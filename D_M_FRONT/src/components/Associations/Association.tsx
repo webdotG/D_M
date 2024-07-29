@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import style from './Associations.module.scss';
 import { useCategoryStore } from '../../store';
 import { fetchAssociations } from '../../API/associationALL';
-import BackSVG from '../../SVG/back.svg'
 import { useTranslate } from '../../hooks/useTranslate';
 
 type AssociationType = string[];

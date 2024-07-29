@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import style from './serachResult.module.scss'; 
 import Dream from '../dreams_memories/dreams_memories';
-import { useCategoryStore } from '../../store';
 import { useTranslate } from '../../hooks/useTranslate'; 
 
 interface SearchResultProps {
@@ -12,18 +11,31 @@ interface SearchResultProps {
     title: string;
     content: string;
     date: string;
+    isAnalyzed?: boolean;
   }[];
 }
 
+interface Record {
+  id: number;
+  category: string;
+  associations: string;
+  title: string;
+  content: string;
+  createdAt: string; 
+  isAnalyzed?: boolean;
+}
+
 function SearchResult({ searchResults }: SearchResultProps) {
-  const [currentRecord, setCurrentRecord] = useState(null);
+  const [currentRecord, setCurrentRecord] = useState<Record | null>(null);
 
   const { translateToLanguage: translate } = useTranslate();
-  const { selectedCategory } = useCategoryStore();
-  // console.log('SEARCH RESULTs PROPS ', searchResults)
 
-  const onResultClick = async (result) => {
-    setCurrentRecord(result)
+  const onResultClick = async (result: Omit<Record, 'createdAt'> & { date: string }) => {
+    const updatedResult: Record = {
+      ...result,
+      createdAt: result.date
+    };
+    setCurrentRecord(updatedResult);
   };
 
   const handleCloseModal = () => {
@@ -47,7 +59,6 @@ function SearchResult({ searchResults }: SearchResultProps) {
         ))}
       </section>
 
-      {/* Отображение информации о текущей записи */}
       {currentRecord && (
         <div className={style.modalOverlay} onClick={handleCloseModal}>
           <div className={style.modalContent} onClick={(e) => e.stopPropagation()}>
@@ -57,13 +68,12 @@ function SearchResult({ searchResults }: SearchResultProps) {
               associations={currentRecord.associations}
               title={currentRecord.title}
               content={currentRecord.content}
-              isAnalyzed={currentRecord.isAnalyzed}
+              isAnalyzed={currentRecord.isAnalyzed ?? false}
               date={currentRecord.createdAt}
             />
           </div>
         </div>
       )}
-      
     </div>
   );
 }

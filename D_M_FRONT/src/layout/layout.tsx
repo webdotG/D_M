@@ -62,7 +62,7 @@ export default function Layout({ children }: TypeProps) {
   };
 
   const translateToLanguage = (text: string): string => {
-    const languageTranslations = translations[language as keyof typeof translations] || translations.Р;
+    const languageTranslations = translations[language as keyof typeof translations] || translations;
     return languageTranslations[text as keyof typeof languageTranslations] || text;
   };
 

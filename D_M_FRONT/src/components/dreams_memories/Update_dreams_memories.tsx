@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import style from './UpdateDream.module.scss';
-import selfAnalys from '../../SVG/medecine.svg';
-import LikeUnlikeIcon from '../../SVG/unlike.svg';
 import { updateDreamMemories } from '../../API/updateDream';
 import { moveDreamToDifferentCategory } from '../../API/moveDreamCategory';
 import { deleteRecordById } from '../../API/deleteRecord';

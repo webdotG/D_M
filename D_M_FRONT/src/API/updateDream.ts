@@ -5,7 +5,7 @@ const token = localStorage.getItem('token');
 export const updateDreamMemories = async (
     id: number,
     category: string,
-    associations: string[],
+    associations: string,
     title: string,
     content: string,
     isAnalyzed: boolean,
