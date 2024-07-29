@@ -1,12 +1,14 @@
+@import '../../variables.scss';
+
 .searchResults__wrapper {
-  h4 {
+h4 {
     display: flex;
     justify-content: center;
     padding-top: 20px;
     padding-bottom: 25px;
     font-size: 24px;
     font-weight: 300;
-    color: #333;
+    color: var(--theme-default-all-text);
   }
 }
 
@@ -14,18 +16,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 }
 
 .searchResult {
   width: 340px;
   padding: 20px;
   box-sizing: border-box;
-  border: 1px solid #e0e0e0;
   border-radius: 8px;
-  background-color: #f9f9f9;
   cursor: pointer;
   margin-bottom: 15px;
   transition: background-color 0.3s, box-shadow 0.3s;
+  border: 2px solid var(--theme-default-all-icon);
+  background-color: var(--theme-default-all-background);
 
   h5 {
     font-size: 20px;
@@ -33,7 +36,7 @@
     padding-top: 10px;
     padding-bottom: 10px;
     font-weight: 500;
-    color: #444;
+    color: var(--theme-default-all-text);
     text-decoration: none;
     margin: 0;
   }
@@ -42,12 +45,12 @@
     font-size: 16px;
     line-height: 1.5;
     padding-bottom: 10px;
-    color: #666;
+    color: var(--theme-default-all-text);
   }
 
   &:hover {
-    background-color: #eaeaea;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(225, 225, 225, 0.6);
+    border: 2px solid var(--theme-default-all-icon);
   }
 }
 
@@ -65,24 +68,23 @@
 }
 
 .modalContent {
-  background: #fff;
   padding: 25px;
   border-radius: 12px;
   max-width: 90%;
   max-height: 80%;
   overflow-y: auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   position: relative;
+  background-color: var(--theme-default-all-background);
 
   h2 {
     margin-top: 0;
     margin-bottom: 15px;
     font-size: 24px;
-    color: #333;
+    color: var(--theme-default-all-text);
   }
 
   p {
     font-size: 18px;
-    color: #555;
+    color: var(--theme-default-all-text);
   }
 }

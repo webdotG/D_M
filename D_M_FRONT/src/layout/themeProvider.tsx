@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode, useContext } from 'react';
+import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import { changeCssVariables } from '../hooks/changeCssVariables';
 
 type ThemeContextType = {
@@ -16,13 +16,22 @@ type ThemeProviderProps = {
   children: ReactNode;
 };
 
+const getStoredTheme = () => {
+  return localStorage.getItem('theme') || THEME_LIGHT;
+};
+
 const ThemeProvider = ({ children }: ThemeProviderProps) => {
-  const [theme, setTheme] = useState(THEME_LIGHT);
+  const [theme, setTheme] = useState(getStoredTheme);
 
   const change = (name: string) => {
     setTheme(name);
+    localStorage.setItem('theme', name);
     changeCssVariables(name);
   };
+
+  useEffect(() => {
+    changeCssVariables(theme);
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, change }}>
