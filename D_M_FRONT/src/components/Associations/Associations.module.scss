@@ -5,6 +5,7 @@
   .wrapper-associations__title{
     padding-top: 5px;
     padding-bottom: 35px;
+    color: var(--theme-default-all-text);
   }
 
 }
@@ -31,6 +32,7 @@
   svg{
     width: 30px;
     height: 50px;
+    fill: var(--theme-default-all-icon);
   }
 
   &:hover{
@@ -39,7 +41,7 @@
   }
 
   &:disabled{
-    opacity: 0.12;
+    opacity: 0.25;
   }
 }
 .slider-button--prev{
@@ -74,10 +76,10 @@
   height: 75px;
   padding: 5px 10px;
   background-color: transparent;
-  border: #333 2px solid;
+  border: 2px solid var(--theme-default-all-icon);
+  color: var(--theme-default-all-text);
   border-radius: 8px;
   font-size: 16px;
-  color: #333;
   cursor: pointer;
   transition: background-color 0.3s ease, color 0.3s ease;
   overflow: hidden; /* Скрытие текста, который выходит за пределы кнопки */
