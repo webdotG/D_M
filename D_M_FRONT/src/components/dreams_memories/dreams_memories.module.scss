@@ -4,11 +4,10 @@
   margin: 0 auto;
   padding: 20px;
   padding-bottom: 35px;
-  border: #333 2px solid;
+  border: 2px solid var(--theme-default-all-icon);
   border-radius: 8px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
+  background-color: var(--theme-default-all-background);
   transition: background-color 0.3s ease;
 
 
@@ -27,6 +26,7 @@
       padding-left: 12px;
       padding-bottom: 25px;
       font-weight: 400;
+      color: var(--theme-default-all-text);
     }
 
     p{
@@ -34,6 +34,7 @@
       line-height: 21px;
       padding-left: 12px;
       padding-bottom: 12px;
+      color: var(--theme-default-all-text);
     }
  
   }
@@ -47,9 +48,10 @@
     border: none;
     border-bottom: 1px solid transparent;
     cursor: pointer;
+    color: var(--theme-default-all-text);
 
     &:hover{
-      border-bottom: 1px solid #333;
+      border-bottom: 1px solid var(--theme-default-all-icon);
       opacity: 0.5;
     }
   }
@@ -64,6 +66,7 @@
       text-align: center;
       text-transform: uppercase;
       font-weight: 300;
+      color: var(--theme-default-all-text);
     }
   }
 }
