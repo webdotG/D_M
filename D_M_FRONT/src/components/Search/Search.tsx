@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import style from './Search.module.scss'; 
-import searchIcon from '../../SVG/search.svg'; 
-import deleteIcon from '../../SVG/delete.svg'; 
-// import unlikeIcon from '../../SVG/unlike.svg'; 
 import { searchByValue, searchByDate, searchByValueAndDate } from '../../API/search'; 
 import { useCategoryStore } from '../../store'; 
 import { useTranslate } from '../../hooks/useTranslate'; 
@@ -112,7 +109,7 @@ useEffect(() => {
         {searchValue ? (
           <button className={style.icon}
           onClick={handleClearInput(setSearchValue)}>
-<svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+<svg  xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M53.678,61.824c-2.27,0-4.404-0.885-6.01-2.49L36,47.667L24.332,59.334c-1.604,1.605-3.739,2.49-6.01,2.49
@@ -133,7 +130,7 @@ useEffect(() => {
           </button > 
         ) : (
           <button className={style.icon}>
-<svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M28.131,10.632c-6.262,0-12.141,3.348-15.342,8.738c-0.282,0.474-0.126,1.089,0.349,1.37
@@ -178,7 +175,7 @@ useEffect(() => {
         {searchDate ? (
           <button className={style.icon}
           onClick={handleClearInput(setSearchValue)}>
-<svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M53.678,61.824c-2.27,0-4.404-0.885-6.01-2.49L36,47.667L24.332,59.334c-1.604,1.605-3.739,2.49-6.01,2.49
@@ -199,7 +196,7 @@ useEffect(() => {
           </button > 
         ) : (
           <button className={style.icon}>
-<svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M28.131,10.632c-6.262,0-12.141,3.348-15.342,8.738c-0.282,0.474-0.126,1.089,0.349,1.37

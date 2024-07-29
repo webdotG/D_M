@@ -1,21 +1,33 @@
+@import '../../variables.scss';
+
 .search-header-form{
-  min-height: 305px;
   margin-top: 125px;
-  padding-bottom: 10px;
-  border-bottom: #666 1px solid;
+  padding: 15px;
+  border-bottom: 1px solid var(--theme-default-all-icon);
+  background-color: var(--theme-default-all-background);
+ 
+  h2{
+    color: var(--theme-default-all-text);
+    p{
+      color: var(--theme-default-all-text);
+    }
+  }
 }
 
 .search-label__wrapper{
   position: relative;
-
+  
   .search-label__help{
     position: absolute;
     bottom: 10px;
     left: 135px;
     font-size: 14px;
-
+    
     span{
       font-size: 11px;
+      p{
+        color: var(--theme-default-all-text);
+      }
     }
   }
 }
@@ -33,6 +45,7 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column;
+    color: var(--theme-default-all-text);
   }
   
   .search-label {
@@ -44,6 +57,7 @@
     align-items: center;
     position: relative;
     cursor: pointer;
+    color: var(--theme-default-all-text);
   
     button{
       border: none;
@@ -58,6 +72,7 @@
         position: absolute;
         right: 12px;
         bottom: 16px;
+        fill: var(--theme-default-all-icon);
       }
     }
     
@@ -67,7 +82,7 @@
       position: absolute;
       font-size: 12px;
       text-align: center;
-      
+      color: var(--theme-default-all-text);
     }
   }
   
@@ -78,13 +93,15 @@
     padding-bottom: 5px;
     padding-left: 10px;
     border: none;
-    border-bottom: 1.5px solid black;
+    border-bottom: 1.5px solid var(--theme-default-all-icon);
     font-size: 18px;
     line-height: 23px;
     cursor: pointer;
     outline: none;
     letter-spacing: 0.25px;
-  
+    background-color:  transparent;
+    color: var(--theme-default-all-text);
+
     &:disabled {
       opacity: 0.5;
       cursor: not-allowed;
@@ -94,12 +111,13 @@
   .search-submit {
     width: 100%;
     margin: 10px auto;
-    border: 1.95px solid black;
+    border: 1.95px solid var(--theme-default-all-icon);
     padding: 10px 20px;
     border-radius: 4px;
     cursor: pointer;
     font-size: 14px;
     background-color: transparent;
+    color: var(--theme-default-all-text);
   
     &:hover {
       opacity: 0.5;
@@ -124,7 +142,7 @@
     margin: 0 auto;
     padding: 5px 7px;
     border: none;
-    border-bottom: 1px solid transparent;
+    border-bottom: 1px solid var(--theme-default-all-icon);
     display: flex;
     align-items: center;
     justify-content: end;
@@ -134,10 +152,11 @@
     svg{
       margin-left: 25px;
       width: 33px;
+      fill: var(--theme-default-all-icon);
     }
 
     &:hover{
       opacity: 0.5;
-      // border-bottom: 1px solid #666;
+   
     }
   }

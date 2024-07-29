@@ -1,8 +1,11 @@
+@import '../../variables.scss';
+
 .home-page{
  margin-top: 55px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: var(--theme-default-all-background);
 
   h2{
     font-size: 23px;
@@ -10,5 +13,10 @@
     padding-bottom: 20px;
     text-align: center;
     font-weight: 300;
+    color: var(--theme-default-all-text);
+
+    p{
+      color: var(--theme-default-all-text);
+    }
   }
 }

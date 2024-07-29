@@ -2,19 +2,10 @@
 
     --color-white: rgba(255, 255, 255, 1);
     --color-black: rgba(0, 0, 0, 1);
-    --color-lightGrey: rgba(240, 240, 240, 1);
-    --color-blue: rgba(0, 123, 255, 1);
- 
-    --color-darkGrey: rgba(18, 18, 18, 1);
-    --color-lightBlack: rgba(31, 31, 31, 1);
-    --color-orange: rgba(255, 87, 34, 1);
- 
     --color-red: rgba(255, 0, 0, 1);
-    --color-brown: rgba(102, 0, 0, 1);
-    --color-yellow: rgba(255, 215, 0, 1);
-
+  
     /* THEMES */
-    // HEADR
+
     --theme-light-all-background: var(--color-white);
     --theme-dark-all-background: var(--color-black);
     --theme-mordor-all-background: var(--color-black);
@@ -24,6 +15,11 @@
     --theme-dark-all-icon: var(--color-white);
     --theme-mordor-all-icon: var(--color-red);
     --theme-default-all-icon: var(--theme-light-all-icon);
+
+    --theme-light-all-text: var(--color-black);
+    --theme-dark-all-text: var(--color-white);
+    --theme-mordor-all-text: var(--color-white);
+    --theme-default-all-text: var(--theme-light-all-text);
     
 }
   
