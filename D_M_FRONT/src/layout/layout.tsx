@@ -89,7 +89,7 @@ export default function Layout({ children }: TypeProps) {
             </div>
           )}
           <button className={style['categoryToggle-btn']} onClick={toggleCategoryModal}>
-            <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+            <svg   xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M48.055,14.837c0.322,0,0.637-0.155,0.832-0.443c0.852-1.27,2.273-2.029,3.801-2.029c0.551,0,1-0.447,1-1
@@ -134,7 +134,7 @@ export default function Layout({ children }: TypeProps) {
             </div>
           )}
           <button className={style['colorThemeToggle-btn']} onClick={toggleThemeModal}>
-            <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M53.262,3.5H18.738C10.599,3.5,4,10.099,4,18.24v0.521C4,26.901,10.599,33.5,18.738,33.5h34.524
@@ -178,7 +178,7 @@ export default function Layout({ children }: TypeProps) {
             </div>
           )}
           <button className={style['languageToggle-btn']} onClick={toggleLanguageModal}>
-<svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+<svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M35.12,37.725c0.098-0.543-0.262-1.063-0.806-1.162c-3.486-0.632-5.784-2.267-7.025-4.996

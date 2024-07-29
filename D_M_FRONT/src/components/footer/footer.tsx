@@ -6,7 +6,7 @@ export const BUTTONS = [
     id: 1,
     name: 'home',
     url: '/D_M/',
-    svg: <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+    svg: <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
     viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
  <g>
    <path d="M70.202,26.797l-33-24.833c-0.033-0.025-0.069-0.04-0.104-0.063c-0.056-0.037-0.111-0.072-0.17-0.103
@@ -31,7 +31,7 @@ export const BUTTONS = [
     id: 2,
     name: 'calendar',
     url: '/D_M/visualPage',
-    svg: <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+    svg: <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
     viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
     <g>
       <path d="M61.568,11.5H10.432c-3.828,0-6.932,3.104-6.932,6.932v35.136c0,3.828,3.104,6.933,6.932,6.933h51.136
@@ -60,7 +60,7 @@ export const BUTTONS = [
     id: 4,
     name: 'chat',
     url: '/',
-    svg: <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+    svg: <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
     viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
  <g>
    <g>
@@ -126,7 +126,7 @@ export const BUTTONS = [
     name: 'profile',
     url: '/D_M/myPage/',
     svg: 
-    <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+    <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
       viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
     <g>
       <path d="M37.008,3.5h-1.796C21.561,3.5,10.5,14.228,10.5,27.512v33.716c0,3.696,3.273,7.271,6.785,7.271h0.333
@@ -162,9 +162,9 @@ const Footer= () => {
     <div className={styles['footer__wrapper']}>
 
     <Link to="/D_M/add" className={styles['footer-add']}>
-    <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
  viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
-<g>
+<g fill="" stroke="">
 	<path d="M30.489,66.511c-1.604-1.604-2.488-3.74-2.488-6.011V44L11.5,43.999C9.229,44,7.095,43.116,5.489,41.51
 		c-1.605-1.605-2.488-3.739-2.488-6.01C3,33.23,3.884,31.095,5.489,29.489c1.606-1.605,3.74-2.489,6.012-2.488L28,27l0.001-15.5
 		C28,9.23,28.884,7.095,30.489,5.489S34.23,3,36.5,3.001c2.27,0,4.404,0.883,6.011,2.489c1.605,1.605,2.489,3.74,2.488,6.011

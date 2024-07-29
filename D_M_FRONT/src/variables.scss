@@ -15,10 +15,15 @@
 
     /* THEMES */
     // HEADR
-    --theme-light-layout-background: var(--color-white);
-    --theme-dark-layout-background: var(--color-darkGrey);
-    --theme-mordor-layout-background: var(--color-lightBlack);
-    --theme-default-layout-background: var(--theme-light-layout-background);
+    --theme-light-all-background: var(--color-white);
+    --theme-dark-all-background: var(--color-black);
+    --theme-mordor-all-background: var(--color-black);
+    --theme-default-all-background: var(--theme-light-all-background);
 
+    --theme-light-all-text: var(--color-black);
+    --theme-dark-all-text: var(--color-white);
+    --theme-mordor-all-text: var(--color-red);
+    --theme-default-all-text: var(--theme-light-all-text);
+    
 }
   
