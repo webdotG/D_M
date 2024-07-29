@@ -98,7 +98,6 @@
            input{
             appearance: none;
             cursor: pointer;
-            
            }
   
           svg{
@@ -140,7 +139,9 @@
         &:hover .label-title{
           opacity: 0.5;
         }
-      
+        input{
+          color: black;
+        }
       }
   
       textarea{
@@ -220,7 +221,7 @@
         font-size: 23px;
 
         &:hover {
-        opacity: 0.5;
+        opacity: 0.75;
      
         }
   
