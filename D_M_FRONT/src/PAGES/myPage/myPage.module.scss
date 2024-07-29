@@ -6,9 +6,9 @@
     flex-direction: column;
     align-items: center;
     max-width: 100%;
-    background-color: #f9f9f9;
+    background-color: var(--theme-default-all-background);
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  
   }
   
   .profile-section {
@@ -18,12 +18,12 @@
   
   .profile-section h1 {
     font-size: 24px;
-    color: #333;
+    color: var(--theme-default-all-text);
   }
   
   .profile-section p {
     font-size: 18px;
-    color: #777;
+    color: var(--theme-default-all-text);
   }
   
   .stats-section {

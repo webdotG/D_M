@@ -169,7 +169,7 @@ const UpdateDream = ({
     <>
       <div className={style['dream-content']}>
           <>
-          <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+          <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	  viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M48.055,14.837c0.322,0,0.637-0.155,0.832-0.443c0.852-1.27,2.273-2.029,3.801-2.029c0.551,0,1-0.447,1-1
@@ -210,7 +210,7 @@ const UpdateDream = ({
                 <span>
                   {editedCategory === 'сны'
                   ? 
-                  <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
                      viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
                   <g>
                     <path d="M24.014,70.462c-2.617,0-5.073-1.016-6.917-2.859L2.175,53.877c-1.908-1.906-2.926-4.364-2.926-6.979
@@ -226,7 +226,7 @@ const UpdateDream = ({
                   </g>
                   </svg>
                   : 
-                  <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
                     viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
                   <g>
                     <path d="M53.678,61.824c-2.27,0-4.404-0.885-6.01-2.49L36,47.667L24.332,59.334c-1.604,1.605-3.739,2.49-6.01,2.49
@@ -263,7 +263,7 @@ const UpdateDream = ({
                 <span>
                 {editedCategory === 'воспоминания'
                   ? 
-                  <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
                      viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
                   <g>
                     <path d="M24.014,70.462c-2.617,0-5.073-1.016-6.917-2.859L2.175,53.877c-1.908-1.906-2.926-4.364-2.926-6.979
@@ -279,7 +279,7 @@ const UpdateDream = ({
                   </g>
                   </svg>
                   : 
-                  <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
                     viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
                   <g>
                     <path d="M53.678,61.824c-2.27,0-4.404-0.885-6.01-2.49L36,47.667L24.332,59.334c-1.604,1.605-3.739,2.49-6.01,2.49
@@ -354,7 +354,7 @@ const UpdateDream = ({
             <button  
               onClick={handleAnalysisClick}>
           {editedIsAnalyzed ? 
-            <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+            <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
                 viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
             <g>
               <g>
@@ -382,7 +382,7 @@ const UpdateDream = ({
             </g>
             </svg>
            : 
-           <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+           <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
            viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
         <g>
           <path d="M24.014,70.462c-2.617,0-5.073-1.016-6.917-2.859L2.175,53.877c-1.908-1.906-2.926-4.364-2.926-6.979

@@ -1,8 +1,6 @@
 .dream {
     padding-bottom: 45px;
   
-    
-  
     &-content {
       margin-bottom: 10px;
       font-size: 16px;
@@ -10,9 +8,10 @@
       flex-direction: column;
       position: relative;
       
+      
       .dream-content-associations,
       .dream-content-title{
-        border-bottom: 1px solid #666;
+        border-bottom: 1px solid var(--theme-default-all-icon);
         border-radius: 0;
       }
       .dream-content-associations{
@@ -30,7 +29,7 @@
         background-color: transparent;
         font-weight: 400;
         border-bottom: 1px solid transparent;
-        color: #333;
+        color: var(--theme-default-all-text);
       
         &:hover{
           opacity: 0.5;
@@ -42,6 +41,7 @@
         width: 35px;
         margin: 0 auto;
         padding-bottom: 25px;
+        fill: var(--theme-default-all-icon);
       }
   
       h3{
@@ -49,6 +49,7 @@
         font-weight: 300;
         text-align: center;
         padding-bottom: 12px;
+        color: var(--theme-default-all-text);
       }
      
       .category-label__wrapper{
@@ -63,12 +64,14 @@
           left: 133px;
           top: 53px;
           font-size: 13px;
+          color: var(--theme-default-all-text);
         }
   
         .category-label__dream{
           p{
             text-align: start;
             padding-left: 35px;
+            color: var(--theme-default-all-text);
           }
           .category-label__img{
             left: 33px;
@@ -83,16 +86,19 @@
           position: relative;
           cursor: pointer;
           border: transparent 1px solid;
-          
+          color: var(--theme-default-all-text);
+
           p{
             padding-bottom: 10px;
             text-align: center;
             cursor: pointer;
+            color: var(--theme-default-all-text);
            }
   
            input{
             appearance: none;
             cursor: pointer;
+            
            }
   
           svg{
@@ -106,7 +112,7 @@
           }
   
           &:hover .category-label__img{
-            border: #555 1px solid;
+            border: 1px solid var(--theme-default-all-icon);
             opacity: 0.75;
             border-radius: 6px;
             cursor: pointer;
@@ -123,10 +129,12 @@
         display: flex;
         flex-direction: column;
         cursor: pointer;
+        color: var(--theme-default-all-text);
         
         p{
           padding-bottom: 15px;
           text-align: center;
+          color: var(--theme-default-all-text);
         }
   
         &:hover .label-title{
@@ -148,7 +156,7 @@
         padding-bottom: 2px;
         margin-bottom: 10px; 
         border: none;
-        
+        color: var(--theme-default-all-text);
       }
   
       &-associations {
@@ -160,7 +168,7 @@
         border-radius: 4px;
         display: flex;
         justify-content: center;
-        
+        color: var(--theme-default-all-text);
       }
   
       &-text {
@@ -169,14 +177,15 @@
         margin-bottom: 10px;
         color: #555; 
         border: none;
-        
+        color: var(--theme-default-all-text);
       }
   
       &-info {
         display: flex;
         justify-content: space-between;
         align-items: center;
-  
+        color: var(--theme-default-all-text);
+
         & > div {
           flex: 1;
           margin-right: 10px;
