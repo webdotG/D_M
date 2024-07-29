@@ -21,6 +21,9 @@
     font-weight: 300;
     color: var(--theme-default-all-text);
     line-height: 33px;
+  text-overflow: ellipsis; /* Добавляем многоточие, если текст не помещается */
+  word-wrap: break-word;   /* Перенос длинных слов */
+  overflow-wrap: break-word; /* Перенос длинных слов */
   }
 
   .back-button{
