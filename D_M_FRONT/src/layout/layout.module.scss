@@ -1,3 +1,5 @@
+@import '../variables.scss';
+
 .layout__content {
   position: fixed;
   top: 0;
@@ -8,8 +10,8 @@
   align-items: center;
   justify-content: center;
   z-index: 2;
-  background-color: white;
-  border-bottom: 2px solid black;
+  background-color: var(--theme-default-layout-background);
+  border-bottom: var(--theme-default-layout-background);
 }
 
 .layout__categories,

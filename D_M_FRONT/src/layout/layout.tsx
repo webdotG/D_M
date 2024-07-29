@@ -1,12 +1,13 @@
 import { ReactNode, useState } from 'react';
 import style from './layout.module.scss';
 import Footer from '../components/footer/footer';
-import { useCategoryStore, useLanguageStore, useThemeStore} from '../store.ts';
+import { useCategoryStore, useLanguageStore } from '../store';
 import translations from '../translations.json';
 import { TranslationMap } from '../types';
-import ToggleTheme from '../SVG/toggle.svg'
-import ToggleLang from '../SVG/lang.svg'
-import D_M from '../SVG/d_m.svg'
+import ToggleTheme from '../SVG/toggle.svg';
+import ToggleLang from '../SVG/lang.svg';
+import D_M from '../SVG/d_m.svg';
+import { useTheme, THEME_LIGHT, THEME_DARK, THEME_MORDOR } from './themeProvider';
 
 type TypeProps = {
   children: ReactNode;
@@ -14,16 +15,22 @@ type TypeProps = {
 
 const CATEGORY = ['сны', 'воспоминания'];
 const LANGUAGES = ['РУ', 'EN', 'BS'];
-const THEMES = ["Светлая", "Тёмная", "Мордор"];
+
+const THEME_MAP: Record<string, string> = {
+  Светлая: THEME_LIGHT,
+  Тёмная: THEME_DARK,
+  Мордор: THEME_MORDOR,
+};
+
+const THEMES = Object.keys(THEME_MAP);
 
 export default function Layout({ children }: TypeProps) {
   const { setSelectedCategory } = useCategoryStore();
   const { language, setLanguage } = useLanguageStore();
-  const { setTheme } = useThemeStore();
+  const { change: setTheme } = useTheme();
   const [modalVisible, setModalVisible] = useState(false);
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const [themeModalVisible, setThemeModalVisible] = useState(false);
- 
 
   const toggleCategoryModal = () => {
     setModalVisible(!modalVisible);
@@ -51,9 +58,9 @@ export default function Layout({ children }: TypeProps) {
     }
   };
 
-
-  const handleThemeSelect = (theme: string) => {
-    setTheme(theme);
+  const handleThemeSelect = (themeName: string) => {
+    const themeValue = THEME_MAP[themeName];
+    setTheme(themeValue);
     setThemeModalVisible(false);
   };
 
@@ -86,8 +93,7 @@ export default function Layout({ children }: TypeProps) {
           )}
 
           <button className={style['categoryToggle-btn']} onClick={toggleCategoryModal}>
-          <img src={D_M} alt='D_M' />
-
+            <img src={D_M} alt='D_M' />
           </button>
         </section>
 
@@ -96,10 +102,10 @@ export default function Layout({ children }: TypeProps) {
           {themeModalVisible && (
             <div className={style.modal_overlay} onClick={toggleThemeModal}>
               <ul className={style.layout__modal}>
-                {THEMES.map((theme, index) => (
+                {THEMES.map((themeName, index) => (
                   <li key={index} className={style.layout__modal__item}>
-                    <button className={style.modalToggle_btn} onClick={() => handleThemeSelect(theme)}>
-                      {translateToLanguage(theme)}
+                    <button className={style.modalToggle_btn} onClick={() => handleThemeSelect(themeName)}>
+                      {translateToLanguage(themeName)}
                     </button>
                   </li>
                 ))}
@@ -108,8 +114,7 @@ export default function Layout({ children }: TypeProps) {
           )}
 
           <button className={style['colorThemeToggle-btn']} onClick={toggleThemeModal}>
-          <img src={ToggleTheme} alt='toggleIcon' />
-            {/* {translateToLanguage(theme)} */}
+            <img src={ToggleTheme} alt='toggleIcon' />
           </button>
         </section>
 
@@ -129,11 +134,9 @@ export default function Layout({ children }: TypeProps) {
             </div>
           )}
           <button className={style['languageToggle-btn']} onClick={toggleLanguageModal}>
-          <img src={ToggleLang} alt='toggleIcon' />
-            {/* {translateToLanguage(language)} */}
+            <img src={ToggleLang} alt='toggleIcon' />
           </button>
         </section>
-
       </div>
 
       {children}
