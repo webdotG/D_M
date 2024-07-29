@@ -2,7 +2,7 @@ import { dbLite } from '../dbLite.js';
 
 // Функция для поиска ассоциаций по id
 export const fetchAssociationsByRecordId = async (tableName, recordId) => {
-  console.log(`associationByID tableName - ${tableName} recordID - ${recordId}`)
+  // console.log(`associationByID tableName - ${tableName} recordID - ${recordId}`)
   try {
     let associationTable;
     let linkColumn;

@@ -12,7 +12,7 @@ export const fetchAssociationsById = async (category: string, recordId: number) 
     // Нормализуем категорию перед отправкой запроса
     const normalizedCategory = normalizeCategory(category);
 
-    console.log(`Запрос ассоциаций для категории: ${normalizedCategory}, recordId: ${recordId}`);
+    // console.log(`Запрос ассоциаций для категории: ${normalizedCategory}, recordId: ${recordId}`);
     
     const response = await axios.post('/api/dreams/associationId', {
       recordId,
@@ -23,7 +23,7 @@ export const fetchAssociationsById = async (category: string, recordId: number) 
       }
     });
 
-    console.log("Полученные данные:", response.data);
+    // console.log("Полученные данные:", response.data);
     if (response.status !== 200) {
       console.error(`Ошибка при загрузке ассоциаций: ${response.statusText}`);
       throw new Error(`Error loading associations: ${response.statusText}`);
@@ -32,7 +32,7 @@ export const fetchAssociationsById = async (category: string, recordId: number) 
     const associationsData = response.data.associations;
     // Если это объект с полем associations как строка
     const associations = associationsData.associations;
-    console.log("Ассоциации :", associations);
+    // console.log("Ассоциации :", associations);
     return associations;
 
   } catch (error) {

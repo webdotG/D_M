@@ -1,6 +1,5 @@
 import sqlite3 from 'sqlite3';
 import { open } from 'sqlite';
-import path from 'path';
 
 // Путь к SQLite
 const dbPath = '/home/webdotg/A_webdotgProjects/D_M/D_M_LiteSQL/db/dreams_memories.db';

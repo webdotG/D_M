@@ -10,8 +10,26 @@ import { deleteRecordById } from '../models/deleteRecord.js';
 import { getAllRecords } from '../models/getAllRecord.js'
 import {fetchAssociationsByRecordId} from '../models/associationByID.js'
 import { addRecord } from '../models/addRecord.js'
+import { searchByAssociation } from '../models/searcRecordByAssociation.js'
 
 const router = express.Router();
+
+// Для поиска записей по конкретной ассоциации
+router.post('/searchByAssociation', getTableName, async (req, res) => {
+  const { association } = req.body;
+  const { tableName } = req;
+
+  console.log(`Входящие данные /searchByAssociation : category-${tableName}, association-${association}`);
+
+  try {
+    const searchResults = await searchByAssociation(tableName, association);
+    res.json(searchResults);
+  } catch (error) {
+    console.error('Ошибка поиска по ассоциации:', error);
+    res.status(500).json({ error: 'Ошибка поиска по ассоциации' });
+  }
+});
+
 
 // Для получения конкретной записи по ID
 router.post('/current', getTableName, async (req, res) => {

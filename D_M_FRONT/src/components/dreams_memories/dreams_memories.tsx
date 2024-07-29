@@ -33,9 +33,9 @@ const Dream: React.FC<DreamProps> = ({
   useEffect(() => {
     const loadAssociations = async () => {
       try {
-        console.log(`Fetching associations for category: ${category}, id: ${id}`);
+        // console.log(`Fetching associations for category: ${category}, id: ${id}`);
         const fetchedAssociations = await fetchAssociationsById(category, id);
-        console.log(`Fetched associations: ${fetchedAssociations}`);
+        // console.log(`Fetched associations: ${fetchedAssociations}`);
         setEditedAssociations(fetchedAssociations);
       } catch (error) {
         console.error('Ошибка при загрузке ассоциаций:', error);
