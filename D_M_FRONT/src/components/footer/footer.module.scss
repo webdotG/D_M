@@ -6,7 +6,7 @@
   width: 100%;
   height: 63px; 
   background-color: var(--theme-default-all-background);
-  border-top: 2px solid var(--theme-default-all-text);
+  border-top: 2px solid var(--theme-default-all-icon);
   display: flex;
 
   .footer__wrapper{
@@ -29,12 +29,12 @@
     background-color: var(--theme-default-all-background);
     border: none;
     cursor: pointer;
-    border: 1.75px solid var(--theme-default-all-text);
+    border: 1.75px solid var(--theme-default-all-icon);
 
     svg{
       width: 100%;
       height: auto;   
-     fill: var(--theme-default-all-text);    
+     fill: var(--theme-default-all-icon);    
     }
   }
 
@@ -56,7 +56,7 @@
     svg{
       width: 33px;
       height: 33px;
-      fill: var(--theme-default-all-text);
+      fill: var(--theme-default-all-icon);
     }
   }
 

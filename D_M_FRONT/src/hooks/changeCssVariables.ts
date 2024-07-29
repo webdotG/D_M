@@ -11,7 +11,7 @@ export const changeCssVariables = (theme: string) => {
       if(root) {
   
         const cssVariables = [
-          'all-background', 'all-text'
+          'all-background', 'all-icon'
         ]
         
         cssVariables.forEach((element) => {

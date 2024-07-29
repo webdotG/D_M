@@ -11,7 +11,7 @@
   justify-content: center;
   z-index: 2;
   background-color: var(--theme-default-all-background);
-  border-bottom: 2px solid var(--theme-default-all-text);
+  border-bottom: 2px solid var(--theme-default-all-icon);
 }
 
 .layout__categories,
@@ -82,7 +82,7 @@
     svg{
       width: 33px;
       height: 33px;
-      fill: var(--theme-default-all-text);
+      fill: var(--theme-default-all-icon);
     }
     
   }
@@ -99,7 +99,7 @@
     svg{
       width: 28px;
       height: 28px;
-      fill: var(--theme-default-all-text);
+      fill: var(--theme-default-all-icon);
     }
   }
 
