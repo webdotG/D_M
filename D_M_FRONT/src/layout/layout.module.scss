@@ -79,9 +79,10 @@
     background-color: transparent;
     cursor: pointer;
 
-    img{
+    svg{
       width: 33px;
       height: 33px;
+      // fill: var( --color-red);
     }
     
   }
@@ -95,7 +96,7 @@
     cursor: pointer;
 
 
-    img{
+    svg{
       width: 28px;
       height: 28px;
     }
