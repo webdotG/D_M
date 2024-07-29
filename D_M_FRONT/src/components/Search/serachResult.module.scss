@@ -75,16 +75,17 @@ h4 {
   overflow-y: auto;
   position: relative;
   background-color: var(--theme-default-all-background);
+  border: 2px solid var(--theme-default-all-icon);
 
-  h2 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-size: 24px;
-    color: var(--theme-default-all-text);
-  }
+  // h2 {
+  //   margin-top: 0;
+  //   margin-bottom: 15px;
+  //   font-size: 24px;
+  //   color: var(--theme-default-all-text);
+  // }
 
-  p {
-    font-size: 18px;
-    color: var(--theme-default-all-text);
-  }
+  // p {
+  //   font-size: 18px;
+  //   color: var(--theme-default-all-text);
+  // }
 }
