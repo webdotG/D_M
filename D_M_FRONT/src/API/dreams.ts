@@ -17,7 +17,7 @@ export const loadDreams = async (category: string) => {
       throw new Error(`Error loading records: ${response.statusText}`);
     }
 
-    console.log('Records loaded successfully:', response.data);
+    // console.log('Записи загружены : ', response.data);
     return response.data;
   } catch (error) {
     console.error('Failed to load records:', error);

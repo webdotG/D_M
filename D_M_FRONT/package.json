@@ -13,15 +13,9 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-common-types": "^6.5.2",
-    "@fortawesome/fontawesome-free": "^6.5.2",
-    "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "axios": "^1.7.2",
-    "chart.js": "^4.4.3",
-    "framer-motion": "^11.0.25",
     "gh-pages": "^6.1.1",
     "react": "^18.2.0",
-    "react-chartjs-2": "^5.2.0",
     "react-datepicker": "^7.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
@@ -33,6 +27,7 @@
     "@types/babel__generator": "^7.6.8",
     "@types/babel__template": "^7.4.4",
     "@types/babel__traverse": "^7.20.5",
+    "@types/d3": "^7.4.3",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

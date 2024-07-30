@@ -15,6 +15,21 @@ import { searchByAssociation } from '../models/searcRecordByAssociation.js'
 const router = express.Router();
 
 // Для поиска записей по конкретной ассоциации
+router.post('/sortByDate', getTableName, async (req, res) => {
+  const { tableName } = req;
+
+  console.log(`Входящие данные /sortByDate : category-${tableName}`);
+
+  try {
+    const searchResults = await sortByDate(tableName);
+    res.json(searchResults);
+  } catch (error) {
+    console.error('Ошибка поиска по ассоциации:', error);
+    res.status(500).json({ error: 'Ошибка поиска по ассоциации' });
+  }
+});
+
+// Для поиска записей по конкретной ассоциации
 router.post('/searchByAssociation', getTableName, async (req, res) => {
   const { association } = req.body;
   const { tableName } = req;

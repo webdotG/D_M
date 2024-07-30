@@ -21,7 +21,7 @@ function App() {
       <Route path="/D_M/login" element={!isAuthenticated ? <LoginRegisterPage /> : <Navigate to="/D_M/" />} />
       <Route path="/D_M/" element={isAuthenticated ? <Layout><HomePage /></Layout> : <Navigate to="/D_M/welcome" />} />
       <Route path="/D_M/add" element={isAuthenticated ?<Layout> <AddDM /> </Layout>: <Navigate to="/D_M/welcome" />} />
-      <Route path="/D_M/visualPage" element={isAuthenticated ? <VisualPage/> : <Navigate to="/D_M/welcome" />} />
+      <Route path="/D_M/visualPage" element={isAuthenticated ? <Layout><VisualPage/></Layout> : <Navigate to="/D_M/welcome" />} />
       <Route path="/D_M/myPage" element={isAuthenticated ? <Layout> <MyPage /> </Layout> : <Navigate to="/D_M/welcome" />} />
     </Routes>
     </ThemeProvider>

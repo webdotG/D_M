@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './visualPage.module.scss';
+import Footer from '../../components/footer/footer';
+import TimelineChart from '../../components/Timeline/TimelineY';
 import { loadDreams } from '../../API/dreams';
 import { fetchAssociations } from '../../API/associationALL'; 
 import { useCategoryStore } from '../../store';
-import TimelineY from '../../components/Timeline/TimelineY'; 
 
 interface Record {
   id: number;
@@ -16,16 +17,17 @@ const VisualPage: React.FC = () => {
   const [records, setRecords] = useState<Record[]>([]);
   const [associations, setAssociations] = useState<string[]>([]);
   const { selectedCategory } = useCategoryStore();
-  // console.log(records, associations)
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Получение записей
         const data: Record[] = await loadDreams(selectedCategory);
         setRecords(data);
-        
+        console.log(data)
         // Получение ассоциаций
         const uniqueAssociations: string[] = await fetchAssociations(selectedCategory);
+        console.log(uniqueAssociations)
         setAssociations(uniqueAssociations);
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
@@ -36,15 +38,10 @@ const VisualPage: React.FC = () => {
   }, [selectedCategory]);
 
   return (
-    <div className={styles['visualPage-wrapper']}>
-      <h1 className={styles['title']}>Визуализация данных</h1>
-      {records.length > 0 && associations.length > 0 ? (
-        <TimelineY records={records} associations={associations} />
-      ) : (
-        <p>Загрузка данных...</p>
-      )}
-
-
+    <div className={styles.container}>
+      <h1 className={styles.title}>Визуализация данных</h1>
+      <TimelineChart records={records} associations={associations} />
+      {/* <Footer /> */}
     </div>
   );
 };
