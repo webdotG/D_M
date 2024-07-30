@@ -16,7 +16,7 @@ const TimelineY: React.FC = () => {
   // Функция для генерации шкалы по месяцам
   const generateScale = () => {
     const scale = [];
-    let currentDate = new Date(startDate);
+    const currentDate = new Date(startDate); // Используйте const здесь
 
     // Добавляем каждую дату месяца в массив до текущего месяца
     while (currentDate <= endDate) {
