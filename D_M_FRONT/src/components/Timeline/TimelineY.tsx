@@ -1,14 +1,13 @@
-import React, { useMemo, useState } from 'react';
-import Modal from './Modal'; // Импортируем компонент модального окна
+import React, { useMemo, useState, useRef, useEffect } from 'react';
+import Modal from './Modal'; 
 
-interface TimelineYProps {
-  // Можете добавить дополнительные пропсы, если нужно
-}
-
-const TimelineY: React.FC<TimelineYProps> = () => {
+const TimelineY: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
+  const [daysInMonth, setDaysInMonth] = useState<number[]>([]);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // Начальная и конечная даты
   const startDate = new Date('1989-06-25');
@@ -37,11 +36,24 @@ const TimelineY: React.FC<TimelineYProps> = () => {
     return { year, month };
   };
 
+  // Функция для вычисления дней в месяце
+  const getDaysInMonth = (year: number, month: number) => {
+    const days = [];
+    const date = new Date(year, month, 1);
+    while (date.getMonth() === month) {
+      days.push(date.getDate());
+      date.setDate(date.getDate() + 1);
+    }
+    return days;
+  };
+
   // Обработчик клика на месяц
   const handleMonthClick = (date: Date) => {
     const { year, month } = formatDate(date);
+    const monthIndex = date.getMonth(); // Месяцы в JavaScript начинаются с 0
     setSelectedYear(year); // Храним полный год
     setSelectedMonth(month);
+    setDaysInMonth(getDaysInMonth(year, monthIndex));
     setIsModalOpen(true);
   };
 
@@ -50,7 +62,27 @@ const TimelineY: React.FC<TimelineYProps> = () => {
     setIsModalOpen(false);
     setSelectedYear(null);
     setSelectedMonth(null);
+    setDaysInMonth([]);
   };
+
+  // Обработчик клика вне модального окна
+  const handleClickOutside = (event: MouseEvent) => {
+    if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+      closeModal();
+    }
+  };
+
+  useEffect(() => {
+    // Добавляем обработчик кликов на весь документ
+    if (isModalOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    // Убираем обработчик кликов при закрытии модального окна
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isModalOpen]);
 
   return (
     <div>
@@ -69,7 +101,18 @@ const TimelineY: React.FC<TimelineYProps> = () => {
       <Modal
         isOpen={isModalOpen}
         onClose={closeModal}
-        content={`${selectedYear} ${selectedMonth}`}
+        content={
+          <div>
+            <div>Год: {selectedYear}</div>
+            <div>Месяц: {selectedMonth}</div>
+            <ul style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+              {daysInMonth.map(day => (
+                <li key={day} style={{ flex: '1 0 14%', textAlign: 'center' }}>{day}</li>
+              ))}
+            </ul>
+          </div>
+        }
+        ref={modalRef} // Передача рефа в модальное окно
       />
     </div>
   );

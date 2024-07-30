@@ -1,24 +1,28 @@
-// Modal.tsx
-import React from 'react';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  content: string;
+  content: React.ReactNode;
+  ref?: React.Ref<HTMLDivElement>; // Передача рефа
 }
 
-const Modal: React.FC<ModalProps> = ({ isOpen, onClose, content }) => {
+const Modal = forwardRef<HTMLDivElement, ModalProps>(({ isOpen, onClose, content }, ref) => {
+  const localRef = useRef<HTMLDivElement>(null);
+
+  useImperativeHandle(ref, () => localRef.current!);
+
   if (!isOpen) return null;
 
   return (
     <div style={modalStyles.overlay}>
-      <div style={modalStyles.modal}>
+      <div ref={localRef} style={modalStyles.modal}>
         <button onClick={onClose} style={modalStyles.closeButton}>×</button>
-        <div>{content}</div>
+        <div style={modalStyles.content}>{content}</div>
       </div>
     </div>
   );
-};
+});
 
 const modalStyles = {
   overlay: {
@@ -38,7 +42,11 @@ const modalStyles = {
     borderRadius: '8px',
     width: '80%',
     maxWidth: '600px',
+    height: '500px',
+    overflowY: 'auto',
     position: 'relative' as 'relative',
+    display: 'flex',
+    flexDirection: 'column',
   },
   closeButton: {
     position: 'absolute' as 'absolute',
@@ -48,7 +56,12 @@ const modalStyles = {
     background: 'none',
     fontSize: '20px',
     cursor: 'pointer',
-  }
+  },
+  content: {
+    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
+  },
 };
 
 export default Modal;
