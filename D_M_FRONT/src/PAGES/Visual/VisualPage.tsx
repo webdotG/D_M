@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import styles from './visualPage.module.scss';
 import { loadDreams } from '../../API/dreams';
-import { fetchAssociationsById } from '../../API/associationByID'; 
+import { fetchAssociationsById } from '../../API/associationByID';
 import { useCategoryStore } from '../../store';
-import TimelineY from '../../components/Timeline/TimelineY'; 
+import TimelineY from '../../components/Timeline/TimelineY';
 
 interface Record {
   id: number;
   title: string;
   date: string; // Дата в формате "dd.mm.yyyy"
+  day?: number; // Добавлен день
+  month?: number; // Добавлен месяц
+  year?: number; // Добавлен год
   associations?: string; // Ассоциации как строка
 }
 
@@ -21,11 +24,11 @@ const VisualPage: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('Fetching data for category:', selectedCategory);
-        
+        console.log('Получение данных для категории:', selectedCategory);
+
         // Получение записей
         const data: Record[] = await loadDreams(selectedCategory);
-        console.log('Loaded records:', data);
+        console.log('Загруженные записи:', data);
         setRecords(data);
 
         // Подготовка ассоциаций по месяцам
@@ -33,11 +36,16 @@ const VisualPage: React.FC = () => {
         const recordsByMonth: { [month: string]: Record[] } = {};
 
         for (const record of data) {
-          console.log('Processing record:', record);
+          console.log('Обработка записи:', record);
           const [day, month, year] = record.date.split('.').map(Number);
           const monthKey = `${month}-${year}`;
-          
-          console.log('Month key:', monthKey);
+
+          // Добавление дня, месяца и года в запись
+          record.day = day;
+          record.month = month;
+          record.year = year;
+
+          console.log('Ключ месяца:', monthKey);
 
           // Получение ассоциаций для каждой записи
           const recordAssociations = await fetchAssociationsById(selectedCategory, record.id);
@@ -48,10 +56,10 @@ const VisualPage: React.FC = () => {
             if (!associationsByMonth[monthKey]) {
               associationsByMonth[monthKey] = [];
             }
-            associationsByMonth[monthKey].push(recordAssociations); // Сохраняем как строку
-            console.log(`Updated associations for ${monthKey}:`, associationsByMonth[monthKey]);
+            associationsByMonth[monthKey].push(record.associations);
+            console.log(`Обновленные ассоциации для ${monthKey}:`, associationsByMonth[monthKey]);
           } else {
-            console.log('No associations for record:', record);
+            console.log('Нет ассоциаций для записи:', record);
           }
 
           // Добавление записей по месяцам
@@ -59,14 +67,14 @@ const VisualPage: React.FC = () => {
             recordsByMonth[monthKey] = [];
           }
           recordsByMonth[monthKey].push(record);
-          console.log(`Updated records for ${monthKey}:`, recordsByMonth[monthKey]);
+          console.log(`Обновленные записи для ${monthKey}:`, recordsByMonth[monthKey]);
         }
 
         setAssociationsByMonth(associationsByMonth);
         setRecordsByMonth(recordsByMonth);
 
-        console.log('Final associationsByMonth:', associationsByMonth);
-        console.log('Final recordsByMonth:', recordsByMonth);
+        console.log('Итоговые associationsByMonth:', associationsByMonth);
+        console.log('Итоговые recordsByMonth:', recordsByMonth);
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
       }
@@ -78,14 +86,11 @@ const VisualPage: React.FC = () => {
   return (
     <div className={styles['visualPage-wrapper']}>
       <h1 className={styles['title']}>Визуализация данных</h1>
-      {Object.keys(associationsByMonth).length > 0 && Object.keys(recordsByMonth).length > 0 ? (
-        <TimelineY
-          associationsByMonth={associationsByMonth}
-          recordsByMonth={recordsByMonth}
-        />
-      ) : (
-        <p>Загрузка данных...</p>
-      )}
+      <div className={styles['timeline-wrapper']}>
+        <div className={styles['timeline']}>
+          <TimelineY associationsByMonth={associationsByMonth} recordsByMonth={recordsByMonth} />
+        </div>
+      </div>
     </div>
   );
 };

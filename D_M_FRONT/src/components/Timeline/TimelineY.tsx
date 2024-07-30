@@ -1,6 +1,15 @@
 import React, { useState } from 'react';
 import Modal from './Modal';
 
+interface Record {
+  id: number;
+  title: string;
+  date: string; // Дата в формате "dd.mm.yyyy"
+  day?: number; // Добавлен день
+  month?: number; // Добавлен месяц
+  year?: number; // Добавлен год
+}
+
 interface TimelineYProps {
   associationsByMonth: { [month: string]: string[] }; // Ассоциации по месяцам
   recordsByMonth: { [month: string]: Record[] }; // Записи по месяцам
@@ -31,7 +40,7 @@ const TimelineY: React.FC<TimelineYProps> = ({ associationsByMonth, recordsByMon
               {month}
             </h2>
             <ul style={{ listStyleType: 'none', padding: 0 }}>
-              {associationsByMonth[month].map((association, i) => (
+              {associationsByMonth[month]?.map((association, i) => (
                 <li key={i} style={{ margin: '5px 0' }}>{association}</li>
               ))}
             </ul>
@@ -48,7 +57,7 @@ const TimelineY: React.FC<TimelineYProps> = ({ associationsByMonth, recordsByMon
             <ul>
               {selectedMonth && recordsByMonth[selectedMonth]?.map((record) => (
                 <li key={record.id}>
-                  {record.date}: {record.title}
+                  {record.date}: {record.title} (день: {record.day}, месяц: {record.month}, год: {record.year})
                 </li>
               )) || <li>Нет записей</li>}
             </ul>
