@@ -59,6 +59,7 @@ export default function DreamsList() {
     fetchDreams(selectedCategory); 
   }, [selectedCategory]);
 
+  // console.log(dreams)
   return (
     <section className={style['dreams-memories']}>
       <Associations onAssociationClick={filterDreamsByAssociation} />
