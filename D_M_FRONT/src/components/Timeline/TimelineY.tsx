@@ -22,17 +22,12 @@ const TimelineY: React.FC<TimelineYProps> = ({
   associationsByMonth,
   daysByMonth
 }) => {
-  console.log('recordsByMonth', recordsByMonth);
-  console.log('associationsByMonth', associationsByMonth);
-  console.log('daysByMonth', daysByMonth);
-
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedMonth, setSelectedMonth] = useState<string | null>(null);
   const [daysInMonth, setDaysInMonth] = useState<number[]>([]);
   const [selectedMonthRecords, setSelectedMonthRecords] = useState<Record[]>([]);
   const [selectedMonthAssociations, setSelectedMonthAssociations] = useState<string[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  
   const modalRef = useRef<HTMLDivElement>(null);
 
   const startDate = new Date('1989-06-25');
@@ -154,42 +149,8 @@ const TimelineY: React.FC<TimelineYProps> = ({
         ref={modalRef}
         isOpen={modalOpen}
         onClose={closeModal}
-        content={
-          <div>
-            <div>Год: {selectedYear}</div>
-            <div>Месяц: {selectedMonth}</div>
-            <div>
-              <h4>Ассоциации:</h4>
-              <ul>
-                {selectedMonthAssociations.length > 0 ? (
-                  selectedMonthAssociations.map((assoc, index) => (
-                    <li key={index}>{assoc}</li>
-                  ))
-                ) : (
-                  <li>Нет ассоциаций для этого месяца.</li>
-                )}
-              </ul>
-            </div>
-            <div>
-              <h4>Записи:</h4>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                {daysInMonth.map(day => {
-                  const dayRecords = selectedMonthRecords.filter(record => record.day === day);
-                  return (
-                    <div key={day} style={{ flex: '1 0 14%', textAlign: 'center' }}>
-                      <div>{day}</div>
-                      {dayRecords.map(record => (
-                        <div key={record.id} style={{ fontSize: '12px' }}>
-                          {record.title}
-                        </div>
-                      ))}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        }
+        selectedYear={selectedYear}
+        selectedMonth={selectedMonth}
         daysInMonth={daysInMonth}
         records={selectedMonthRecords}
       />

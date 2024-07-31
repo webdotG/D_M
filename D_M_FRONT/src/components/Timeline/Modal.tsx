@@ -3,40 +3,45 @@ import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
-  content: React.ReactNode;
-  daysInMonth: number[];
-  records: Record[];
+  records: Record[]; // Записи, которые нужно показать
+  daysInMonth: number[]; // Дни, которые нужно показать
+  selectedMonth?: string | null,
+  selectedYear?: number | null
 }
 
 interface Record {
   id: number;
   title: string;
-  date: string;
-  day?: number;
-  month?: number;
-  year?: number;
+  date: string; // Дата в формате "dd.mm.yyyy"
+  day?: number; // Добавлен день
+  month?: number; // Добавлен месяц
+  year?: number; // Добавлен год
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
   isOpen,
   onClose,
-  content,
+  records,
   daysInMonth,
-  records
+  selectedYear,
+  selectedMonth
 }, ref) {
+
   const localRef = useRef<HTMLDivElement>(null);
 
   useImperativeHandle(ref, () => localRef.current!);
 
   if (!isOpen) return null;
 
+  // Функция для отображения записей по дням
   const renderDays = () => {
     return daysInMonth.map(day => {
       const dayRecords = records.filter(record => record.day === day);
+      console.log('DAY RECORDS >>> :', dayRecords)
       return (
         <div key={day} style={modalStyles.dayCell}>
           <span>{day}</span>
-          {dayRecords.length > 0 && (
+          {dayRecords.length > 0 ? (
             <div style={modalStyles.records}>
               {dayRecords.map(record => (
                 <div key={record.id} style={modalStyles.record}>
@@ -44,6 +49,8 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
                 </div>
               ))}
             </div>
+          ) : (
+            <div style={modalStyles.noRecords}>Нет записей</div>
           )}
         </div>
       );
@@ -54,11 +61,10 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
     <div style={modalStyles.overlay}>
       <div ref={localRef} style={modalStyles.modal}>
         <button onClick={onClose} style={modalStyles.closeButton}>×</button>
-        <div style={modalStyles.content}>
-          {content}
-          <div style={modalStyles.daysContainer}>
-            {renderDays()}
-          </div>
+        <h3>{selectedYear}</h3>
+        <h4>{selectedMonth}</h4>
+        <div style={modalStyles.daysContainer}>
+          {renderDays()}
         </div>
       </div>
     </div>
@@ -98,11 +104,6 @@ const modalStyles = {
     fontSize: '20px',
     cursor: 'pointer',
   },
-  content: {
-    flex: 1,
-    display: 'flex',
-    flexDirection: 'column',
-  },
   daysContainer: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -110,8 +111,8 @@ const modalStyles = {
     marginTop: '10px',
   },
   dayCell: {
-    width: '30px',
-    height: '30px',
+    width: '100px', // Увеличено для удобства
+    height: 'auto',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -120,6 +121,7 @@ const modalStyles = {
     borderRadius: '4px',
     position: 'relative' as 'relative',
     textAlign: 'center',
+    padding: '10px', // Добавлено для визуального улучшения
   },
   records: {
     marginTop: '5px',
@@ -134,6 +136,11 @@ const modalStyles = {
     padding: '2px 4px',
     margin: '2px 0',
     fontSize: '12px',
+  },
+  noRecords: {
+    marginTop: '5px',
+    fontSize: '12px',
+    color: '#666',
   },
 };
 

@@ -21,6 +21,7 @@ const VisualPage: React.FC = () => {
   const [recordsByMonth, setRecordsByMonth] = useState<{ [month: string]: Record[] }>({});
   const [daysByMonth, setDaysByMonth] = useState<{ [month: string]: number[] }>({});
   const { selectedCategory } = useCategoryStore();
+  console.log('RECORDS >>> : ', records);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -90,7 +91,8 @@ const VisualPage: React.FC = () => {
           <TimelineY 
             recordsByMonth={recordsByMonth}
             associationsByMonth={associationsByMonth}
-            daysByMonth={daysByMonth} 
+            daysByMonth={daysByMonth}
+            records={records} 
           />
         </div>
       </div>
