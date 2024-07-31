@@ -4,21 +4,62 @@ interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   content: React.ReactNode;
-  ref?: React.Ref<HTMLDivElement>; // Передача рефа
+  daysInMonth: number[];
+  records: Record[];
 }
 
-const Modal = forwardRef<HTMLDivElement, ModalProps>(({ isOpen, onClose, content }, ref) => {
+interface Record {
+  id: number;
+  title: string;
+  date: string;
+  day?: number;
+  month?: number;
+  year?: number;
+}
+
+const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
+  isOpen,
+  onClose,
+  content,
+  daysInMonth,
+  records
+}, ref) {
   const localRef = useRef<HTMLDivElement>(null);
 
   useImperativeHandle(ref, () => localRef.current!);
 
   if (!isOpen) return null;
 
+  const renderDays = () => {
+    return daysInMonth.map(day => {
+      const dayRecords = records.filter(record => record.day === day);
+      return (
+        <div key={day} style={modalStyles.dayCell}>
+          <span>{day}</span>
+          {dayRecords.length > 0 && (
+            <div style={modalStyles.records}>
+              {dayRecords.map(record => (
+                <div key={record.id} style={modalStyles.record}>
+                  {record.title}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      );
+    });
+  };
+
   return (
     <div style={modalStyles.overlay}>
       <div ref={localRef} style={modalStyles.modal}>
         <button onClick={onClose} style={modalStyles.closeButton}>×</button>
-        <div style={modalStyles.content}>{content}</div>
+        <div style={modalStyles.content}>
+          {content}
+          <div style={modalStyles.daysContainer}>
+            {renderDays()}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -61,6 +102,38 @@ const modalStyles = {
     flex: 1,
     display: 'flex',
     flexDirection: 'column',
+  },
+  daysContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '10px',
+    marginTop: '10px',
+  },
+  dayCell: {
+    width: '30px',
+    height: '30px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    border: '1px solid #ddd',
+    borderRadius: '4px',
+    position: 'relative' as 'relative',
+    textAlign: 'center',
+  },
+  records: {
+    marginTop: '5px',
+    fontSize: '12px',
+    color: '#00796b',
+    textOverflow: 'ellipsis',
+    overflow: 'hidden',
+  },
+  record: {
+    backgroundColor: '#e0f2f1',
+    borderRadius: '4px',
+    padding: '2px 4px',
+    margin: '2px 0',
+    fontSize: '12px',
   },
 };
 
