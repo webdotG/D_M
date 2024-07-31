@@ -19,24 +19,22 @@ const VisualPage: React.FC = () => {
   const [records, setRecords] = useState<Record[]>([]);
   const [associationsByMonth, setAssociationsByMonth] = useState<{ [month: string]: string[] }>({});
   const [recordsByMonth, setRecordsByMonth] = useState<{ [month: string]: Record[] }>({});
+  const [daysByMonth, setDaysByMonth] = useState<{ [month: string]: number[] }>({});
   const { selectedCategory } = useCategoryStore();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        console.log('Получение данных для категории:', selectedCategory);
-
         // Получение записей
         const data: Record[] = await loadDreams(selectedCategory);
-        console.log('Загруженные записи:', data);
         setRecords(data);
 
         // Подготовка ассоциаций по месяцам
         const associationsByMonth: { [month: string]: string[] } = {};
         const recordsByMonth: { [month: string]: Record[] } = {};
+        const daysByMonth: { [month: string]: number[] } = {};
 
         for (const record of data) {
-          console.log('Обработка записи:', record);
           const [day, month, year] = record.date.split('.').map(Number);
           const monthKey = `${month}-${year}`;
 
@@ -44,8 +42,6 @@ const VisualPage: React.FC = () => {
           record.day = day;
           record.month = month;
           record.year = year;
-
-          console.log('Ключ месяца:', monthKey);
 
           // Получение ассоциаций для каждой записи
           const recordAssociations = await fetchAssociationsById(selectedCategory, record.id);
@@ -57,9 +53,6 @@ const VisualPage: React.FC = () => {
               associationsByMonth[monthKey] = [];
             }
             associationsByMonth[monthKey].push(record.associations);
-            console.log(`Обновленные ассоциации для ${monthKey}:`, associationsByMonth[monthKey]);
-          } else {
-            console.log('Нет ассоциаций для записи:', record);
           }
 
           // Добавление записей по месяцам
@@ -67,14 +60,20 @@ const VisualPage: React.FC = () => {
             recordsByMonth[monthKey] = [];
           }
           recordsByMonth[monthKey].push(record);
-          console.log(`Обновленные записи для ${monthKey}:`, recordsByMonth[monthKey]);
+
+          // Добавление дня в массив дней по месяцу
+          if (!daysByMonth[monthKey]) {
+            daysByMonth[monthKey] = [];
+          }
+          if (!daysByMonth[monthKey].includes(day)) {
+            daysByMonth[monthKey].push(day);
+          }
         }
 
         setAssociationsByMonth(associationsByMonth);
         setRecordsByMonth(recordsByMonth);
+        setDaysByMonth(daysByMonth);
 
-        console.log('Итоговые associationsByMonth:', associationsByMonth);
-        console.log('Итоговые recordsByMonth:', recordsByMonth);
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
       }
@@ -88,7 +87,11 @@ const VisualPage: React.FC = () => {
       <h1 className={styles['title']}>Визуализация данных</h1>
       <div className={styles['timeline-wrapper']}>
         <div className={styles['timeline']}>
-          <TimelineY associationsByMonth={associationsByMonth} recordsByMonth={recordsByMonth} />
+          <TimelineY 
+            recordsByMonth={recordsByMonth}
+            associationsByMonth={associationsByMonth}
+            daysByMonth={daysByMonth} 
+          />
         </div>
       </div>
     </div>
