@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useRef, useEffect } from 'react';
 import Modal from './Modal';
+import styles from './TimelineY.module.scss'; 
 
 interface Record {
   id: number;
@@ -102,7 +103,7 @@ const TimelineY: React.FC<TimelineYProps> = ({
 
   return (
     <div>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', margin: '10px 0' }}>
+      <div className={styles.container}>
         {scale.map((date, index) => {
           const { year, month } = formatDate(date);
           const monthKey = `${date.getMonth() + 1}-${year}`;
@@ -112,29 +113,12 @@ const TimelineY: React.FC<TimelineYProps> = ({
             <div
               key={index}
               onClick={() => handleMonthClick(date)}
-              style={{
-                cursor: 'pointer',
-                padding: '10px',
-                margin: '5px',
-                border: '1px solid #ccc',
-                borderRadius: '4px',
-                backgroundColor: monthAssociations.length ? '#e0f7fa' : '#fff',
-                boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-                position: 'relative',
-                minWidth: '120px',
-                overflow: 'hidden'
-              }}
+              className={`${styles.monthItem} ${monthAssociations.length ? styles.monthItemWithAssociations : ''}`}
             >
               <span>{year}__{month}</span>
               {monthAssociations.length > 0 && (
                 <div
-                  style={{
-                    marginTop: '5px',
-                    fontSize: '12px',
-                    color: '#00796b',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
-                  }}
+                  className={styles.associations}
                   title={monthAssociations.join(', ')}
                 >
                   {monthAssociations.join(', ')}

@@ -1,12 +1,14 @@
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import Dream from '../dreams_memories/dreams_memories'; 
+import styles from './Modal.module.scss'; // Импорт стилей
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   records: Record[]; // Записи, которые нужно показать
   daysInMonth: number[]; // Дни, которые нужно показать
-  selectedMonth?: string | null,
-  selectedYear?: number | null
+  selectedMonth?: string | null;
+  selectedYear?: number | null;
 }
 
 interface Record {
@@ -16,6 +18,8 @@ interface Record {
   day?: number; // Добавлен день
   month?: number; // Добавлен месяц
   year?: number; // Добавлен год
+  content?: string; // Содержимое записи
+  isAnalyzed?: boolean; // Индикатор анализа записи
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
@@ -26,122 +30,81 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
   selectedYear,
   selectedMonth
 }, ref) {
-
+  const [selectedRecord, setSelectedRecord] = useState<Record | null>(null);
+  const [viewingRecord, setViewingRecord] = useState(false);
   const localRef = useRef<HTMLDivElement>(null);
 
   useImperativeHandle(ref, () => localRef.current!);
 
   if (!isOpen) return null;
 
-  // Функция для отображения записей по дням
+  const handleDayClick = (record: Record) => {
+    setSelectedRecord(record);
+    setViewingRecord(true);
+  };
+
+  const handleBackClick = () => {
+    setSelectedRecord(null);
+    setViewingRecord(false);
+  };
+
   const renderDays = () => {
     return daysInMonth.map(day => {
       const dayRecords = records.filter(record => record.day === day);
-      console.log('DAY RECORDS >>> :', dayRecords)
       return (
-        <div key={day} style={modalStyles.dayCell}>
+        <div key={day} className={styles.dayCell}>
           <span>{day}</span>
           {dayRecords.length > 0 ? (
-            <div style={modalStyles.records}>
+            <div className={styles.records}>
               {dayRecords.map(record => (
-                <div key={record.id} style={modalStyles.record}>
+                <div key={record.id} className={styles.record} onClick={() => handleDayClick(record)}>
                   {record.title}
                 </div>
               ))}
             </div>
           ) : (
-            <div style={modalStyles.noRecords}>Нет записей</div>
+            <div className={styles.noRecords}>Нет записей</div>
           )}
         </div>
       );
     });
   };
 
+  const renderSelectedRecord = () => {
+    if (!selectedRecord) return null;
+
+    return (
+      <>
+        <button onClick={handleBackClick} className={styles.backButton}>← Назад</button>
+        <Dream
+          id={selectedRecord.id}
+          category="" // Обновите, если у вас есть категория в записи
+          associations="" // Обновите, если у вас есть ассоциации в записи
+          title={selectedRecord.title}
+          content={selectedRecord.content || ""}
+          isAnalyzed={selectedRecord.isAnalyzed || false}
+          date={selectedRecord.date}
+        />
+      </>
+    );
+  };
+
   return (
-    <div style={modalStyles.overlay}>
-      <div ref={localRef} style={modalStyles.modal}>
-        <button onClick={onClose} style={modalStyles.closeButton}>×</button>
-        <h3>{selectedYear}</h3>
-        <h4>{selectedMonth}</h4>
-        <div style={modalStyles.daysContainer}>
-          {renderDays()}
-        </div>
+    <div className={styles.overlay}>
+      <div ref={localRef} className={styles.modal}>
+        <button onClick={onClose} className={styles.closeButton}>×</button>
+        {viewingRecord ? renderSelectedRecord() : (
+          <>
+            <h3>{selectedYear}</h3>
+            <h4>{selectedMonth}</h4>
+            <div className={styles.daysContainer}>
+              {renderDays()}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 });
-
-const modalStyles = {
-  overlay: {
-    position: 'fixed' as 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  modal: {
-    backgroundColor: 'white',
-    padding: '20px',
-    borderRadius: '8px',
-    width: '80%',
-    maxWidth: '600px',
-    height: '500px',
-    overflowY: 'auto',
-    position: 'relative' as 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  closeButton: {
-    position: 'absolute' as 'absolute',
-    top: '10px',
-    right: '10px',
-    border: 'none',
-    background: 'none',
-    fontSize: '20px',
-    cursor: 'pointer',
-  },
-  daysContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '10px',
-    marginTop: '10px',
-  },
-  dayCell: {
-    width: '100px', // Увеличено для удобства
-    height: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    border: '1px solid #ddd',
-    borderRadius: '4px',
-    position: 'relative' as 'relative',
-    textAlign: 'center',
-    padding: '10px', // Добавлено для визуального улучшения
-  },
-  records: {
-    marginTop: '5px',
-    fontSize: '12px',
-    color: '#00796b',
-    textOverflow: 'ellipsis',
-    overflow: 'hidden',
-  },
-  record: {
-    backgroundColor: '#e0f2f1',
-    borderRadius: '4px',
-    padding: '2px 4px',
-    margin: '2px 0',
-    fontSize: '12px',
-  },
-  noRecords: {
-    marginTop: '5px',
-    fontSize: '12px',
-    color: '#666',
-  },
-};
 
 export default Modal;
