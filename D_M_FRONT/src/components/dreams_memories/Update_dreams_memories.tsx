@@ -4,12 +4,10 @@ import { updateDreamMemories } from '../../API/updateDream';
 import { moveDreamToDifferentCategory } from '../../API/moveDreamCategory';
 import { deleteRecordById } from '../../API/deleteRecord';
 import { useCategoryStore } from '../../store';
-import { fetchAssociationsById } from '../../API/associationByID'; 
-import {fetchAssociations} from '../../API/associationALL'
-import {useTranslate} from '../../hooks/useTranslate'
+import { fetchAssociationsById } from '../../API/associationByID';
+import { useTranslate } from '../../hooks/useTranslate';
 
-
-type UpadteDreamProps = {
+type UpdateDreamProps = {
   id: number;
   category: string;
   associations: string;
@@ -29,8 +27,7 @@ const UpdateDream = ({
   isAnalyzed,
   date,
   onClose
-}: UpadteDreamProps) => {
-
+}: UpdateDreamProps) => {
   const [editedCategory, setEditedCategory] = useState(category);
   const [editedAssociations, setEditedAssociations] = useState(associations);
   const [editedTitle, setEditedTitle] = useState(title);
@@ -40,30 +37,19 @@ const UpdateDream = ({
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [tempCategory, setTempCategory] = useState(category);
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
-  // const [associationsList, setAssociationsList] = useState<string[]>([]);
-  // console.log('ASSOCIATION LIST >>>> ', associationsList)
-  
+
   const selectedCategory = useCategoryStore((state) => state.selectedCategory);
   const setSelectedCategory = useCategoryStore((state) => state.setSelectedCategory);
-  const { translateToLanguage: translate } = useTranslate(); 
+  const { translateToLanguage: translate } = useTranslate();
 
   useEffect(() => {
- 
     setEditedCategory(selectedCategory);
 
     const loadAssociations = async () => {
       try {
-        console.log(`Fetching associations for category: ${category}, id: ${id}`);
         const fetchedAssociations = await fetchAssociationsById(category, id);
-        console.log(`Fetched associations: ${fetchedAssociations}`);
         setEditedAssociations(fetchedAssociations);
-
-        const fetchedAssociationsALL = await fetchAssociations(category);
-        console.log(`Fetched associations: ${fetchedAssociationsALL}`);
-        // setAssociationsList(fetchedAssociations);
-        
       } catch (error) {
-        // setAssociationsList([]);
         console.error('Ошибка при загрузке ассоциаций:', error);
       }
     };
@@ -72,64 +58,53 @@ const UpdateDream = ({
   }, [id, category, selectedCategory]);
 
   const handleEditClick = async () => {
-    console.log("Входящие данные на редактирование : ", {
-      editedCategory,
-      editedAssociations,
-      editedTitle,
-      editedContent,
-      editedIsAnalyzed,
-      editedDate,
-    });
+    try {
+      const normalizeCategory = (category: string): string => {
+        if (category === 'dreams' || category === 'сны') return 'сны';
+        if (category === 'memories' || category === 'воспоминания') return 'воспоминания';
+        console.warn(`Неизвестная категория: ${category}`);
+        return 'воспоминания';
+      };
 
-      try {
-        let result;
-        // Проверка категории
-        const editedCategoryName = editedCategory === 'dreams' ? 'сны' : editedCategory === 'memories' ? 'воспоминания' : editedCategory;
-        const currentCategoryName = category === 'dreams' ? 'сны' : category === 'memories' ? 'воспоминания' : category;
-  
-        if (editedCategoryName !== currentCategoryName) {
-          console.log("Запись в категорию ... ", editedCategory);
-          console.log("Удаление из категории ... ", currentCategoryName);
-          result = await moveDreamToDifferentCategory(
-            id,
-            editedCategory,
-            editedAssociations,
-            editedTitle,
-            editedContent,
-            editedIsAnalyzed,
-            editedDate
-          );
-        } else {
-          console.log("Обновление ... ");
-          result = await updateDreamMemories(
-            id,
-            editedCategory,
-            editedAssociations,
-            editedTitle,
-            editedContent,
-            editedIsAnalyzed,
-            editedDate
-          );
-        }
+      const editedCategoryName = normalizeCategory(editedCategory);
+      const currentCategoryName = normalizeCategory(category);
 
-        console.log("Update Result:", result);
-        setSelectedCategory(result.category || editedCategory);
-       
-        window.location.reload();
-      } catch (error) {
-        console.error('Ошибка при редактировании текущей записи:', error);
+      let result;
+      if (editedCategoryName !== currentCategoryName) {
+        result = await moveDreamToDifferentCategory(
+          id,
+          editedCategory,
+          editedAssociations,
+          editedTitle,
+          editedContent,
+          editedIsAnalyzed,
+          editedDate
+        );
+      } else {
+        result = await updateDreamMemories(
+          id,
+          editedCategory,
+          editedAssociations,
+          editedTitle,
+          editedContent,
+          editedIsAnalyzed,
+          editedDate
+        );
       }
-    
+
+      setSelectedCategory(result.category || editedCategory);
+      window.location.reload();
+    } catch (error) {
+      console.error('Ошибка при редактировании текущей записи:', error);
+    }
   };
 
   const handleAnalysisClick = () => {
-    console.log("Analysis Clicked. Is Analyzed:", editedIsAnalyzed);
     setEditedIsAnalyzed(!editedIsAnalyzed);
-};
+  };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newCategory = e.target.value;
-    console.log("Категория изменена на : ", newCategory);
     if (newCategory !== editedCategory) {
       setTempCategory(newCategory);
       setShowConfirmation(true);
@@ -141,13 +116,11 @@ const UpdateDream = ({
     setShowConfirmation(false);
   };
 
-  const handleDeleteClick = async () => {
-    // console.log("Delete Clicked");
+  const handleDeleteClick = () => {
     setShowDeleteConfirmation(true);
   };
 
   const confirmDelete = async () => {
-    // console.log("Delete Confirmed");
     try {
       await deleteRecordById(selectedCategory, id);
       window.location.reload();
@@ -159,7 +132,6 @@ const UpdateDream = ({
   };
 
   const cancelDelete = () => {
-    // console.log("Delete Canceled");
     setShowDeleteConfirmation(false);
   };
 

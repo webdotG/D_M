@@ -30,7 +30,8 @@ const TimelineY: React.FC<TimelineYProps> = ({
   const [selectedMonthAssociations, setSelectedMonthAssociations] = useState<string[]>([]);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [expandedYears, setExpandedYears] = useState<{ [key: number]: boolean }>({});
-  const [selectedSeasons, setSelectedSeasons] = useState<{ [year: number]: string | null }>({});
+  const [selectedSeasons, setSelectedSeasons] = useState<{ [year: number]: string[] }>({});
+ 
   const modalRef = useRef<HTMLDivElement>(null);
 
   const startDate = new Date('1989-06-25');
@@ -126,19 +127,27 @@ const TimelineY: React.FC<TimelineYProps> = ({
 
   const toggleYear = (year: number) => {
     setExpandedYears(prev => ({ ...prev, [year]: !prev[year] }));
-    setSelectedSeasons(prev => ({ ...prev, [year]: null })); 
   };
 
   const handleSeasonClick = (year: number, season: string) => {
-    setSelectedSeasons(prev => ({ ...prev, [year]: prev[year] === season ? null : season }));
+    setSelectedSeasons(prev => {
+      const currentSeasons = prev[year] || [];
+      const seasonIndex = currentSeasons.indexOf(season);
+      if (seasonIndex === -1) {
+        // Добавляем сезон, если его нет в текущем списке
+        return { ...prev, [year]: [...currentSeasons, season] };
+      } else {
+        // Удаляем сезон, если он уже есть
+        return { ...prev, [year]: currentSeasons.filter(s => s !== season) };
+      }
+    });
   };
 
   const renderSeasons = (year: number) => {
-    const selectedSeason = selectedSeasons[year];
+    const selectedSeasonsForYear = selectedSeasons[year] || [];
     return Object.keys(seasons).map(season => (
-      <div key={season} className={`${styles.season} ${selectedSeason === season ? seasonClasses[season] : ''}`}>
-        
-        {selectedSeason === season && (
+      <div key={season} className={`${styles.season} ${selectedSeasonsForYear.includes(season) ? seasonClasses[season] : ''}`}>
+        {selectedSeasonsForYear.includes(season) && (
           <div className={styles.monthsContainer}>
             {scale.filter(date => date.getFullYear() === year && seasons[season].includes(date.getMonth()))
                   .map(date => {
@@ -167,7 +176,6 @@ const TimelineY: React.FC<TimelineYProps> = ({
           className={styles.seasonButton}>
           {seasonNames[season]}
         </button>
-
       </div>
     ));
   };
@@ -176,7 +184,6 @@ const TimelineY: React.FC<TimelineYProps> = ({
     <div className={styles.timelineContainer}>
       {Array.from(new Set(scale.map(date => date.getFullYear()))).map(year => (
         <div key={year} className={styles.yearContainer}>
-          
           {expandedYears[year] && renderSeasons(year)}
           <button onClick={() => toggleYear(year)} 
             className={styles.yearButton}>

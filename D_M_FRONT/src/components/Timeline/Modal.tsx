@@ -1,6 +1,8 @@
 import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
-import Dream from '../dreams_memories/dreams_memories'; 
-import styles from './Modal.module.scss'; // Импорт стилей
+import Dream from '../dreams_memories/dreams_memories';
+import styles from './Modal.module.scss';
+import { useCategoryStore } from '../../store'; 
+import { fetchAssociationsById } from '../../API/associationByID'; 
 
 interface ModalProps {
   isOpen: boolean;
@@ -15,11 +17,11 @@ interface Record {
   id: number;
   title: string;
   date: string; // Дата в формате "dd.mm.yyyy"
-  day?: number; // Добавлен день
-  month?: number; // Добавлен месяц
-  year?: number; // Добавлен год
-  content?: string; // Содержимое записи
-  isAnalyzed?: boolean; // Индикатор анализа записи
+  day?: number; 
+  month?: number; 
+  year?: number; 
+  content?: string; 
+  isAnalyzed?: boolean; 
 }
 
 const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
@@ -32,20 +34,33 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
 }, ref) {
   const [selectedRecord, setSelectedRecord] = useState<Record | null>(null);
   const [viewingRecord, setViewingRecord] = useState(false);
+  const [associations, setAssociations] = useState<string>("");
   const localRef = useRef<HTMLDivElement>(null);
+
+  const selectedCategory = useCategoryStore((state) => state.selectedCategory); 
 
   useImperativeHandle(ref, () => localRef.current!);
 
   if (!isOpen) return null;
 
-  const handleDayClick = (record: Record) => {
+  const handleDayClick = async (record: Record) => {
     setSelectedRecord(record);
     setViewingRecord(true);
+
+    // Загружаем ассоциации для выбранной записи
+    try {
+      const fetchedAssociations = await fetchAssociationsById(selectedCategory, record.id);
+      setAssociations(fetchedAssociations);
+    } catch (error) {
+      console.error('Ошибка при загрузке ассоциаций:', error);
+      setAssociations("");
+    }
   };
 
   const handleBackClick = () => {
     setSelectedRecord(null);
     setViewingRecord(false);
+    setAssociations(""); 
   };
 
   const renderDays = () => {
@@ -78,8 +93,8 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
         <button onClick={handleBackClick} className={styles.backButton}>← Назад</button>
         <Dream
           id={selectedRecord.id}
-          category="" // Обновите, если у вас есть категория в записи
-          associations="" // Обновите, если у вас есть ассоциации в записи
+          category={selectedCategory} 
+          associations={associations} 
           title={selectedRecord.title}
           content={selectedRecord.content || ""}
           isAnalyzed={selectedRecord.isAnalyzed || false}
