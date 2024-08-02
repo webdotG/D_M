@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { useNavigate } from 'react-router-dom';
 import styles from './Add_dreams_memories.module.scss';
 import { fetchAssociations } from '../../API/associationALL';
 import { AddRecord } from '../../API/AddRecord';
-import {useTranslate} from '../../hooks/useTranslate'
-
+import { useTranslate } from '../../hooks/useTranslate';
+import { useCategoryStore } from '../../store'; 
+import { useNavigate } from 'react-router-dom';
 
 const AddDreams: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [isAnalyzed, setIsAnalyzed] = useState<boolean>(false);
-  const [category, setCategory] = useState<string>('сны');
-  const [date, setDate] = useState<Date | null>(null);
+  const [date, setDate] = useState<string>(''); // Используйте string для даты
   const [associationsList, setAssociationsList] = useState<string[]>([]);
   const [selectedAssociation, setSelectedAssociation] = useState<string>('');
   const [newAssociation, setNewAssociation] = useState<string>('');
   const [isAddingNewAssociation, setIsAddingNewAssociation] = useState<boolean>(false);
+
+  const { selectedCategory, setSelectedCategory } = useCategoryStore();
+  const [category, setCategory] = useState<string>(selectedCategory); // Инициализируйте состояние из хука
 
   const navigate = useNavigate();
   const { translateToLanguage } = useTranslate();
@@ -55,7 +55,7 @@ const AddDreams: React.FC = () => {
 
   const handleCategoryChange = (newCategory: string) => {
     setCategory(newCategory);
-    fetchAndSetAssociations(newCategory);
+    setSelectedCategory(newCategory); // Обновите категорию в хранилище
   };
 
   const fetchAndSetAssociations = async (newCategory: string) => {
@@ -73,8 +73,8 @@ const AddDreams: React.FC = () => {
     }
   };
 
-  const handleDateChange = (newDate: Date | null) => {
-    setDate(newDate);
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(event.target.value);
   };
 
   const handleAssociationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -87,14 +87,6 @@ const AddDreams: React.FC = () => {
     setNewAssociation(event.target.value);
   };
 
-  const formatDateToDDMMYYYY = (date: Date | null): string => {
-    if (!date) return '';
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    return `${day}.${month}.${year}`;
-  };
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -103,11 +95,11 @@ const AddDreams: React.FC = () => {
       : selectedAssociation;
 
     const newDream = {
-      title: title || ' ... ',  // Передаем пустую строку, если значение отсутствует
+      title: title || ' ... ',
       content: content || ' ... ',  
       isAnalyzed,
       category,
-      date: date ? formatDateToDDMMYYYY(date) : '',  
+      date: date || '',
       associations: associations || ' ... ',  
       video: '', 
       img: ''
@@ -119,7 +111,7 @@ const AddDreams: React.FC = () => {
       setTitle('');
       setContent('');
       setIsAnalyzed(false);
-      setDate(null);
+      setDate('');
       setSelectedAssociation('');
       setNewAssociation('');
       setIsAddingNewAssociation(false);
@@ -135,7 +127,7 @@ const AddDreams: React.FC = () => {
     setContent('');
     setIsAnalyzed(false);
     setCategory('сны');
-    setDate(null);
+    setDate('');
     setSelectedAssociation('');
     setNewAssociation('');
     setIsAddingNewAssociation(false);
@@ -144,10 +136,8 @@ const AddDreams: React.FC = () => {
 
   return (
     <>
-  
       <div className={styles['add-dreams-container']}>
         <form onSubmit={handleSubmit} className={styles['add-dreams-form']}>
-
           <div className={styles['form-group']}>
             <label htmlFor="category">
               <p>{translateToLanguage('Записываем')}</p>
@@ -157,12 +147,8 @@ const AddDreams: React.FC = () => {
               value={category}
               onChange={(e) => handleCategoryChange(e.target.value)}
             >
-              <option value="сны">
-              {translateToLanguage('Сон')}
-              </option>
-              <option value="воспоминания">
-              {translateToLanguage('Воспоминание')}
-              </option>
+              <option value="сны">{translateToLanguage('Сон')}</option>
+              <option value="воспоминания">{translateToLanguage('Воспоминание')}</option>
             </select>
           </div>
 
@@ -175,7 +161,6 @@ const AddDreams: React.FC = () => {
               id="title"
               value={title}
               onChange={handleTitleChange}
-            
             />
           </div>
 
@@ -186,7 +171,7 @@ const AddDreams: React.FC = () => {
             <textarea
               id="content"
               value={content}
-              onChange={handleContentChange} 
+              onChange={handleContentChange}
             />
           </div>
 
@@ -199,18 +184,17 @@ const AddDreams: React.FC = () => {
                 type="text"
                 value={newAssociation}
                 onChange={handleNewAssociationChange}
-                placeholder="Новая ассоциация"  
+                placeholder="Новая ассоциация"
               />
             ) : (
               <select
                 id="associations"
                 value={selectedAssociation}
                 onChange={handleAssociationChange}
-                
               >
                 <option value="">
                   <p>{translateToLanguage('Варианты')}</p>
-                  </option>
+                </option>
                 {associationsList.map((association, index) => (
                   <option key={index} value={association}>
                     {association}
@@ -218,7 +202,7 @@ const AddDreams: React.FC = () => {
                 ))}
                 <option value="new">
                   <p>{translateToLanguage('Записать новую ассоциацию')}</p>
-                  </option>
+                </option>
               </select>
             )}
           </div>
@@ -238,19 +222,17 @@ const AddDreams: React.FC = () => {
             <label htmlFor="date">
               <p>{translateToLanguage('Дата')}</p>
             </label>
-            <DatePicker
+            <input
+              type="date"
               id="date"
-              selected={date}
+              value={date}
               onChange={handleDateChange}
-              dateFormat="dd/MM/yyyy"
-              isClearable
-              placeholderText="Выберите дату"
-         
+              placeholder="Выберите дату"
             />
           </div>
 
           <div className={styles['form-group']}>
-          <button type="submit" className={styles['submit-button']}>
+            <button type="submit" className={styles['submit-button']}>
               <p>{translateToLanguage('Сохранить')}</p>
             </button> 
             <button type="button" className={styles['reset-button']} onClick={handleReset}>
@@ -259,7 +241,7 @@ const AddDreams: React.FC = () => {
           </div>
         </form>
       </div>
-      {/* <Footer /> */}
+      
     </>
   );
 };

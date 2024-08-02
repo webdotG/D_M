@@ -94,25 +94,14 @@ const VisualPage: React.FC = () => {
           }
           recordsByMonth[monthKey].push(record);
 
-          // Добавление дня в массив дней по месяцу
-          if (!daysByMonth[monthKey]) {
-            daysByMonth[monthKey] = [];
-            console.log('Дни по месяцам (daysByMonth) >>> : ', daysByMonth[monthKey]);
-          }
-          if (!daysByMonth[monthKey].includes(day)) {
-            daysByMonth[monthKey].push(day);
-            console.log(`Добавлен день ${day} в массив дней по месяцу ${monthKey}`);
-          }
         }
 
         console.log('Итоговые ассоциации по месяцам (associationsByMonth) >>> : ', associationsByMonth);
         console.log('Итоговые записи по месяцам (recordsByMonth) >>> : ', recordsByMonth);
-        console.log('Итоговые дни по месяцам (daysByMonth) >>> : ', daysByMonth);
-
+       
         setAssociationsByMonth(associationsByMonth);
         setRecordsByMonth(recordsByMonth);
-        setDaysByMonth(daysByMonth);
-
+        
       } catch (error) {
         console.error('Ошибка загрузки данных:', error);
       }
@@ -129,7 +118,6 @@ const VisualPage: React.FC = () => {
           <TimelineY 
             recordsByMonth={recordsByMonth}
             associationsByMonth={associationsByMonth}
-            daysByMonth={daysByMonth}
             records={records} 
           />
         </div>

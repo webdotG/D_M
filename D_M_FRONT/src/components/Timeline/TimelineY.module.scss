@@ -106,18 +106,25 @@
   text-overflow: ellipsis;
 }
 
-.fallSeason .monthsContainer {
+
+.winterNewEar .monthsContainer {
+  background-color: blue; 
+}
+
+.winterOldEar .monthsContainer {
+  background-color: lightblue; 
+}
+
+
+.fall .monthsContainer {
   background-color: red;
 }
 
-.summerSeason .monthsContainer {
+.summer .monthsContainer {
   background-color: yellow;
 }
 
-.springSeason .monthsContainer {
+.spring .monthsContainer {
   background-color: green;
 }
 
-.winterSeason .monthsContainer {
-  background-color: blue;
-}
