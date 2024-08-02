@@ -66,7 +66,7 @@ export default function WelcomePage() {
             <button onClick={goToPreviousSlide}
               disabled={currentSlide === 0}
               className={currentSlide === 0 ? style['opacity'] : ''}>
-              <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+              <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	 viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M48.252,69.253c-2.271,0-4.405-0.884-6.011-2.489L17.736,42.258c-1.646-1.645-2.546-3.921-2.479-6.255
@@ -85,7 +85,7 @@ export default function WelcomePage() {
               <button onClick={createAccount}>Создать аккаунт</button>
              : 
               <button onClick={goToNextSlide} className={style['next-btn']}>
-                <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+                <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	 viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M48.252,69.253c-2.271,0-4.405-0.884-6.011-2.489L17.736,42.258c-1.646-1.645-2.546-3.921-2.479-6.255
@@ -104,7 +104,7 @@ export default function WelcomePage() {
         </div>
         <button className={style['skip-button']} onClick={skipSlide}>
           пропустить
-        <svg fill="#000000" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
+        <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" 
 	 viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
 <g>
 	<path d="M48.252,69.253c-2.271,0-4.405-0.884-6.011-2.489L17.736,42.258c-1.646-1.645-2.546-3.921-2.479-6.255

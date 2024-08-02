@@ -1,34 +1,114 @@
-/* TimelineY.module.scss */
+.timelineContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
-.container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 10px 0;
-  }
-  
-  .monthItem {
-    cursor: pointer;
-    padding: 10px;
-    margin: 5px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+.yearContainer {
+  width: 260px;
+  padding-left: 15px;
+  padding-right: 15px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.yearButton {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 15px;
+
+  .yearButton__content {
     position: relative;
-    min-width: 120px;
-    overflow: hidden;
+
+    svg {
+      width: 14px;
+      height: 14px;
+      margin-left: 5px;
+      transform: rotate(90deg);
+      position: absolute;
+      left: -50px;
+      top: 2px;
+    }
   }
-  
-  .monthItemWithAssociations {
-    background-color: #e0f7fa;
-  }
-  
-  .associations {
-    margin-top: 5px;
-    font-size: 12px;
-    color: #00796b;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
+}
+
+.season {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.seasonButton {
+  width: 125px;
+  padding: 4px 8px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.monthsContainer {
+  margin-top: 5px;
+  display: flex;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.monthItem {
+  width: 90px;
+  padding: 4px 6px;
+  margin: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.monthItemWithAssociations {
+  background-color: #e0f7fa;
+}
+
+.associations {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #00796b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fallSeason .monthsContainer {
+  background-color: red;
+}
+
+.summerSeason .monthsContainer {
+  background-color: yellow;
+}
+
+.springSeason .monthsContainer {
+  background-color: green;
+}
+
+.winterSeason .monthsContainer {
+  background-color: blue;
+}
