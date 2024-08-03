@@ -136,13 +136,6 @@ const TimelineY: React.FC<TimelineYProps> = ({
     winterOldEar: 'Зима',
   };
 
-  const seasonClasses = {
-    fall: styles.fallSeason,
-    summer: styles.summerSeason,
-    spring: styles.springSeason,
-    winter: styles.winterSeason
-  };
-
   const toggleYear = (year: number) => {
     setExpandedYears(prev => ({ ...prev, [year]: !prev[year] }));
   };
@@ -163,6 +156,37 @@ const TimelineY: React.FC<TimelineYProps> = ({
 
   const renderSeasons = (year: number) => {
     const selectedSeasonsForYear = selectedSeasons[year] || [];
+  
+    // Создаем объект для хранения количества записей по месяцам
+    const monthRecordCounts: { [key: string]: number } = {};
+  
+    // Подсчитываем записи для каждого месяца
+    Object.keys(recordsByMonth).forEach(monthKey => {
+      const [month, yearStr] = monthKey.split('-');
+      if (parseInt(yearStr) === year) {
+        monthRecordCounts[monthKey] = recordsByMonth[monthKey].length;
+      }
+    });
+  
+    // Подсчитываем общее количество записей для сезона
+    const seasonRecordCounts: { [key: string]: number } = {};
+  
+    Object.keys(seasons).forEach(season => {
+      const seasonMonths = seasons[season];
+      const totalRecords = scale
+        .filter(date => {
+          const dateYear = date.getFullYear();
+          const dateMonth = date.getMonth();
+          return dateYear === year && seasonMonths.includes(dateMonth);
+        })
+        .reduce((total, date) => {
+          const monthKey = `${date.getMonth() + 1}-${year}`;
+          return total + (monthRecordCounts[monthKey] || 0);
+        }, 0);
+  
+      seasonRecordCounts[season] = totalRecords;
+    });
+  
     return Object.keys(seasons).map(season => {
       const seasonMonths = seasons[season];
       const isSeasonVisible = scale.some(date => {
@@ -177,18 +201,30 @@ const TimelineY: React.FC<TimelineYProps> = ({
       let seasonClass = styles.season; // базовый класс
   
       // Присвойте специфичный класс для сезона
-      if (season === 'winter') {
-        // Здесь вы можете выбрать какой именно зимний класс использовать
-        seasonClass = selectedSeasonsForYear.includes('winterNewEar') 
-          ? styles.winterNewEar 
+      if (season === 'winterNewEar') {
+        seasonClass = selectedSeasonsForYear.includes('winterNewEar')
+          ? styles.winterNewEar
           : styles.winterOldEar;
       } else {
-        // Присвойте другой класс в зависимости от сезона
         seasonClass = styles[season];
       }
   
+      // Общее количество записей для сезона
+      const totalRecords = seasonRecordCounts[season] || 0;
+  
       return (
         <div key={season} className={seasonClass}>
+        
+          <button onClick={() => handleSeasonClick(year, season)} 
+          className={styles.seasonButton}>
+            {seasonNames[season]}
+            {totalRecords > 0 && (
+              <span className={styles.recordCount}>
+                {totalRecords}
+             </span>
+            )}
+          </button>
+        
           {selectedSeasonsForYear.includes(season) && (
             <div className={styles.monthsContainer}>
               {scale
@@ -198,19 +234,19 @@ const TimelineY: React.FC<TimelineYProps> = ({
                   return dateYear === year && seasonMonths.includes(dateMonth);
                 })
                 .map(date => {
-                  const { month } = formatDate(date);
+                  const month = formatDate(date).month;
                   const monthKey = `${date.getMonth() + 1}-${year}`;
-                  const monthAssociations = associationsByMonth[monthKey] || [];
+                  const count = monthRecordCounts[monthKey] || 0;
                   return (
                     <div
                       key={monthKey}
                       onClick={() => handleMonthClick(date)}
-                      className={`${styles.monthItem} ${monthAssociations.length ? styles.monthItemWithAssociations : ''}`}
+                      className={`${styles.monthItem} ${count > 0 ? styles.monthItemWithAssociations : ''}`}
                     >
-                      <span>{month}</span>
-                      {monthAssociations.length > 0 && (
-                        <div className={styles.associations} title={monthAssociations.join(', ')}>
-                          {monthAssociations.join(', ')}
+                      <span>{month} {count > 0 && `${count}`}</span>
+                      {count > 0 && (
+                        <div className={styles.associations} title={associationsByMonth[monthKey]?.join(', ') || ''}>
+                          {associationsByMonth[monthKey]?.join(', ')}
                         </div>
                       )}
                     </div>
@@ -218,13 +254,20 @@ const TimelineY: React.FC<TimelineYProps> = ({
                 })}
             </div>
           )}
-          <button onClick={() => handleSeasonClick(year, season)} className={styles.seasonButton}>
-            {seasonNames[season]}
-          </button>
+          
         </div>
       );
     });
   };
+  
+  const getYearRecordCount = (year: number) => {
+    return scale
+      .filter(date => date.getFullYear() === year)
+      .reduce((total, date) => {
+        const monthKey = `${date.getMonth() + 1}-${year}`;
+        return total + (recordsByMonth[monthKey]?.length || 0);
+      }, 0);
+  };  
   
   return (
     <div className={styles.timelineContainer}>
@@ -248,9 +291,17 @@ const TimelineY: React.FC<TimelineYProps> = ({
                   </g>
                 </svg>
               </span> 
-              : year
-            }
-          </button>
+            :
+            <span className={styles.yearButton__content}>
+              {year}
+              {getYearRecordCount(year) > 0 && (
+                <span className={styles.recordCount}>
+                  {/* {`${getYearRecordCount(year)}`} */}
+                </span>
+              )}
+            </span>
+          }
+           </button>
         </div>
       ))}
 
