@@ -51,10 +51,17 @@
 }
 
 .season {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  
 }
+  .winterNewEar,
+  .spring ,
+  .summer,
+  .fall ,
+  .winterOldEar{
+      display: flex;
+      flex-direction: column-reverse;
+      align-items: center;
+  }
 
 .seasonButton {
   width: 125px;
@@ -158,9 +165,20 @@
       border-radius: 0;
       position: relative;
 
+      .yearButton__content{
+        display: flex;
+        svg{
+          width: 35px;
+          height: 25px;
+          left: 175px;
+        }
+      }
       .recordCount{
           margin-left: 25px;
-          
+      }
+
+      &:hover{
+        opacity: 0.5;
       }
     }
 
@@ -171,8 +189,10 @@
     .winterOldEar{
       width: 100%;
       display: flex;
+      flex-direction: row;
       padding-top: 5px;
       padding-bottom: 5px;
+      padding-left: 15px;
       border-radius: 4px;
 
       .seasonButton{
@@ -189,6 +209,10 @@
         .recordCount{
           margin-left: 75px;
         }
+
+        &:hover{
+          opacity: 0.5;
+        }
       }
 
       .monthsContainer{
@@ -199,14 +223,13 @@
         margin: 0;
       
         .monthItem{
+          padding-bottom: 3px;
           margin-top: 0;
           margin-bottom: 0;
           border: none;
           border-radius: 0;
-          box-shadow: 0 0px 0px rgba(0,0,0,0.1);
+          box-shadow: 1px 2px 0px rgba(0,0,0,0.1);
           position: relative;
-          border: 1px solid black;
-          border-radius: 6px;
           background: transparent;
           
           span{
@@ -215,6 +238,7 @@
           .associations{
             border: none;
           }
+         
         }
 
         .monthItemWithAssociations{
@@ -227,7 +251,14 @@
 
           .associations{
             color: black;
+            
+            &:hover{
+              opacity: 0.5;
+              border-bottom: 1px solid black;
+            border-radius: 0;
+            }
           }
+         
         }
       }
       
