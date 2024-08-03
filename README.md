@@ -19,6 +19,7 @@ layout:
 
 # 🤗 Dreams\&Memories
 
+
 ## Why How What
 
 This app I had the idea to write after I realized that I knew very little about my grandmother. So I decided to record her stories that she told me. I wanted to learn as much as possible about her, but unfortunately, the time I spent with her was not enough for her to fully recall the stories from her life.
@@ -30,6 +31,8 @@ While I was exploring different options from the technologies already available 
 By the time I realized that I wanted to write my own app, I had the idea of recording not only stories and memories but also dreams and the possibility to analyze them.
 
 That's how it turned out, and I'm happy with it.
+
+[Read the beauty documentation on GitBook](https://dotgs-personal-organization.gitbook.io/d-and-m/)
 
 {% hint style="success" %}
 **Personal History:** Easily find, remember, and share your personal stories.
