@@ -38,6 +38,9 @@ const MyPage: React.FC = () => {
                 <button className={style['logout-button']} onClick={handleLogout}>
                     Выйти
                 </button>
+                <a href='https://dotgs-personal-organization.gitbook.io/d-and-m' >
+                    Документация
+                </a>
             </div>
             <Footer />
         </>

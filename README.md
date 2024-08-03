@@ -14,5 +14,5 @@ By the time I realized that I wanted to write my own app, I had the idea of reco
 
 That's how it turned out, and I'm happy with it.
 
-## Read the beauty documentation on GitBook (https://dotgs-personal-organization.gitbook.io/d-and-m/)
+[Read the beauty documentation on GitBook] (https://dotgs-personal-organization.gitbook.io/d-and-m/)
 
