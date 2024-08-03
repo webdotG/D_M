@@ -22,7 +22,7 @@ const YearComponent: React.FC<YearComponentProps> = ({
       {expanded ? (
         <span className={styles.yearButton__content}>
           Свернуть {year} год
-          <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
+          <svg fill='' xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 72 72" enableBackground="new 0 0 72 72" xmlSpace="preserve">
             <g>
               <path d="M48.252,69.253c-2.271,0-4.405-0.884-6.011-2.489L17.736,42.258c-1.646-1.645-2.546-3.921-2.479-6.255
                 c-0.068-2.337,0.833-4.614,2.479-6.261L42.242,5.236c1.605-1.605,3.739-2.489,6.01-2.489c2.271,0,4.405,0.884,6.01,2.489
