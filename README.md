@@ -2,7 +2,7 @@
 description: '"Dreams and Memories" about and doc'
 ---
 
-# Dreams\&Memories
+# 🤗 Dreams\&Memories
 
 ## Why How What
 
@@ -16,18 +16,36 @@ By the time I realized that I wanted to write my own app, I had the idea of reco
 
 That's how it turned out, and I'm happy with it.
 
-## Key Features
+{% hint style="success" %}
+**Personal History:** Easily find, remember, and share your personal stories.
+{% endhint %}
 
-* **Personal History:** Easily find, remember, and share your personal stories.
-* **Dream Analysis:** Wonder why you dream what you dream and self-analyze.
-* **Amazing GPT Tool:** Create your own movie based on your stories or talk to a virtual assistant.
+{% hint style="success" %}
+**Dream Analysis:** Wonder why you dream what you dream and self-analyze.
+{% endhint %}
 
-## Getting Started
+{% hint style="success" %}
+**Amazing GPT  Tool:** Create your own movie based on your stories or talk to a virtual assistant.
+{% endhint %}
 
-To get started with this project, follow the instructions in the [Getting Started](GettingStarted.md) guide.
+## How To Start
+
+If you want to see the project on your computer and or want to participate in its upgrade. follow the instructions in the [Getting Started](GettingStarted.md) guide.
 
 ## Documentation
 
-* [Architecture Concepts](ArchitectureConcepts.md)
-* [Database](Database.md)
-* [API Documentation](APIDocumentation.md)
+{% content-ref url="architecture-concepts.md" %}
+[architecture-concepts.md](architecture-concepts.md)
+{% endcontent-ref %}
+
+{% content-ref url="database.md" %}
+[database.md](database.md)
+{% endcontent-ref %}
+
+{% content-ref url="api-documentation.md" %}
+[api-documentation.md](api-documentation.md)
+{% endcontent-ref %}
+
+{% content-ref url="security.md" %}
+[security.md](security.md)
+{% endcontent-ref %}
