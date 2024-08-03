@@ -1,21 +1,3 @@
----
-description: '"Dreams and Memories" about and doc'
-coverY: -97
-layout:
-  cover:
-    visible: true
-    size: full
-  title:
-    visible: true
-  description:
-    visible: true
-  tableOfContents:
-    visible: true
-  outline:
-    visible: true
-  pagination:
-    visible: true
----
 
 # 🤗 Dreams\&Memories
 
@@ -32,38 +14,5 @@ By the time I realized that I wanted to write my own app, I had the idea of reco
 
 That's how it turned out, and I'm happy with it.
 
-[Read the beauty documentation on GitBook](https://dotgs-personal-organization.gitbook.io/d-and-m/)
+## Read the beauty documentation on GitBook (https://dotgs-personal-organization.gitbook.io/d-and-m/)
 
-{% hint style="success" %}
-**Personal History:** Easily find, remember, and share your personal stories.
-{% endhint %}
-
-{% hint style="success" %}
-**Dream Analysis:** Wonder why you dream what you dream and self-analyze.
-{% endhint %}
-
-{% hint style="success" %}
-**Amazing GPT  Tool:** Create your own movie based on your stories or talk to a virtual assistant.
-{% endhint %}
-
-## How To Start
-
-If you want to see the project on your computer and or want to participate in its upgrade. follow the instructions in the [Getting Started](GettingStarted.md) guide.
-
-## Documentation
-
-{% content-ref url="architecture-concepts.md" %}
-[architecture-concepts.md](architecture-concepts.md)
-{% endcontent-ref %}
-
-{% content-ref url="database.md" %}
-[database.md](database.md)
-{% endcontent-ref %}
-
-{% content-ref url="api-documentation.md" %}
-[api-documentation.md](api-documentation.md)
-{% endcontent-ref %}
-
-{% content-ref url="security.md" %}
-[security.md](security.md)
-{% endcontent-ref %}
