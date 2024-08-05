@@ -6,8 +6,9 @@ import HomePage from './PAGES/home/home';
 import Layout from './layout/layout';
 import AddDM from './components/dreams_memories/Add_dreams_memories';
 import MyPage from './PAGES/myPage/myPage';
-import VisualPage from './PAGES/Visual/VisualPage';
+import VisualPage from './PAGES/visual/VisualPage';
 import ThemeProvider from './layout/themeProvider';
+import ChatPage from './PAGES/chat/chatPage';
 
 function App() {
   
@@ -23,6 +24,7 @@ function App() {
       <Route path="/D_M/add" element={isAuthenticated ?<Layout> <AddDM /> </Layout>: <Navigate to="/D_M/welcome" />} />
       <Route path="/D_M/visualPage" element={isAuthenticated ? <Layout><VisualPage/></Layout> : <Navigate to="/D_M/welcome" />} />
       <Route path="/D_M/myPage" element={isAuthenticated ? <Layout> <MyPage /> </Layout> : <Navigate to="/D_M/welcome" />} />
+      <Route path="/D_M/chatPage" element={isAuthenticated ? <Layout> <ChatPage /> </Layout> : <Navigate to="/D_M/welcome" />} />
     </Routes>
     </ThemeProvider>
   );
