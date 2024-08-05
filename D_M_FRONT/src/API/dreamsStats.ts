@@ -9,7 +9,7 @@ export const fetchDreamStats = async (category: string): Promise<{ total: number
     }
 
     try {
-        console.log('GET /api/dreams/statistic category = ', category);
+        // console.log('GET /api/dreams/statistic category = ', category);
 
         const response = await axios.post(`/api/dreams/statistic`, {category }, {
             headers: {
@@ -21,7 +21,7 @@ export const fetchDreamStats = async (category: string): Promise<{ total: number
             throw new Error(`Error loading records for category ${category}: Status ${response.status}`);
         }
 
-        console.log('RESPONSE данные загружены = ', response);
+        // console.log('RESPONSE данные загружены = ', response);
         return response.data;
     } catch (error) {
         console.error('Failed to load records:', error);

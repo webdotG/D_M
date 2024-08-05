@@ -9,11 +9,11 @@ import MyPage from './PAGES/myPage/myPage';
 import VisualPage from './PAGES/Visual/VisualPage';
 import ThemeProvider from './layout/themeProvider';
 
-
 function App() {
+  
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   console.log('isAuth ... >>>  ... : ', isAuthenticated);
-  
+
   return (
     <ThemeProvider >
     <Routes>

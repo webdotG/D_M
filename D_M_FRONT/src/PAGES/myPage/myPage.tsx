@@ -3,6 +3,7 @@ import { useAuthStore } from '../../store';
 import style from './myPage.module.scss';  
 import Footer from '../../components/footer/footer';
 import DreamStatsComponent from '../../components/Stats/dreamsStats';
+import { OpenAi } from '../../API/OpenAI';
 
 const MyPage: React.FC = () => {
     const setAuthenticated = useAuthStore(state => state.setAuthenticated);
@@ -22,6 +23,8 @@ const MyPage: React.FC = () => {
         setKey(prevKey => prevKey + 1);
     }, []);
 
+    OpenAi()
+    
     return (
         <>
         
