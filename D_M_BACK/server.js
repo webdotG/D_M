@@ -2,9 +2,9 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import userRoutes from './routes/user.js';
-import dreamRoutes from './routes/dreams.js';
-import OpenAI from 'openai';
+import userRoutes from './routes/users.js';
+import dreamRoutes from './routes/records.js';
+import chatAiRoutes from './routes/gpt.js'
 
 dotenv.config();
 
@@ -15,32 +15,18 @@ app.use(express.json());
 
 const server = http.createServer(app);
 
-// Маршруты (PostgreSQL)
+// Маршруты (User)
 app.use('/api/user', userRoutes);
 
-// Маршруты (SQLite)
+// Маршруты (Records)
 app.use('/api/dreams', dreamRoutes);
 
-// Подключение к OpenAI
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Маршруты (chatUsers)
+app.use('/api/chat_users', chatAiRoutes);
 
-app.post('/api/chatAI', async (req, res) => {
-  const prompt = req.body.prompt;
-  console.log('OPEN AI PROMPT >>> : ', prompt)
-  try {
-    const response = await openai.completions.create({
-      model: "gpt-3.5-turbo",
-      prompt: prompt,
-      max_tokens: 350,
-    });
+// Маршруты (AI)
+app.use('/api/chat_ai', chatAiRoutes);
 
-    res.json({ response: response.choices[0].text.trim() });
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
-});
 
 // Запуск сервера
 server.listen(port, () => {

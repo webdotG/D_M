@@ -1,16 +1,16 @@
 import express from 'express';
 import { getTableName } from '../midlewear/getTableName.js'; 
-import { associationAll } from '../models/associationAll.js';
-import { getStats } from '../models/stats.js';
-import { Search } from '../models/search.js';
-import { getCurrentRecord} from '../models/currentRecord.js';
-import { moveRecordToDifferentCategory } from '../models/moveRecord.js';
-import { updateRecordById } from '../models/updateRecordById.js';
-import { deleteRecordById } from '../models/deleteRecord.js';
-import { getAllRecords } from '../models/getAllRecord.js'
-import {fetchAssociationsByRecordId} from '../models/associationByID.js'
-import { addRecord } from '../models/addRecord.js'
-import { searchByAssociation } from '../models/searcRecordByAssociation.js'
+import { associationAll } from '../models/records/associationAll.js';
+import { getStats } from '../models/records/stats.js';
+import { Search } from '../models/records/search.js';
+import { getCurrentRecord} from '../models/records/currentRecord.js';
+import { moveRecordToDifferentCategory } from '../models/records/moveRecord.js';
+import { updateRecordById } from '../models/records/updateRecordById.js';
+import { deleteRecordById } from '../models/records/deleteRecord.js';
+import { getAllRecords } from '../models/records/getAllRecord.js'
+import {fetchAssociationsByRecordId} from '../models/records/associationByID.js'
+import { addRecord } from '../models/records/addRecord.js'
+import { searchByAssociation } from '../models/records/searcRecordByAssociation.js'
 
 const router = express.Router();
 

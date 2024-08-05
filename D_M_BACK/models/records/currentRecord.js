@@ -1,4 +1,4 @@
-import { dbLite } from '../dbLite.js';
+import { dbLite } from '../../dbLite.js';
 
 // Функция для получения конкретной записи по ID и категории
 export const getCurrentRecord = async (tableName, id) => {

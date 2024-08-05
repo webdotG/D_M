@@ -1,4 +1,4 @@
-import { dbLite } from '../dbLite.js';
+import { dbLite } from '../../dbLite.js';
 
 export const updateRecordById = async (tableName, id, associations, title, content, isAnalyzed, date) => {
     console.log(`/update updateRecord : tableName-${tableName}, id-${id}, associations-${associations}, title-${title}, content-${content}, isAnalyzed-${isAnalyzed}, date-${date}`);

@@ -1,19 +1,18 @@
 
 import express from 'express';
+import OpenAI from 'openai';
 
 const router = express.Router();
-
-import OpenAI from 'openai';
 
 // Подключение к OpenAI
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   });
 
-
-router.post('/api/chatAI', async (req, res) => {
+router.post('/gpt', async (req, res) => {
+  
 const prompt = req.body.prompt;
-console.log('OPEN AI PROMPT >>> : ', prompt)
+
 try {
     const response = await openai.completions.create({
     model: "gpt-3.5-turbo",
@@ -27,3 +26,5 @@ try {
     res.status(500).send(error.message);
 }
 });
+
+export default router;

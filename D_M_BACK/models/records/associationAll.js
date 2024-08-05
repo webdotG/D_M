@@ -1,4 +1,4 @@
-import { dbLite } from '../dbLite.js';
+import { dbLite } from '../../dbLite.js';
 
 // Функция для поиска ассоциаций
 export const associationAll = async (tableName) => {

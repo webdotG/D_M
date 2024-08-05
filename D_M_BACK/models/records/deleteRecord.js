@@ -1,4 +1,4 @@
-import { dbLite } from '../dbLite.js';
+import { dbLite } from '../../dbLite.js';
 
 const deleteRecordById = async (tableName, id) => {
   const db = await dbLite;

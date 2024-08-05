@@ -1,4 +1,4 @@
-import { dbLite } from '../dbLite.js';
+import { dbLite } from '../../dbLite.js';
 
 // Функция для получения всех записей из указанной таблицы
 export const getAllRecords = async (tableName) => {

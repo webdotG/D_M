@@ -1,4 +1,4 @@
-import { dbLite } from '../dbLite.js';
+import { dbLite } from '../../dbLite.js';
 
 export const moveRecordToDifferentCategory = async (tableName, id, associations, title, content, isAnalyzed, date) => {
   // Определяем целевую таблицу и таблицы ассоциаций

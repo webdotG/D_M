@@ -1,4 +1,4 @@
-import { dbLite } from '../dbLite.js';
+import { dbLite } from '../../dbLite.js';
 
 // Функция для поиска ассоциаций по id
 export const fetchAssociationsByRecordId = async (tableName, recordId) => {

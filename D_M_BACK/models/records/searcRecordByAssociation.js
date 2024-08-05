@@ -1,4 +1,4 @@
-import { dbLite } from '../dbLite.js';
+import { dbLite } from '../../dbLite.js';
 
 // Функция для поиска записей по конкретной ассоциации
 export const searchByAssociation = async (tableName, association) => {

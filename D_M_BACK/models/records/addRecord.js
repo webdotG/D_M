@@ -1,4 +1,4 @@
-import { dbLite } from '../dbLite.js';  
+import { dbLite } from '../../dbLite.js';  
 
 export const addRecord = async (tableName, newRecord) => {
   const db = await dbLite;  

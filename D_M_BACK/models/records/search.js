@@ -1,4 +1,4 @@
-import { dbLite } from '../dbLite.js';
+import { dbLite } from '../../dbLite.js';
 
 // Функция для выполнения поиска в базе данных
 export const Search = async (tableName, value, date) => {
