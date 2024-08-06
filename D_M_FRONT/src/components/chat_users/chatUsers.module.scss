@@ -1,42 +1,58 @@
 .container {
-    background: #f9f9f9;
+    display: flex;
+    flex-direction: column;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    margin: 0 auto;
+    border: 1px solid #e1e1e1;
 }
 
 .input, .textarea {
-    background: #fff;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 4px;
     width: 100%;
-    margin-bottom: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+    border: 1px solid #d1d1d1;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.input:focus, .textarea:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
 .input {
-    height: 40px;
+    height: 44px;
+    font-size: 16px;
 }
 
 .textarea {
-    height: 100px;
+    height: 120px;
+    resize: vertical;
+    font-size: 16px;
 }
 
 .button {
-    background: #d0d0d0;
+    padding: 12px 20px;
+    margin-top: 10px;
     border: none;
-    padding: 10px 20px;
-    border-radius: 4px;
+    border-radius: 6px;
+    color: #fff;
+    background-color: #007bff;
     cursor: pointer;
-    color: #333;
-    font-size: 1rem;
-    transition: background 0.3s ease;
+    font-size: 16px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
 
-    &:hover {
-        background: #b0b0b0;
-    }
+.button:hover {
+    background-color: #0056b3;
+}
 
-    & + .button {
-        margin-left: 10px;
-    }
+.button:active {
+    transform: scale(0.98);
 }
