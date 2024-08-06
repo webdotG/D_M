@@ -90,7 +90,7 @@ const ChatPage: React.FC = () => {
             <div className={style.chatContent}>
                 <div className={style.chatList}>
                     <h2>Чаты:</h2>
-                    {chats.length > 0 ? (
+                    {/* {chats.length > 0 ? ( */}
                         <div className={style.chatCircleContainer}>
                             {chats.map(chat => (
                                 <div key={chat.id} className={style.chatCircle} onClick={() => handleChatClick(chat)}>
@@ -103,9 +103,9 @@ const ChatPage: React.FC = () => {
                                 Запросить чат
                             </button>
                         </div>
-                    ) : (
-                        <p>Нет доступных чатов</p>
-                    )}
+                     {/* ) : ( */}
+                         {/* <p>Нет доступных чатов</p> */}
+                     {/* )} */}
                 </div>
                 <div className={style.chatArea}>
                     {activeChat && (
