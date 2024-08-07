@@ -19,19 +19,18 @@ type ThemeState = {
   setTheme: (theme: string) => void;
 };
 
-type AuthState = {
+interface AuthState {
   isAuthenticated: boolean;
   token: string;
   user: {
-    id: number | null;
+    id: string | null;
     userName: string | null;
     email: string | null;
     dateOfBirth: string | null;
   };
   setAuthenticated: (auth: boolean, token?: string, user?: any) => void;
-};
+}
 
-// Функции для получения значений из localStorage
 const getStoredCategory = () => {
   return localStorage.getItem('selectedCategory') || CATEGORY[0];
 };
@@ -74,27 +73,37 @@ export const useThemeStore = create<ThemeState>((set) => ({
 export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: JSON.parse(localStorage.getItem('isAuthenticated') || 'false'),
   token: localStorage.getItem('token') || '',
-  user: JSON.parse(localStorage.getItem('user') || '{}'),
+  user: {
+    id: null,
+    userName: null,
+    email: null,
+    dateOfBirth: null,
+  },
+  
+ 
   setAuthenticated: (auth: boolean, token?: string, user?: any) => {
-    set({ isAuthenticated: auth });
+    
+    set((state) => {
+      const newState = {
+        isAuthenticated: auth,
+        token: state.token,
+        user: state.user,
+      };
+
+      // Логирование информации о пользователе
+      console.log('Обновлен статус аутентификации:', auth);
+      if (user) {
+        console.log('Сохранён в стор пользователь :', user);
+      }
+
+      return newState;
+    });
+
     localStorage.setItem('isAuthenticated', JSON.stringify(auth));
     if (token) {
-      set({ token });
       localStorage.setItem('token', token);
-      console.log('Token set:', token);
-    } else {
-      set({ token: '' });
-      localStorage.removeItem('token');
-      console.log('Token removed');
-    }
-    if (user) {
-      set({ user });
-      localStorage.setItem('user', JSON.stringify(user));
-      console.log('User set:', user);
-    } else {
-      set({ user: { id: null, userName: null, email: null, dateOfBirth: null } });
-      localStorage.removeItem('user');
-      console.log('User removed');
+      console.log('В локалСторадж записан token');
     }
   },
 }));
+

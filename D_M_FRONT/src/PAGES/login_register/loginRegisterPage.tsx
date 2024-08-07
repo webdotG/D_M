@@ -41,16 +41,9 @@ const LoginPage: React.FC = () => {
       } else {
         // Вход существующего пользователя
         userData = await loginUser(ui_username, ui_password);
-        console.log('Вход успешен:', userData);
       }
 
       setAuthenticated(true, userData.token);
-
-      // Проверка после установки
-      // const token = useAuthStore.getState().token;
-      // const isAuthenticated = useAuthStore.getState().isAuthenticated;
-      // console.log('After setAuthenticated - isAuthenticated:', isAuthenticated);
-      // console.log('After setAuthenticated - Token:', token);
 
       navigate('/D_M/');
 

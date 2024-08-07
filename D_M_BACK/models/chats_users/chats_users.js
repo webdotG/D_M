@@ -27,7 +27,13 @@ export const CreateChat = async (req, res) => {
  * Получить все чаты пользователя.
  */
 export const GetChats = async (req, res) => {
-  const userId = req.user.id; 
+  console.log('req.user:', req.user); // Логирование req.user
+
+  if (!req.user) {
+    return res.status(401).json({ message: 'Пользователь не аутентифицирован' });
+  }
+
+  const userId = req.user.id;
 
   console.log('Получение чатов для пользователя с ID:', userId);
   try {

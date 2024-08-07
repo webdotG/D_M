@@ -13,7 +13,6 @@ import ChatPage from './PAGES/chat/chatPage';
 function App() {
   
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  console.log('isAuth ... >>>  ... : ', isAuthenticated);
 
   return (
     <ThemeProvider >

@@ -29,7 +29,13 @@ interface ErrorResponse {
  * Создать новый чат.
  */
 export const createChat = async (chat_name: string, invited_user: string): Promise<CreateChatResponse | ErrorResponse> => {
-  const token = useAuthStore.getState().token;
+  const { token } = useAuthStore.getState();
+  console.log('Токен для создания чата:', token);
+
+  if (!token) {
+    console.error('Токен не найден');
+    return { message: 'Токен не найден' };
+  }
 
   const response = await fetch(`${API_URL}/create`, {
     method: 'POST',
@@ -52,9 +58,14 @@ export const createChat = async (chat_name: string, invited_user: string): Promi
  * Получить все чаты пользователя.
  */
 export const getChats = async (): Promise<Chat[] | ErrorResponse> => {
-  const token = useAuthStore.getState().token;
+  const { token, user } = useAuthStore.getState();
+console.log('getChats USER ... ', user)
+  if (!token || !user?.id) {
+    console.error('Токен или идентификатор пользователя не найден');
+    return { message: 'Токен или идентификатор пользователя не найден' };
+  }
 
-  const response = await fetch(`${API_URL}/list`, {
+  const response = await fetch(`${API_URL}/list/${user.id}`, {
     method: 'GET',
     headers: {
       'Authorization': `Bearer ${token}`
@@ -69,11 +80,12 @@ export const getChats = async (): Promise<Chat[] | ErrorResponse> => {
   return response.json();
 };
 
+
 /**
  * Получить сообщения для конкретного чата.
  */
 export const getMessages = async (chatId: string): Promise<Message[] | ErrorResponse> => {
-  const token = useAuthStore.getState().token;
+  const { token } = useAuthStore.getState();
   console.log('Токен для запроса сообщений:', token);
 
   if (!token) {
@@ -108,7 +120,14 @@ export const getMessages = async (chatId: string): Promise<Message[] | ErrorResp
  * Отправить сообщение в чат.
  */
 export const sendMessage = async (chatId: string, message_text: string, photo_message?: string): Promise<SendMessageResponse | ErrorResponse> => {
-  const token = useAuthStore.getState().token;
+  const { token } = useAuthStore.getState();
+  console.log('Токен для отправки сообщения:', token);
+
+  if (!token) {
+    console.error('Токен не найден');
+    return { message: 'Токен не найден' };
+  }
+
   const body = { message_text, photo_message };
 
   const response = await fetch(`${API_URL}/${chatId}/messages`, {
@@ -132,7 +151,13 @@ export const sendMessage = async (chatId: string, message_text: string, photo_me
  * Удалить чат и все связанные сообщения.
  */
 export const deleteChat = async (chatId: string): Promise<{ message: string } | ErrorResponse> => {
-  const token = useAuthStore.getState().token;
+  const { token } = useAuthStore.getState();
+  console.log('Токен для удаления чата:', token);
+
+  if (!token) {
+    console.error('Токен не найден');
+    return { message: 'Токен не найден' };
+  }
 
   const response = await fetch(`${API_URL}/${chatId}`, {
     method: 'DELETE',
