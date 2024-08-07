@@ -20,40 +20,40 @@ export async function connectDB() {
     // Проверка существования таблиц и создание, если необходимо
     const tables = [
       { name: 'users', createQuery: `
-       CREATE TABLE users (
-  id SERIAL PRIMARY KEY,
-  user_name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) UNIQUE NOT NULL,
-  date_of_birth DATE NOT NULL,
-  password VARCHAR(255) NOT NULL
-);
-      ` },
-      { name: 'photos', createQuery: `
-        CREATE TABLE photos (
-  photo_id SERIAL PRIMARY KEY,
-  photo_url VARCHAR(255) NOT NULL,
-  uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  user_id INT REFERENCES users(id)
-);
-      ` },
-      { name: 'rooms', createQuery: `
-        CREATE TABLE rooms (
-  room_id SERIAL PRIMARY KEY,
-  room_name VARCHAR(255) NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  user_id INT REFERENCES users(id)
-);
-    ` },
-      { name: 'messages', createQuery: `
-        CREATE TABLE messages (
-          message_id SERIAL PRIMARY KEY,
-          room_id INT REFERENCES rooms(room_id),
-          message_text TEXT NOT NULL,
-          sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-          sender_id INT REFERENCES users(id),
-          photo_message INT REFERENCES photos(photo_id)
+        CREATE TABLE IF NOT EXISTS users (
+          user_id SERIAL PRIMARY KEY,
+          user_name VARCHAR(255) NOT NULL,
+          email VARCHAR(255) UNIQUE NOT NULL,
+          date_of_birth DATE NOT NULL,
+          password VARCHAR(255) NOT NULL
         );
       ` },
+      { name: 'photos', createQuery: `
+        CREATE TABLE IF NOT EXISTS photos (
+          photo_id SERIAL PRIMARY KEY,
+          photo_url VARCHAR(255) NOT NULL,
+          uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          user_id INT REFERENCES users(user_id)
+        );
+      ` },
+      { name: 'chats', createQuery: `
+        CREATE TABLE IF NOT EXISTS chats (
+          chat_id SERIAL PRIMARY KEY,
+          chat_name VARCHAR(255) NOT NULL,
+          created_user INT REFERENCES users(user_id),
+          invited_user INT REFERENCES users(user_id)
+        );
+      ` },
+      { name: 'messages', createQuery: `
+        CREATE TABLE IF NOT EXISTS messages (
+          message_id SERIAL PRIMARY KEY,
+          chat_id INT REFERENCES chats(chat_id),
+          message_text TEXT NOT NULL,
+          sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          sender_id INT REFERENCES users(user_id),
+          photo_message INT REFERENCES photos(photo_id)
+        );
+      ` }
     ];
 
     for (const table of tables) {
@@ -80,7 +80,7 @@ export async function connectDB() {
     const tablesData = {
       users: 'SELECT * FROM users',
       photos: 'SELECT * FROM photos',
-      rooms: 'SELECT * FROM rooms',
+      chats: 'SELECT * FROM chats',
       messages: 'SELECT * FROM messages',
     };
 
