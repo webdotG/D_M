@@ -93,6 +93,18 @@ export async function connectDB() {
       }
     }
 
+    // Функция для получения всех сообщений по chat_id
+    async function getMessagesByChatId(chatId) {
+      const query = 'SELECT * FROM messages WHERE chat_id = $1';
+      const result = await client.query(query, [chatId]);
+      return result.rows;
+    }
+
+    // Пример использования функции
+    const chatId = 1; // Укажите нужный chat_id
+    const messages = await getMessagesByChatId(chatId);
+    console.log(`Сообщения для чата ${chatId}:`, messages);
+
     return client;
   } catch (err) {
     console.error('Ошибка при подключении к базе данных:', err);
