@@ -14,8 +14,24 @@ const ChatPage: React.FC = () => {
     const [showChatComponent, setShowChatComponent] = useState(false); // Состояние для показа компонента чата
 
     // Обработчик отправки сообщения
-    const handleSendMessage = () => {
-        if (ws && ws.readyState === WebSocket.OPEN && activeChat) {
+    const handleSendMessage = async () => {
+        if (!activeChat.id) {
+            // Если нет активного чата, создаем новый
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: 'New Chat' })
+                });
+                const newChat = await response.json();
+                setChats(prevChats => [...prevChats, newChat]);
+                setActiveChat(newChat);
+            } catch (error) {
+                console.error('Ошибка при создании нового чата:', error);
+            }
+        } else if (ws && ws.readyState === WebSocket.OPEN) {
             const newMessage = { chatId: activeChat.id, message: message };
             ws.send(JSON.stringify(newMessage)); // Отправка сообщения на сервер
             setMessages(prevMessages => ({
@@ -90,22 +106,18 @@ const ChatPage: React.FC = () => {
             <div className={style.chatContent}>
                 <div className={style.chatList}>
                     <h2>Чаты:</h2>
-                    {/* {chats.length > 0 ? ( */}
-                        <div className={style.chatCircleContainer}>
-                            {chats.map(chat => (
-                                <div key={chat.id} className={style.chatCircle} onClick={() => handleChatClick(chat)}>
-                                    <div className={style.chatCircleContent}></div>
-                                    <p>{chat.name}</p>
-                                </div>
-                            ))}
-                            <button className={style.button} 
-                                onClick={() => setShowChatComponent(true)}>
-                                Запросить чат
-                            </button>
-                        </div>
-                     {/* ) : ( */}
-                         {/* <p>Нет доступных чатов</p> */}
-                     {/* )} */}
+                    <div className={style.chatCircleContainer}>
+                        {chats.map(chat => (
+                            <div key={chat.id} className={style.chatCircle} onClick={() => handleChatClick(chat)}>
+                                <div className={style.chatCircleContent}></div>
+                                <p>{chat.name}</p>
+                            </div>
+                        ))}
+                        <button className={style.button} 
+                            onClick={() => setShowChatComponent(true)}>
+                            Запросить чат
+                        </button>
+                    </div>
                 </div>
                 <div className={style.chatArea}>
                     {activeChat && (
