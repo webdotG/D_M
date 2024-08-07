@@ -22,7 +22,13 @@ type ThemeState = {
 type AuthState = {
   isAuthenticated: boolean;
   token: string;
-  setAuthenticated: (auth: boolean, token?: string) => void;
+  user: {
+    id: number | null;
+    userName: string | null;
+    email: string | null;
+    dateOfBirth: string | null;
+  };
+  setAuthenticated: (auth: boolean, token?: string, user?: any) => void;
 };
 
 // Функции для получения значений из localStorage
@@ -68,7 +74,8 @@ export const useThemeStore = create<ThemeState>((set) => ({
 export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: JSON.parse(localStorage.getItem('isAuthenticated') || 'false'),
   token: localStorage.getItem('token') || '',
-  setAuthenticated: (auth: boolean, token?: string) => {
+  user: JSON.parse(localStorage.getItem('user') || '{}'),
+  setAuthenticated: (auth: boolean, token?: string, user?: any) => {
     set({ isAuthenticated: auth });
     localStorage.setItem('isAuthenticated', JSON.stringify(auth));
     if (token) {
@@ -79,6 +86,15 @@ export const useAuthStore = create<AuthState>((set) => ({
       set({ token: '' });
       localStorage.removeItem('token');
       console.log('Token removed');
+    }
+    if (user) {
+      set({ user });
+      localStorage.setItem('user', JSON.stringify(user));
+      console.log('User set:', user);
+    } else {
+      set({ user: { id: null, userName: null, email: null, dateOfBirth: null } });
+      localStorage.removeItem('user');
+      console.log('User removed');
     }
   },
 }));

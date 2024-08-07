@@ -1,155 +1,173 @@
 import React, { useState, useEffect } from 'react';
 import style from './chatPage.module.scss';
-import ChatComponent from '../../components/chat_users/ChatUsers'; // Импортируем компонент ChatComponent
+import { createWebSocketConnection, sendMessage as sendWsMessage, getChatHistory, handleWebSocketMessage } from '../../webSocket';
+import { createChat, getChats, getMessages, sendMessage, deleteChat } from '../../API/users_chat';
 
 const ChatPage: React.FC = () => {
-    const [message, setMessage] = useState(''); 
-    const [chats, setChats] = useState([
-        { id: '1', name: 'GPT Chat' }, // Обязательный чат с GPT
-        { id: '2', name: 'User Test Chat' } // Тестовый пользовательский чат
-    ]); 
-    const [activeChat, setActiveChat] = useState<{ id: string, name: string }>({ id: '1', name: 'GPT Chat' }); // Активный чат по умолчанию
-    const [messages, setMessages] = useState<{ [key: string]: string[] }>({}); // История сообщений для каждого чата
-    const [ws, setWs] = useState<WebSocket | null>(null); // Состояние для WebSocket соединения
-    const [showChatComponent, setShowChatComponent] = useState(false); // Состояние для показа компонента чата
+  const [message, setMessage] = useState('');
+  const [chats, setChats] = useState<{ id: string, name: string }[]>([]);
+  const [activeChat, setActiveChat] = useState<{ id: string, name: string } | null>(null);
+  const [messages, setMessages] = useState<{ [key: string]: { senderId: string, text: string }[] }>({});
+  const [newChatName, setNewChatName] = useState('');
+  const [invitedUser, setInvitedUser] = useState('');
+  const [ws, setWs] = useState<WebSocket | null>(null);
 
-    // Обработчик отправки сообщения
-    const handleSendMessage = async () => {
-        if (!activeChat.id) {
-            // Если нет активного чата, создаем новый
-            try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ name: 'New Chat' })
-                });
-                const newChat = await response.json();
-                setChats(prevChats => [...prevChats, newChat]);
-                setActiveChat(newChat);
-            } catch (error) {
-                console.error('Ошибка при создании нового чата:', error);
-            }
-        } else if (ws && ws.readyState === WebSocket.OPEN) {
-            const newMessage = { chatId: activeChat.id, message: message };
-            ws.send(JSON.stringify(newMessage)); // Отправка сообщения на сервер
-            setMessages(prevMessages => ({
-                ...prevMessages,
-                [activeChat.id]: [...(prevMessages[activeChat.id] || []), message]
-            }));
-            setMessage(''); // Очистка поля ввода
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      try {
+        const data = JSON.parse(event.data);
+        handleWebSocketMessage(data);
+      } catch (error) {
+        console.error('Ошибка обработки сообщения:', error);
+      }
+    };
+
+    const initialWs = createWebSocketConnection(import.meta.env.VITE_WS_URL || 'ws://localhost:2525', handleMessage);
+    setWs(initialWs);
+
+    return () => {
+      if (initialWs) {
+        initialWs.close();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const fetchChats = async () => {
+      const response = await getChats();
+      if ('message' in response) {
+        console.error(response.message);
+      } else {
+        setChats(response);
+      }
+    };
+
+    fetchChats();
+  }, []);
+
+  useEffect(() => {
+    if (activeChat) {
+      const fetchMessages = async () => {
+        const response = await getMessages(activeChat.id);
+        if ('message' in response) {
+          console.error(response.message);
         } else {
-            console.error('WebSocket соединение не открыто');
+          setMessages(prevMessages => ({
+            ...prevMessages,
+            [activeChat.id]: response
+          }));
         }
-    };
+      };
 
-    // Обработчик изменения текста сообщения
-    const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setMessage(e.target.value);
-    };
+      fetchMessages();
+    }
+  }, [activeChat]);
 
-    // Обработчик клика на чат
-    const handleChatClick = (chat: { id: string, name: string }) => {
-        setActiveChat(chat);
-        if (ws) {
-            ws.close(); // Закрытие предыдущего WebSocket соединения
+  const handleSendMessage = async () => {
+    if (activeChat) {
+      const senderId = 'user_id';
+      const response = await sendMessage(activeChat.id, message);
+      if ('message' in response) {
+        console.error(response.message);
+      } else {
+        setMessages(prevMessages => ({
+          ...prevMessages,
+          [activeChat.id]: [...(prevMessages[activeChat.id] || []), { senderId, text: message }]
+        }));
+        setMessage('');
+      }
+    }
+  };
+
+  const handleChatSelect = (chat: { id: string, name: string }) => {
+    setActiveChat(chat);
+  };
+
+  const handleCreateChat = async () => {
+    if (newChatName && invitedUser) {
+      const response = await createChat(newChatName, invitedUser);
+      if ('message' in response) {
+        console.error(response.message);
+      } else {
+        setNewChatName('');
+        setInvitedUser('');
+        const updatedChats = await getChats();
+        if ('message' in updatedChats) {
+          console.error(updatedChats.message);
+        } else {
+          setChats(updatedChats);
         }
-        const newWs = new WebSocket('wss://example.com/chat/' + chat.id); // Устанавливаем новое WebSocket соединение
-        newWs.onopen = () => {
-            console.log('WebSocket соединение установлено с ' + chat.name);
-            newWs.send(JSON.stringify({ type: 'get_history', chatId: chat.id })); // Запрос истории сообщений
-        };
-        newWs.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.type === 'history') {
-                setMessages(prevMessages => ({
-                    ...prevMessages,
-                    [chat.id]: data.messages
-                }));
-            } else if (data.type === 'new_message') {
-                setMessages(prevMessages => ({
-                    ...prevMessages,
-                    [chat.id]: [...(prevMessages[chat.id] || []), data.message]
-                }));
-            }
-            console.log('Новое сообщение от ' + chat.name + ': ' + event.data);
-        };
-        setWs(newWs);
-    };
+      }
+    }
+  };
 
-    // Пример обработки сообщений от сервера (получение списка чатов и обновление состояния)
-    useEffect(() => {
-        const initialWs = new WebSocket('wss://example.com/chat');
-        initialWs.onmessage = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.type === 'chat_list') {
-                setChats(prevChats => [...prevChats, ...data.chats]); // Обновление списка чатов
-            }
-        };
+  const handleDeleteChat = async (chatId: string) => {
+    const response = await deleteChat(chatId);
+    if ('message' in response) {
+      console.error(response.message);
+    } else {
+      const updatedChats = await getChats();
+      if ('message' in updatedChats) {
+        console.error(updatedChats.message);
+      } else {
+        setChats(updatedChats);
+        if (activeChat && activeChat.id === chatId) {
+          setActiveChat(null);
+        }
+      }
+    }
+  };
 
-        setWs(initialWs);
-
-        // Подключение к GPT чату по умолчанию
-        handleChatClick({ id: '1', name: 'GPT Chat' });
-
-        return () => {
-            if (ws) {
-                ws.close(); // Очистка WebSocket соединения при размонтировании компонента
-            }
-        };
-    }, []);
-
-    return (
-        <div className={style.container}>
-            <h1 className={style.title}>Chat Page</h1>
-            <div className={style.chatContent}>
-                <div className={style.chatList}>
-                    <h2>Чаты:</h2>
-                    <div className={style.chatCircleContainer}>
-                        {chats.map(chat => (
-                            <div key={chat.id} className={style.chatCircle} onClick={() => handleChatClick(chat)}>
-                                <div className={style.chatCircleContent}></div>
-                                <p>{chat.name}</p>
-                            </div>
-                        ))}
-                        <button className={style.button} 
-                            onClick={() => setShowChatComponent(true)}>
-                            Запросить чат
-                        </button>
-                    </div>
-                </div>
-                <div className={style.chatArea}>
-                    {activeChat && (
-                        <div>
-                            <h3 className={style.activeChatTitle}>ЧАТ С {activeChat.name}</h3>
-                            <div className={style.messageHistory}>
-                                {messages[activeChat.id]?.map((msg, index) => (
-                                    <div key={index} className={style.message}>{msg}</div>
-                                ))}
-                            </div>
-                            <textarea
-                                className={style.messageInput}
-                                value={message}
-                                onChange={handleMessageChange}
-                                placeholder="Введите сообщение..."
-                            />
-                            <button className={style.button} onClick={handleSendMessage}>Отправить сообщение</button>
-                        </div>
-                    )}
-                </div>
-            </div>
-            
-            {showChatComponent && (
-                <div className={style.chatComponentContainer}>
-                    <ChatComponent />
-                    <button className={style.closeButton} onClick={() => setShowChatComponent(false)}>
-                        Закрыть
-                    </button>
-                </div>
-            )}
+  return (
+    <div className={style.chatPage}>
+      <div className={style.chatList}>
+        <h2>Список чатов</h2>
+        <ul>
+          {chats.map(chat => (
+            <li key={chat.id}>
+              <span onClick={() => handleChatSelect(chat)}>{chat.name}</span>
+              <button onClick={() => handleDeleteChat(chat.id)}>Удалить</button>
+            </li>
+          ))}
+        </ul>
+        <div className={style.newChat}>
+          <h3>Создать новый чат</h3>
+          <input
+            type="text"
+            value={newChatName}
+            onChange={(e) => setNewChatName(e.target.value)}
+            placeholder="Название чата"
+          />
+          <input
+            type="text"
+            value={invitedUser}
+            onChange={(e) => setInvitedUser(e.target.value)}
+            placeholder="Приглашенный пользователь"
+          />
+          <button onClick={handleCreateChat}>Создать</button>
         </div>
-    );
+      </div>
+      {activeChat && (
+        <div className={style.chatWindow}>
+          <h2>Чат: {activeChat.name}</h2>
+          <div className={style.messages}>
+            {messages[activeChat.id] && messages[activeChat.id].map((msg, index) => (
+              <div key={index}>{msg.text}</div>
+            ))}
+          </div>
+          <div className={style.inputArea}>
+            <input
+              type="text"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Введите сообщение"
+            />
+            <button onClick={handleSendMessage}>Отправить</button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default ChatPage;

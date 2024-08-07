@@ -1,19 +1,21 @@
 import express from 'express';
+import {
+  CreateChat,
+  GetChats,
+  GetMessages,
+  SendMessage,
+  DeleteChat 
+} from '../models/chats_users/chats_users.js';
+import { Auth } from '../midlewear/auth.js'; 
 
 const router = express.Router();
 
-router.post('/send-invitation', (req, res) => {
-    const { senderId, recipientId, message } = req.body;
-    // Логика для отправки приветственного сообщения
-    // Например, сохранение в базу данных и отправка уведомления получателю
-    res.json({ success: true, message: 'Invitation sent' });
-});
+/* api/chat_users/... */
 
-router.post('/confirm-connection', (req, res) => {
-    const { senderId, recipientId } = req.body;
-    // Логика для подтверждения соединения
-    // Например, обновление статуса в базе данных
-    res.json({ success: true, message: 'Connection confirmed' });
-});
+router.post('/create', Auth, CreateChat);
+router.get('/list', Auth, GetChats);
+router.get('/:chatId/messages', Auth, GetMessages);
+router.post('/:chatId/messages', Auth, SendMessage);
+router.delete('/:chatId', Auth, DeleteChat); 
 
-module.exports = router;
+export default router;

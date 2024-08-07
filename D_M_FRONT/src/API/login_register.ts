@@ -1,30 +1,47 @@
 import axios from 'axios';
+import { useAuthStore } from '../store'; 
 
 // Функция для сохранения токена в localStorage
 const saveToken = (token: string) => {
   localStorage.setItem('token', token);
-  console.log('Login_Register LocalStorage GetItem ... >>> ... ', localStorage.getItem('token'))
+  console.log('Токен сохранен в LocalStorage:', localStorage.getItem('token'));
 };
 
+export const loginUser = async (user_name: string, password: string) => {
+  const setAuthenticated = useAuthStore.getState().setAuthenticated;
 
-export const registerUser = async (user_name: string, user_password: string) => {
   try {
-    if (!user_name || !user_password) {
+    if (!user_name || !password) {
       throw new Error('Имя пользователя и пароль обязательны');
     }
 
-    const response = await axios.post('/api/user/register/', {
+    console.log('Отправка запроса на вход с именем пользователя:', user_name);
+
+    const response = await axios.post('/api/user/login/', {
       user_name,
-      user_password,
+      password,
     });
 
-    saveToken(response.data.token);
+    console.log('Ответ от сервера (логин):', response.data);
 
-    console.log('registerUser response', response);
-    return response.data;
+    const { token, user } = response.data;
+    saveToken(token);
+
+    const savedToken = localStorage.getItem('token');
+    console.log('Токен после сохранения в LocalStorage:', savedToken);
+
+    console.log('Информация о пользователе:', user);
+
+    // Сохранение данных в store
+    setAuthenticated(true, token, user);
+
+    return { token, user };
   } catch (error) {
+    console.error('Ошибка при попытке входа:', error.message);
+
     if (axios.isAxiosError(error)) {
       if (error.response?.data) {
+        console.error('Ошибка от сервера:', error.response.data);
         throw error.response.data;
       } else {
         throw new Error('Неизвестная ошибка Axios');
@@ -35,29 +52,41 @@ export const registerUser = async (user_name: string, user_password: string) => 
   }
 };
 
-export const loginUser = async (user_name: string, user_password: string) => {
+export const registerUser = async (user_name: string, password: string, email: string, date_of_birth: string) => {
+  const setAuthenticated = useAuthStore.getState().setAuthenticated;
+
   try {
-    if (!user_name || !user_password) {
-      throw new Error('Имя пользователя и пароль обязательны');
+    if (!user_name || !password || !email || !date_of_birth) {
+      throw new Error('Имя пользователя, пароль, email и дата рождения обязательны');
     }
 
-    const response = await axios.post('/api/user/login/', {
+    console.log('Отправка запроса на регистрацию с именем пользователя:', user_name);
+
+    const response = await axios.post('/api/user/register/', {
       user_name,
-      user_password,
+      password,
+      email,
+      date_of_birth,
     });
-    console.log('API/USER/LOGIN response.data.token ... : ', response.data.token)
 
-      const token = response.data.token;
-      localStorage.setItem('token', token);
-      console.log('setItem ... >>> ... :', token);
+    console.log('Ответ от сервера (регистрация):', response.data);
 
-      const savedToken = localStorage.getItem('token');
-      console.log('getItem ... >>> ... :', savedToken);
-  
-      return { token };
-      } catch (error) {
+    const { token, user } = response.data;
+    saveToken(token);
+
+    console.log('Токен после регистрации:', token);
+    console.log('Информация о пользователе:', user);
+
+    // Сохранение данных в store
+    setAuthenticated(true, token, user);
+
+    return { token, user };
+  } catch (error) {
+    console.error('Ошибка при попытке регистрации:', error.message);
+
     if (axios.isAxiosError(error)) {
       if (error.response?.data) {
+        console.error('Ошибка от сервера:', error.response.data);
         throw error.response.data;
       } else {
         throw new Error('Неизвестная ошибка Axios');

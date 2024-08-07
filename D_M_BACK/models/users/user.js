@@ -9,28 +9,29 @@ export const Current = (req, res) => {
     try {
         const currentUser = req.user;
         const token = req.headers.authorization.replace(/Bearer\s?/, '');
-    
+
         res.status(200).json({
-          id: currentUser.id,
-          userName: currentUser.userName,
+          id: currentUser.user_id,
+          userName: currentUser.user_name,
+          email: currentUser.email,
+          dateOfBirth: currentUser.date_of_birth,
           token: token
         });
-      } catch (err) {
+    } catch (err) {
         console.error('Ошибка при получении текущего пользователя:', err.message);
         res.status(500).json({ message: 'Внутренняя ошибка сервера' });
-      }
+    }
 };
 
-
 export const Login = async (req, res) => {
-    const { user_name, user_password } = req.body;
+    const { user_name, password } = req.body;
   
     try {
       console.log('Login request:', req.body);
       const getUserQuery = `
-        SELECT id, user_name, user_password 
-        FROM users 
-        WHERE user_name = $1
+          SELECT user_id, user_name, password, email, date_of_birth 
+          FROM users 
+          WHERE user_name = $1
       `;
       const userResult = await pool.query(getUserQuery, [user_name]);
   
@@ -42,7 +43,7 @@ export const Login = async (req, res) => {
       const user = userResult.rows[0];
       console.log('Найденный пользователь:', user);
   
-      const isPasswordValid = await bcrypt.compare(user_password, user.user_password);
+      const isPasswordValid = await bcrypt.compare(password, user.password);
       console.log('Результат сравнения паролей:', isPasswordValid);
   
       if (!isPasswordValid) {
@@ -50,54 +51,52 @@ export const Login = async (req, res) => {
         return res.status(401).json({ message: 'Неверные учетные данные' });
       }
   
-      const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '48h' });
+      const token = jwt.sign({ id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '48h' });
       console.log('Токен сгенерирован:', token);
   
-      res.status(200).json({ token });
+      res.status(200).json({ 
+        token, 
+        user: {
+          id: user.user_id,
+          userName: user.user_name,
+          email: user.email,
+          dateOfBirth: user.date_of_birth
+        }
+      });
     } catch (err) {
       console.error('Ошибка при входе в систему:', err.message);
       res.status(500).json({ message: 'Внутренняя ошибка сервера' });
     }
-  };
+};
   
-  // Register endpoint
-  export const Register = async (req, res) => {
-    const { user_name, user_password } = req.body;
-  
-    console.log('Register request:', req.body);
+export const Register = async (req, res) => {
+    const { user_name, password, email, date_of_birth } = req.body;
   
     try {
-      const checkUserQuery = `
-        SELECT id, user_name 
-        FROM users 
-        WHERE user_name = $1
-      `;
-      const userResult = await pool.query(checkUserQuery, [user_name]);
-  
-      if (userResult.rows.length > 0) {
-        console.log('Пользователь с таким именем уже существует');
-        return res.status(400).json({ message: 'Пользователь с таким именем уже существует' });
-      }
-  
-      if (!user_password) {
-        throw new Error('Пароль не может быть пустым');
-      }
-  
-      const hashedPassword = await bcrypt.hash(user_password, 10);
-      console.log('Хэшированный пароль:', hashedPassword);
+      const hashedPassword = await bcrypt.hash(password, 10);
   
       const createUserQuery = `
-        INSERT INTO users (user_name, user_password) VALUES ($1, $2) RETURNING id
+          INSERT INTO users (user_name, password, email, date_of_birth) 
+          VALUES ($1, $2, $3, $4) 
+          RETURNING user_id, user_name, email, date_of_birth
       `;
-      const newUser = await pool.query(createUserQuery, [user_name, hashedPassword]);
+      const newUser = await pool.query(createUserQuery, [user_name, hashedPassword, email, date_of_birth]);
+      const user = newUser.rows[0];
   
-      const token = jwt.sign({ id: newUser.rows[0].id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-      console.log('Пользователь зарегистрирован и токен сгенерирован:', token);
+      const token = jwt.sign({ id: user.user_id }, process.env.JWT_SECRET, { expiresIn: '48h' });
+      console.log('Новый пользователь зарегистрирован:', user);
   
-      res.status(201).json({ token });
+      res.status(201).json({ 
+        token, 
+        user: {
+          id: user.user_id,
+          userName: user.user_name,
+          email: user.email,
+          dateOfBirth: user.date_of_birth
+        }
+      });
     } catch (err) {
       console.error('Ошибка при регистрации пользователя:', err.message);
-      res.status(500).json({ message: 'Внутренняя ошибка сервера', error: err.message });
+      res.status(500).json({ message: 'Внутренняя ошибка сервера' });
     }
-  };
-  
+};

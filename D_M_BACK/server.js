@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './routes/users.js';
 import dreamRoutes from './routes/records.js';
+import chatUsersRoutes from './routes/chat_users.js';
 import chatAiRoutes from './routes/gpt.js';
 import createWsServer from './ws-server.js'; 
 
@@ -23,7 +24,7 @@ const wsServer = createWsServer(httpServer);
 // Определение маршрутов 
 app.use('/api/user', userRoutes);
 app.use('/api/dreams', dreamRoutes);
-app.use('/api/chat_users', chatAiRoutes);
+app.use('/api/chat_users', chatUsersRoutes);
 app.use('/api/chat_ai', chatAiRoutes);
 
 // Запуск HTTP сервера
