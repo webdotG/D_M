@@ -2,7 +2,6 @@ import pkg from 'pg';
 const { Pool } = pkg;
 import dotenv from 'dotenv';
 dotenv.config();
-import chalk from 'chalk';
 
 const pool = new Pool({
   user: process.env.PG_USER,
@@ -15,7 +14,7 @@ const pool = new Pool({
 export async function connectDB() {
   try {
     const client = await pool.connect();
-    console.log(chalk.green('Коннект к базе данных выполнен успешно'));
+    console.log('Коннект к базе данных выполнен успешно');
 
     // Проверка существования таблиц и создание, если необходимо
     const tables = [
@@ -66,37 +65,37 @@ export async function connectDB() {
       `;
       const tableResult = await client.query(checkTableQuery);
       if (tableResult.rows[0].exists) {
-        console.log(chalk.blue(`Таблица "${table.name}" существует`));
+        console.log(`Таблица "${table.name}" существует`);
       } else {
-        console.log(chalk.yellow(`Таблица "${table.name}" не найдена, создаем таблицу`));
+        console.log(`Таблица "${table.name}" не найдена, создаем таблицу`);
         await client.query(table.createQuery);
-        console.log(chalk.green(`Таблица "${table.name}" создана`));
+        console.log(`Таблица "${table.name}" создана`);
       }
     }
 
-    // Вывод данных из таблиц
-    console.log(chalk.bold('Вывод данных из таблиц:'));
+    // Вывод названий столбцов из таблиц
+    console.log('Вывод названий столбцов из таблиц:');
 
     const tablesData = {
-      users: 'SELECT * FROM users',
-      photos: 'SELECT * FROM photos',
-      chats: 'SELECT * FROM chats',
-      messages: 'SELECT * FROM messages',
+      users: 'SELECT column_name FROM information_schema.columns WHERE table_name = \'users\'',
+      photos: 'SELECT column_name FROM information_schema.columns WHERE table_name = \'photos\'',
+      chats: 'SELECT column_name FROM information_schema.columns WHERE table_name = \'chats\'',
+      messages: 'SELECT column_name FROM information_schema.columns WHERE table_name = \'messages\'',
     };
 
     for (const [table, query] of Object.entries(tablesData)) {
       const result = await client.query(query);
       if (result.rows.length > 0) {
-        console.log(chalk.bold(`Данные из таблицы "${table}":`));
-        console.table(result.rows);
+        const columnNames = result.rows.map(row => row.column_name).join(', ');
+        console.log(`Столбцы в таблице "${table}": ${columnNames}`);
       } else {
-        console.log(chalk.red(`Нет данных в таблице "${table}"`));
+        console.log(`Нет данных о столбцах в таблице "${table}"`);
       }
     }
 
     return client;
   } catch (err) {
-    console.error(chalk.red('Ошибка при подключении к базе данных:'), err);
+    console.error('Ошибка при подключении к базе данных:', err);
     throw err;
   }
 }
