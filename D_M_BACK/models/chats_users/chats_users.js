@@ -27,13 +27,7 @@ export const CreateChat = async (req, res) => {
  * Получить все чаты пользователя.
  */
 export const GetChats = async (req, res) => {
-  console.log('req.user:', req.user); // Логирование req.user
-
-  if (!req.user) {
-    return res.status(401).json({ message: 'Пользователь не аутентифицирован' });
-  }
-
-  const userId = req.user.id;
+  const userId = req.params.userId; // Получение userId из параметров пути
 
   console.log('Получение чатов для пользователя с ID:', userId);
   try {
@@ -42,8 +36,10 @@ export const GetChats = async (req, res) => {
       WHERE created_user = $1 OR invited_user = $1
     `;
     const result = await pool.query(getChatsQuery, [userId]);
+
+    console.log(`Чаты пользователя ${userId}:`, result.rows);
+
     res.status(200).json(result.rows);
-    console.log(`Чаты пользователя ${userId} успешно получены`);
   } catch (err) {
     console.error('Ошибка при получении чатов:', err.message);
     res.status(500).json({ message: 'Внутренняя ошибка сервера' });

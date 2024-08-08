@@ -13,7 +13,7 @@ const router = express.Router();
 /* api/chat_users/... */
 
 router.post('/create', Auth, CreateChat);
-router.get('/list', Auth, GetChats);
+router.get('/list/:userId', Auth, GetChats);
 router.get('/:chatId/messages', Auth, GetMessages);
 router.post('/:chatId/messages', Auth, SendMessage);
 router.delete('/:chatId', Auth, DeleteChat); 

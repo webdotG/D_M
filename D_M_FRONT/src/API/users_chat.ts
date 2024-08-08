@@ -26,8 +26,7 @@ interface ErrorResponse {
 /**
  * Создать новый чат.
  */
-export const createChat = async (chat_name: string, invited_user: string): Promise<CreateChatResponse | ErrorResponse> => {
-  const token = localStorage.getItem('token');
+export const createChat = async (token: string, chat_name: string, invited_user: string): Promise<CreateChatResponse | ErrorResponse> => {
   console.log('Токен для создания чата:', token);
 
   if (!token) {
@@ -55,21 +54,19 @@ export const createChat = async (chat_name: string, invited_user: string): Promi
 /**
  * Получить все чаты пользователя.
  */
-export const getChats = async (): Promise<Chat[] | ErrorResponse> => {
-  const token = localStorage.getItem('token');
-  const user = JSON.parse(localStorage.getItem('user') || '{}');
+export const getChats = async (token: string, userId: string): Promise<Chat[] | ErrorResponse> => {
+  console.log('getChats USER ID:', userId);
+  console.log('getChats TOKEN:', token);
 
-  console.log('getChats USER ... ', user);
-  console.log('getChats TOKEN ... ', token);
-
-  if (!token || !user.id) {
+  if (!token || !userId) {
     console.error('Токен или идентификатор пользователя не найден');
     return { message: 'Токен или идентификатор пользователя не найден' };
   }
 
-  const response = await fetch(`${API_URL}/list/${user.id}`, {
+  const response = await fetch(`/api/chat_users/list/${userId}`, {
     method: 'GET',
     headers: {
+      'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     }
   });
@@ -85,8 +82,7 @@ export const getChats = async (): Promise<Chat[] | ErrorResponse> => {
 /**
  * Получить сообщения для конкретного чата.
  */
-export const getMessages = async (chatId: string): Promise<Message[] | ErrorResponse> => {
-  const token = localStorage.getItem('token');
+export const getMessages = async (token: string, chatId: string): Promise<Message[] | ErrorResponse> => {
   console.log('Токен для запроса сообщений:', token);
 
   if (!token) {
@@ -120,8 +116,7 @@ export const getMessages = async (chatId: string): Promise<Message[] | ErrorResp
 /**
  * Отправить сообщение в чат.
  */
-export const sendMessage = async (chatId: string, message_text: string, photo_message?: string): Promise<SendMessageResponse | ErrorResponse> => {
-  const token = localStorage.getItem('token');
+export const sendMessage = async (token: string, chatId: string, message_text: string, photo_message?: string): Promise<SendMessageResponse | ErrorResponse> => {
   console.log('Токен для отправки сообщения:', token);
 
   if (!token) {
@@ -151,8 +146,7 @@ export const sendMessage = async (chatId: string, message_text: string, photo_me
 /**
  * Удалить чат и все связанные сообщения.
  */
-export const deleteChat = async (chatId: string): Promise<{ message: string } | ErrorResponse> => {
-  const token = localStorage.getItem('token');
+export const deleteChat = async (token: string, chatId: string): Promise<{ message: string } | ErrorResponse> => {
   console.log('Токен для удаления чата:', token);
 
   if (!token) {

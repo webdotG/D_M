@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import style from './chatPage.module.scss';
-import { createWebSocketConnection, sendMessage as sendWsMessage, getChatHistory, handleWebSocketMessage } from '../../webSocket';
+import { createWebSocketConnection, handleWebSocketMessage } from '../../webSocket';
 import { createChat, getChats, getMessages, sendMessage, deleteChat } from '../../API/users_chat';
-
 
 const ChatPage: React.FC = () => {
   const [message, setMessage] = useState('');
@@ -13,8 +12,8 @@ const ChatPage: React.FC = () => {
   const [invitedUser, setInvitedUser] = useState('');
   const [ws, setWs] = useState<WebSocket | null>(null);
 
-
-  
+  const token = localStorage.getItem('token') || '';
+  const userId = JSON.parse(localStorage.getItem('user') || '{}').id;
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -38,7 +37,7 @@ const ChatPage: React.FC = () => {
 
   useEffect(() => {
     const fetchChats = async () => {
-      const response = await getChats();
+      const response = await getChats(token, userId);
       if ('message' in response) {
         console.error(response.message);
       } else {
@@ -47,12 +46,12 @@ const ChatPage: React.FC = () => {
     };
 
     fetchChats();
-  }, []);
+  }, [token, userId]);
 
   useEffect(() => {
     if (activeChat) {
       const fetchMessages = async () => {
-        const response = await getMessages(activeChat.id);
+        const response = await getMessages(token, activeChat.id);
         if ('message' in response) {
           console.error(response.message);
         } else {
@@ -65,18 +64,17 @@ const ChatPage: React.FC = () => {
 
       fetchMessages();
     }
-  }, [activeChat]);
+  }, [activeChat, token]);
 
   const handleSendMessage = async () => {
-    if (activeChat) {
-      const senderId = 'user_id';
-      const response = await sendMessage(activeChat.id, message);
+    if (activeChat && userId) {
+      const response = await sendMessage(token, activeChat.id, message);
       if ('message' in response) {
         console.error(response.message);
       } else {
         setMessages(prevMessages => ({
           ...prevMessages,
-          [activeChat.id]: [...(prevMessages[activeChat.id] || []), { senderId, text: message }]
+          [activeChat.id]: [...(prevMessages[activeChat.id] || []), { senderId: userId, text: message }]
         }));
         setMessage('');
       }
@@ -89,13 +87,13 @@ const ChatPage: React.FC = () => {
 
   const handleCreateChat = async () => {
     if (newChatName && invitedUser) {
-      const response = await createChat(newChatName, invitedUser);
+      const response = await createChat(token, newChatName, invitedUser);
       if ('message' in response) {
         console.error(response.message);
       } else {
         setNewChatName('');
         setInvitedUser('');
-        const updatedChats = await getChats();
+        const updatedChats = await getChats(token, userId);
         if ('message' in updatedChats) {
           console.error(updatedChats.message);
         } else {
@@ -106,11 +104,11 @@ const ChatPage: React.FC = () => {
   };
 
   const handleDeleteChat = async (chatId: string) => {
-    const response = await deleteChat(chatId);
+    const response = await deleteChat(token, chatId);
     if ('message' in response) {
       console.error(response.message);
     } else {
-      const updatedChats = await getChats();
+      const updatedChats = await getChats(token, userId);
       if ('message' in updatedChats) {
         console.error(updatedChats.message);
       } else {
