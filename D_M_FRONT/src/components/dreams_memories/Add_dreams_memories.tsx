@@ -232,8 +232,8 @@ console.log('currnt_DATA >>> ', current_data)
             <input
               type="date"
               id="date"
-              value={date}
               onChange={handleDateChange}
+              value={date}
               placeholder="Выберите дату"
             />
           </div>

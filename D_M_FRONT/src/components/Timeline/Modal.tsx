@@ -62,10 +62,19 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
     }
   };
 
+  
+  const months: { [key: string]: number } = {Январь: 1,Февраль: 2,Март: 3,Апрель: 4,Май: 5,Июнь: 6,Июль: 7,Август: 8,Сентябрь: 9,Октябрь: 10,Ноябрь: 11,Декабрь: 12};
   const handleNoRecordsClick = (day: number) => {
-    setCurrentDate(`${day}-${selectedMonth || ''}-${selectedYear || ''}`); 
+    // Преобразуем название месяца в номер месяца
+    const monthNumber = months[selectedMonth || ''] || 0;
+    
+    // Формируем дату в формате YYYY-MM-DD
+    const formattedDate = `${selectedYear || ''}-${monthNumber.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    
+    setCurrentDate(formattedDate);
     setIsAdding(true);
   };
+  
 
   const renderAddForm = () => {
     if (isAdding) {
