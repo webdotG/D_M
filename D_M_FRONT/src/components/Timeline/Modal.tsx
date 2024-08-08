@@ -1,10 +1,10 @@
-import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import Dream from '../dreams_memories/dreams_memories';
 import styles from './Modal.module.scss';
 import { useCategoryStore } from '../../store'; 
 import { fetchAssociationsById } from '../../API/associationByID'; 
 import AddDreams from '../dreams_memories/Add_dreams_memories';
-import { useNavigate } from 'react-router-dom';
+
 
 interface ModalProps {
   isOpen: boolean;
@@ -38,10 +38,9 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
   const [viewingRecord, setViewingRecord] = useState(false);
   const [associations, setAssociations] = useState<string>("");
   const [isAdding, setIsAdding] = useState(false);
-  const [currentDate, setCurrentDate] = useState<string | null>(null); // Состояние для даты
+  const [currentDate, setCurrentDate] = useState<string | null>(null); 
 
   const localRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
 
   const selectedCategory = useCategoryStore((state) => state.selectedCategory); 
 
@@ -73,6 +72,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
     
     setCurrentDate(formattedDate);
     setIsAdding(true);
+ 
   };
   
 
@@ -141,9 +141,17 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
         {viewingRecord ? renderSelectedRecord() : (
           <>
             <h3>{selectedYear} - {selectedMonth}</h3>
-            
-            {renderAddForm()}
 
+            {isAdding ?  (
+            <div className={styles.add_container}> 
+            {renderAddForm()}
+            <button className={styles.close_add_btn} 
+            onClick={() => setIsAdding(false)} >закрыть</button> 
+            </div>
+            
+            )
+              : ''
+          }
             <div className={styles.daysContainer}>
               {renderDays()}
             </div>

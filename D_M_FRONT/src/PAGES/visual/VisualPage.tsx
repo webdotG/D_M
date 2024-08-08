@@ -112,7 +112,7 @@ const VisualPage: React.FC = () => {
 
   return (
     <div className={styles['visualPage-wrapper']}>
-      <h1 className={styles['title']}>Визуализация...{selectedCategory}</h1>
+      <h1 className={styles['title']}>{selectedCategory} на графике</h1>
       <div className={styles['timeline-wrapper']}>
         <div className={styles['timeline']}>
           <TimelineY 
