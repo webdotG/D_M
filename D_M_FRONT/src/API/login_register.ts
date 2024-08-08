@@ -7,25 +7,24 @@ interface User {
   userName: string;
   email: string;
   dateOfBirth: string;
-  // Не сохраняем ключ `token` в пользовательском объекте
 }
+
 // Тип для токена
 type Token = string;
-// Функция для сохранения токена
 
+// Функция для сохранения токена
 const saveToken = (token: Token) => {
   localStorage.setItem('token', token);
   if (token) {
-    console.log('Токен в LocalStorage ...');
+    console.log('Токен сохранен в LocalStorage');
   }
 };
 
 // Функция для сохранения пользователя (без токена)
 const saveUser = (user: User) => {
-  const { token, ...userWithoutToken } = user; // Удаляем токен из объекта пользователя
-  localStorage.setItem('user', JSON.stringify(userWithoutToken));
-  if (userWithoutToken) {
-    console.log('Информация о пользователе в LocalStorage ...');
+  localStorage.setItem('user', JSON.stringify(user));
+  if (user) {
+    console.log('Информация о пользователе сохранена в LocalStorage');
   }
 };
 
@@ -63,26 +62,23 @@ export const getCurrentUser = async (token: string) => {
   }
 };
 
-
-export const loginUser = async (user_name: string, password: string) => {
+export const loginUser = async (userName: string, password: string) => {
   const setAuthenticated = useAuthStore.getState().setAuthenticated;
 
   try {
-    if (!user_name || !password) {
+    if (!userName || !password) {
       throw new Error('Имя пользователя и пароль обязательны');
     }
 
-    console.log('Запрос с именем :', user_name);
-
     const response = await axios.post('/api/user/login/', {
-      user_name,
+      user_name: userName,
       password,
     });
 
     const { token } = response.data;
 
-    if (token){
-      console.log('Token ...');
+    if (token) {
+      console.log('Токен после входа:', token);
     }
 
     saveToken(token);
@@ -110,21 +106,19 @@ export const loginUser = async (user_name: string, password: string) => {
   }
 };
 
-export const registerUser = async (user_name: string, password: string, email: string, date_of_birth: string) => {
+export const registerUser = async (userName: string, password: string, email: string, dateOfBirth: string) => {
   const setAuthenticated = useAuthStore.getState().setAuthenticated;
 
   try {
-    if (!user_name || !password || !email || !date_of_birth) {
+    if (!userName || !password || !email || !dateOfBirth) {
       throw new Error('Имя пользователя, пароль, email и дата рождения обязательны');
     }
 
-    console.log('Отправка запроса на регистрацию с именем пользователя:', user_name);
-
     const response = await axios.post('/api/user/register/', {
-      user_name,
+      user_name: userName,
       password,
       email,
-      date_of_birth,
+      date_of_birth: dateOfBirth,
     });
 
     console.log('Ответ от сервера (регистрация):', response.data);

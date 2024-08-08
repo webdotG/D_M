@@ -8,10 +8,14 @@ import { useAuthStore } from '../../store';
 import axios from 'axios';
 
 const LoginPage: React.FC = () => {
+
   const [ui_username, setUIUsername] = useState<string>('');
   const [ui_password, setUIPassword] = useState<string>('');
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
+  const [email, setEmail] = useState<string>('');
+  const [dateOfBirth, setDateOfBirth] = useState<string>('');
+
   const navigate = useNavigate();
   const isAuthenticated = useAuthStore(state => state.isAuthenticated); 
   const setAuthenticated = useAuthStore(state => state.setAuthenticated); 
@@ -23,6 +27,13 @@ const LoginPage: React.FC = () => {
   const handlePasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setUIPassword(event.target.value);
   };
+  const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+  
+  const handleDateOfBirthChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setDateOfBirth(event.target.value);
+  };
 
   const handleConfirmPasswordChange = (event: ChangeEvent<HTMLInputElement>) => {
     setConfirmPassword(event.target.value);
@@ -30,23 +41,23 @@ const LoginPage: React.FC = () => {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+  
     try {
       let userData;
-
+  
       if (isRegistering) {
-        // Регистрация нового пользователя
-        userData = await registerUser(ui_username, ui_password);
+        // Регистрация нового пользователя с новыми полями
+        userData = await registerUser(ui_username, ui_password, email, dateOfBirth);
         console.log('Регистрация успешна:', userData);
       } else {
         // Вход существующего пользователя
         userData = await loginUser(ui_username, ui_password);
       }
-
+  
       setAuthenticated(true, userData.token);
-
+  
       navigate('/D_M/');
-
+  
     } catch (err: unknown) {  
       if (axios.isAxiosError(err)) {
         console.error('Ошибка входа или регистрации:', err.response?.data || err.message);
@@ -101,6 +112,7 @@ const LoginPage: React.FC = () => {
           />
         </div>
         {isRegistering && (
+         <>
           <div className={style['form-group']}>
             <label htmlFor="confirm-password" className={style['label']}><p>Подтвердить пароль</p></label>
             <input
@@ -112,6 +124,30 @@ const LoginPage: React.FC = () => {
               className={style['input']}
             />
           </div>
+          <div className={style['form-group']}>
+            <label htmlFor="email" className={style['label']}><p>Email</p></label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={handleEmailChange}
+              required
+              className={style['input']}
+            />
+          </div>
+          <div className={style['form-group']}>
+            <label htmlFor="date-of-birth" className={style['label']}><p>Дата рождения</p></label>
+            <input
+              type="date"
+              id="date-of-birth"
+              value={dateOfBirth}
+              onChange={handleDateOfBirthChange}
+              required
+              className={style['input']}
+            />
+          </div>
+        
+        </>  
         )}
         <button type="submit" className={style['submit-button']}>
           {isRegistering ? 'Зарегистрироваться' : 'Войти'}
