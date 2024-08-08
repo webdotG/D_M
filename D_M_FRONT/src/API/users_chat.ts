@@ -58,7 +58,7 @@ export const createChat = async (created_user: string, token: string, chat_name:
  */
 export const getChats = async (token: string, userId: string): Promise<Chat[] | ErrorResponse> => {
   console.log('getChats USER ID:', userId);
-  console.log('getChats TOKEN:', token);
+  // console.log('getChats TOKEN:', token);
 
   if (!token || !userId) {
     console.error('Токен или идентификатор пользователя не найден');

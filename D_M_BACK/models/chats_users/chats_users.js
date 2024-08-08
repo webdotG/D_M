@@ -24,28 +24,28 @@ export const CreateChat = async (req, res) => {
 };
 
 
-/**
- * Получить все чаты пользователя.
- */
-export const GetChats = async (req, res) => {
-  const userId = req.params.userId; // Получение userId из параметров пути
+  /**
+   * Получить все чаты пользователя.
+   */
+  export const GetChats = async (req, res) => {
+    const userId = req.params.userId; // Получение userId из параметров пути
 
-  console.log('Получение чатов для пользователя с ID:', userId);
-  try {
-    const getChatsQuery = `
-      SELECT * FROM chats
-      WHERE created_user = $1 OR invited_user = $1
-    `;
-    const result = await pool.query(getChatsQuery, [userId]);
+    console.log('Получение чатов для пользователя с ID:', userId);
+    try {
+      const getChatsQuery = `
+        SELECT * FROM chats
+        WHERE created_user = $1 OR invited_user = $1
+      `;
+      const result = await pool.query(getChatsQuery, [userId]);
 
-    console.log(`Чаты пользователя ${userId}:`, result.rows);
+      console.log(`Чаты пользователя ${userId}:`, result.rows);
 
-    res.status(200).json(result.rows);
-  } catch (err) {
-    console.error('Ошибка при получении чатов:', err.message);
-    res.status(500).json({ message: 'Внутренняя ошибка сервера' });
-  }
-};
+      res.status(200).json(result.rows);
+    } catch (err) {
+      console.error('Ошибка при получении чатов:', err.message);
+      res.status(500).json({ message: 'Внутренняя ошибка сервера' });
+    }
+  };
 
 /**
  * Получить сообщения для конкретного чата.
