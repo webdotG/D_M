@@ -62,7 +62,7 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
     }
   };
 
-  
+
   const months: { [key: string]: number } = {Январь: 1,Февраль: 2,Март: 3,Апрель: 4,Май: 5,Июнь: 6,Июль: 7,Август: 8,Сентябрь: 9,Октябрь: 10,Ноябрь: 11,Декабрь: 12};
   const handleNoRecordsClick = (day: number) => {
     // Преобразуем название месяца в номер месяца
@@ -141,10 +141,13 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
         {viewingRecord ? renderSelectedRecord() : (
           <>
             <h3>{selectedYear} - {selectedMonth}</h3>
+            
+            {renderAddForm()}
+
             <div className={styles.daysContainer}>
               {renderDays()}
             </div>
-            {renderAddForm()}
+            
           </>
         )}
       </div>
