@@ -32,7 +32,8 @@ const TimelineY: React.FC<TimelineYProps> = ({ recordsByMonth, associationsByMon
 
   const modalRef = useRef<HTMLDivElement>(null);
 
-  const startDate = new Date('1989-06-25');
+  const startDate = JSON.parse(localStorage.getItem('user') || '{}').dateOfBirth;
+  // console.log('Start date ... ', startDate)
   const endDate = new Date();
 
   const scale = useMemo(() => generateScale(startDate, endDate), [endDate]);
