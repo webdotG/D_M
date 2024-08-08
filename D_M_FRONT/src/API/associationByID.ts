@@ -18,7 +18,7 @@ export const fetchAssociationsById = async (category: string, recordId: number) 
     // Нормализуем категорию перед отправкой запроса
     const normalizedCategory = normalizeCategory(category);
 
-    console.log(`Запрос ассоциаций для категории: ${normalizedCategory}, recordId: ${recordId}`);
+    // console.log(`Запрос ассоциаций для категории: ${normalizedCategory}, recordId: ${recordId}`);
     
     const response = await axios.post('/api/dreams/associationId', {
       recordId,

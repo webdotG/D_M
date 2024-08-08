@@ -3,6 +3,7 @@ import style from './chatPage.module.scss';
 import { createWebSocketConnection, sendMessage as sendWsMessage, getChatHistory, handleWebSocketMessage } from '../../webSocket';
 import { createChat, getChats, getMessages, sendMessage, deleteChat } from '../../API/users_chat';
 
+
 const ChatPage: React.FC = () => {
   const [message, setMessage] = useState('');
   const [chats, setChats] = useState<{ id: string, name: string }[]>([]);
@@ -11,6 +12,9 @@ const ChatPage: React.FC = () => {
   const [newChatName, setNewChatName] = useState('');
   const [invitedUser, setInvitedUser] = useState('');
   const [ws, setWs] = useState<WebSocket | null>(null);
+
+
+  
 
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {

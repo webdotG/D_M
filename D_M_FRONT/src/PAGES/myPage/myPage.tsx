@@ -14,6 +14,7 @@ const MyPage: React.FC = () => {
         if (confirmed) {
             setAuthenticated(false);
             localStorage.removeItem('token');
+            localStorage.removeItem('user');
             localStorage.setItem('isAuthenticated', JSON.stringify(false));
             window.location.href = '/D_M/login'; 
         }

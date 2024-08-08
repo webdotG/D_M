@@ -22,13 +22,8 @@ type ThemeState = {
 interface AuthState {
   isAuthenticated: boolean;
   token: string;
-  user: {
-    id: string | null;
-    userName: string | null;
-    email: string | null;
-    dateOfBirth: string | null;
-  };
-  setAuthenticated: (auth: boolean, token?: string, user?: any) => void;
+  setAuthenticated: (auth: boolean, token?: string) => void;
+  logout: () => void;
 }
 
 const getStoredCategory = () => {
@@ -73,31 +68,13 @@ export const useThemeStore = create<ThemeState>((set) => ({
 export const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: JSON.parse(localStorage.getItem('isAuthenticated') || 'false'),
   token: localStorage.getItem('token') || '',
-  user: {
-    id: null,
-    userName: null,
-    email: null,
-    dateOfBirth: null,
-  },
-  
- 
-  setAuthenticated: (auth: boolean, token?: string, user?: any) => {
-    
-    set((state) => {
-      const newState = {
-        isAuthenticated: auth,
-        token: state.token,
-        user: state.user,
-      };
+  setAuthenticated: (auth: boolean, token?: string) => {
+    console.log('auth...', auth);
 
-      // Логирование информации о пользователе
-      console.log('Обновлен статус аутентификации:', auth);
-      if (user) {
-        console.log('Сохранён в стор пользователь :', user);
-      }
-
-      return newState;
-    });
+    set(() => ({
+      isAuthenticated: auth,
+      token: token || '', // Если нет нового токена, устанавливаем пустую строку
+    }));
 
     localStorage.setItem('isAuthenticated', JSON.stringify(auth));
     if (token) {
@@ -105,5 +82,15 @@ export const useAuthStore = create<AuthState>((set) => ({
       console.log('В локалСторадж записан token');
     }
   },
-}));
+  logout: () => {
+    set(() => ({
+      isAuthenticated: false,
+      token: '',
+    }));
 
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    console.log('ЛокалСторадж очищен');
+  },
+}));

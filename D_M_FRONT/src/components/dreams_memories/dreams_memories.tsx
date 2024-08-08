@@ -24,7 +24,7 @@ const Dream: React.FC<DreamProps> = ({
   isAnalyzed,
   date
 }: DreamProps) => {
-  console.log('CATEGORY CUM ...... ', category)
+  // console.log('CATEGORY CUM ...... ', category)
   const [isEditing, setIsEditing] = useState(false);
   const [editedAssociations, setEditedAssociations] = useState(associations);
 
@@ -34,9 +34,9 @@ const Dream: React.FC<DreamProps> = ({
   useEffect(() => {
     const loadAssociations = async () => {
       try {
-        console.log(`Fetching associations for category: ${selectedCategory}, id: ${id}`);
+        // console.log(`Fetching associations for category: ${selectedCategory}, id: ${id}`);
         const fetchedAssociations = await fetchAssociationsById(selectedCategory, id);
-        console.log(`Fetched associations: ${fetchedAssociations}`);
+        // console.log(`Fetched associations: ${fetchedAssociations}`);
         setEditedAssociations(fetchedAssociations);
       } catch (error) {
         console.error('Ошибка при загрузке ассоциаций:', error);

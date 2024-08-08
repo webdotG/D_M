@@ -1,12 +1,32 @@
 import axios from 'axios';
 import { useAuthStore } from '../store';
 
-const saveToken = (token: string) => {
+// Тип для пользователя
+interface User {
+  id: number;
+  userName: string;
+  email: string;
+  dateOfBirth: string;
+  // Не сохраняем ключ `token` в пользовательском объекте
+}
+// Тип для токена
+type Token = string;
+// Функция для сохранения токена
+
+const saveToken = (token: Token) => {
   localStorage.setItem('token', token);
-  if (token){
+  if (token) {
     console.log('Токен в LocalStorage ...');
   }
-  
+};
+
+// Функция для сохранения пользователя (без токена)
+const saveUser = (user: User) => {
+  const { token, ...userWithoutToken } = user; // Удаляем токен из объекта пользователя
+  localStorage.setItem('user', JSON.stringify(userWithoutToken));
+  if (userWithoutToken) {
+    console.log('Информация о пользователе в LocalStorage ...');
+  }
 };
 
 export const getCurrentUser = async (token: string) => {
@@ -17,7 +37,15 @@ export const getCurrentUser = async (token: string) => {
       },
     });
 
-    // console.log('Информация о текущем пользователе:', response.data);
+    console.log('Информация о текущем пользователе:', response.data);
+
+    // Обновление состояния в сторе
+    useAuthStore.getState().setAuthenticated(true, token);
+
+    // Сохранение токена и пользователя в localStorage
+    saveToken(token);
+    saveUser(response.data);
+
     return response.data;
   } catch (error) {
     console.error('Ошибка при получении информации о текущем пользователе:', error.message);
@@ -35,6 +63,7 @@ export const getCurrentUser = async (token: string) => {
   }
 };
 
+
 export const loginUser = async (user_name: string, password: string) => {
   const setAuthenticated = useAuthStore.getState().setAuthenticated;
 
@@ -50,8 +79,6 @@ export const loginUser = async (user_name: string, password: string) => {
       password,
     });
 
-  
-
     const { token } = response.data;
 
     if (token){
@@ -60,14 +87,11 @@ export const loginUser = async (user_name: string, password: string) => {
 
     saveToken(token);
 
-    // const savedToken = localStorage.getItem('token');
-    // console.log('Токен после сохранения в LocalStorage:', savedToken);
-
     // Запрос информации о пользователе
     const user = await getCurrentUser(token);
 
     // Сохранение данных в store
-    setAuthenticated(true, token, user);
+    setAuthenticated(true, token);
 
     return { token, user };
   } catch (error) {
@@ -114,7 +138,7 @@ export const registerUser = async (user_name: string, password: string, email: s
     const user = await getCurrentUser(token);
 
     // Сохранение данных в store
-    setAuthenticated(true, token, user);
+    setAuthenticated(true, token);
 
     return { token, user };
   } catch (error) {

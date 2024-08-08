@@ -30,7 +30,7 @@ const Associations: React.FC<AssociationsProps> = ({ onAssociationClick }) => {
         try {
           const data = await fetchAssociations(selectedCategory);
 
-          console.log('Loaded associations:', data);
+          // console.log('Loaded associations:', data);
           setAssociations(data);
           setDisplayedAssociations(data.slice(0, itemsPerPage));
           setHasMore(data.length > itemsPerPage);
