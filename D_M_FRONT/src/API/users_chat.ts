@@ -26,21 +26,22 @@ interface ErrorResponse {
 /**
  * Создать новый чат.
  */
-export const createChat = async (token: string, chat_name: string, invited_user: string): Promise<CreateChatResponse | ErrorResponse> => {
+export const createChat = async (created_user: string, token: string, chat_name: string, invited_user: string): Promise<CreateChatResponse | ErrorResponse> => {
   console.log('Токен для создания чата:', token);
-
+  console.log('Создатель чата:', created_user);
+  
   if (!token) {
     console.error('Токен не найден');
     return { message: 'Токен не найден' };
   }
 
-  const response = await fetch(`${API_URL}/create`, {
+  const response = await fetch(`/api/chat_users/create`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${token}`
     },
-    body: JSON.stringify({ chat_name, invited_user })
+    body: JSON.stringify({ chat_name, invited_user, created_user }) // Убедитесь, что поле name совпадает
   });
 
   if (!response.ok) {
@@ -50,6 +51,7 @@ export const createChat = async (token: string, chat_name: string, invited_user:
 
   return response.json();
 };
+
 
 /**
  * Получить все чаты пользователя.

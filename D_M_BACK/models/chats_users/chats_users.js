@@ -4,10 +4,10 @@ import { pool } from '../../db.js';
  * Создать новый чат.
  */
 export const CreateChat = async (req, res) => {
-  const { chat_name, invited_user } = req.body;
-  const created_user = req.user.user_id; // Получаем текущего пользователя
+  const { chat_name, invited_user, created_user } = req.body; // Убедитесь, что поля совпадают
 
   console.log('Создание чата с данными:', { chat_name, invited_user }, 'Создатель:', created_user);
+
   try {
     const createChatQuery = `
       INSERT INTO chats (chat_name, created_user, invited_user)
@@ -22,6 +22,7 @@ export const CreateChat = async (req, res) => {
     res.status(500).json({ message: 'Внутренняя ошибка сервера' });
   }
 };
+
 
 /**
  * Получить все чаты пользователя.
