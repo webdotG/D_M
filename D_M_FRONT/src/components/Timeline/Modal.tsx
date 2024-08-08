@@ -91,6 +91,11 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
     setCurrentDate(null); 
   };
 
+  const handleCloseClick = () => { 
+    setViewingRecord(false);
+    onClose()
+  }
+  
   const renderDays = () => {
     return daysInMonth.map(day => {
       const dayRecords = records.filter(record => record.day === day);
@@ -137,7 +142,10 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
   return (
     <div className={styles.overlay}>
       <div ref={localRef} className={styles.modal}>
-        <button onClick={onClose} className={styles.closeButton}>×</button>
+        
+      
+        <button onClick={handleCloseClick} className={styles.closeButton}>×</button>
+        
         {viewingRecord ? renderSelectedRecord() : (
           <>
             <h3>{selectedYear} - {selectedMonth}</h3>
@@ -148,7 +156,6 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
             <button className={styles.close_add_btn} 
             onClick={() => setIsAdding(false)} >закрыть</button> 
             </div>
-            
             )
               : ''
           }
