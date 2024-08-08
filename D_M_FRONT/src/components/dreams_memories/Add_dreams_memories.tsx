@@ -6,11 +6,17 @@ import { useTranslate } from '../../hooks/useTranslate';
 import { useCategoryStore } from '../../store'; 
 import { useNavigate } from 'react-router-dom';
 
-const AddDreams: React.FC = () => {
+
+interface AddDreamsProps {
+  current_data: string | null;
+}
+
+const AddDreams: React.FC<AddDreamsProps> = ({ current_data }) => {
+console.log('currnt_DATA >>> ', current_data)
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
   const [isAnalyzed, setIsAnalyzed] = useState<boolean>(false);
-  const [date, setDate] = useState<string>(''); // Используйте string для даты
+  const [date, setDate] = useState<string>(current_data || ''); 
   const [associationsList, setAssociationsList] = useState<string[]>([]);
   const [selectedAssociation, setSelectedAssociation] = useState<string>('');
   const [newAssociation, setNewAssociation] = useState<string>('');
@@ -55,7 +61,11 @@ const AddDreams: React.FC = () => {
 
   const handleCategoryChange = (newCategory: string) => {
     setCategory(newCategory);
-    setSelectedCategory(newCategory); // Обновите категорию в хранилище
+    setSelectedCategory(newCategory); 
+  };
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDate(event.target.value);
   };
 
   const fetchAndSetAssociations = async (newCategory: string) => {
@@ -73,9 +83,6 @@ const AddDreams: React.FC = () => {
     }
   };
 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDate(event.target.value);
-  };
 
   const handleAssociationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value;
@@ -140,7 +147,7 @@ const AddDreams: React.FC = () => {
         <form onSubmit={handleSubmit} className={styles['add-dreams-form']}>
           <div className={styles['form-group']}>
             <label htmlFor="category">
-              <p>{translateToLanguage('Записываем')}</p>
+              {translateToLanguage('Записываем')}
             </label>
             <select
               id="category"
@@ -154,7 +161,7 @@ const AddDreams: React.FC = () => {
 
           <div className={styles['form-group']}>
             <label htmlFor="title">
-              <p>{translateToLanguage('Заголовок')}</p>
+              {translateToLanguage('Заголовок')}
             </label>
             <input
               type="text"
@@ -166,7 +173,7 @@ const AddDreams: React.FC = () => {
 
           <div className={styles['form-group']}>
             <label htmlFor="content">
-              <p>{translateToLanguage('Текст')}</p>
+              {translateToLanguage('Текст')}
             </label>
             <textarea
               id="content"
@@ -177,7 +184,7 @@ const AddDreams: React.FC = () => {
 
           <div className={styles['form-group']}>
             <label htmlFor="associations">
-              <p>{translateToLanguage('Ассоциации')}</p>
+              {translateToLanguage('Ассоциации')}
             </label>
             {isAddingNewAssociation ? (
               <input
@@ -193,7 +200,7 @@ const AddDreams: React.FC = () => {
                 onChange={handleAssociationChange}
               >
                 <option value="">
-                  <p>{translateToLanguage('Варианты')}</p>
+                  {translateToLanguage('Варианты')}
                 </option>
                 {associationsList.map((association, index) => (
                   <option key={index} value={association}>
@@ -201,7 +208,7 @@ const AddDreams: React.FC = () => {
                   </option>
                 ))}
                 <option value="new">
-                  <p>{translateToLanguage('Записать новую ассоциацию')}</p>
+                  {translateToLanguage('Записать новую ассоциацию')}
                 </option>
               </select>
             )}
@@ -209,7 +216,7 @@ const AddDreams: React.FC = () => {
 
           <div className={styles['form-group']}>
             <label>
-              <p>{translateToLanguage('Анализировано')}</p>
+              {translateToLanguage('Анализировано')}
               <input
                 type="checkbox"
                 checked={isAnalyzed}
@@ -220,7 +227,7 @@ const AddDreams: React.FC = () => {
 
           <div className={styles['form-group']}>
             <label htmlFor="date">
-              <p>{translateToLanguage('Дата')}</p>
+              {translateToLanguage('Дата')}
             </label>
             <input
               type="date"
@@ -233,15 +240,14 @@ const AddDreams: React.FC = () => {
 
           <div className={styles['form-group']}>
             <button type="submit" className={styles['submit-button']}>
-              <p>{translateToLanguage('Сохранить')}</p>
+              {translateToLanguage('Сохранить')}
             </button> 
             <button type="button" className={styles['reset-button']} onClick={handleReset}>
-              <p>{translateToLanguage('Сбросить')}</p>
+              {translateToLanguage('Сбросить')}
             </button>
           </div>
         </form>
       </div>
-      
     </>
   );
 };

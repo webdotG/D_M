@@ -1,8 +1,10 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import Dream from '../dreams_memories/dreams_memories';
 import styles from './Modal.module.scss';
 import { useCategoryStore } from '../../store'; 
 import { fetchAssociationsById } from '../../API/associationByID'; 
+import AddDreams from '../dreams_memories/Add_dreams_memories';
+import { useNavigate } from 'react-router-dom';
 
 interface ModalProps {
   isOpen: boolean;
@@ -35,7 +37,11 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
   const [selectedRecord, setSelectedRecord] = useState<Record | null>(null);
   const [viewingRecord, setViewingRecord] = useState(false);
   const [associations, setAssociations] = useState<string>("");
+  const [isAdding, setIsAdding] = useState(false);
+  const [currentDate, setCurrentDate] = useState<string | null>(null); // Состояние для даты
+
   const localRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   const selectedCategory = useCategoryStore((state) => state.selectedCategory); 
 
@@ -47,7 +53,6 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
     setSelectedRecord(record);
     setViewingRecord(true);
 
-    // Загружаем ассоциации для выбранной записи
     try {
       const fetchedAssociations = await fetchAssociationsById(selectedCategory, record.id);
       setAssociations(fetchedAssociations);
@@ -57,10 +62,24 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
     }
   };
 
+  const handleNoRecordsClick = (day: number) => {
+    setCurrentDate(`${day}-${selectedMonth || ''}-${selectedYear || ''}`); 
+    setIsAdding(true);
+  };
+
+  const renderAddForm = () => {
+    if (isAdding) {
+      return <AddDreams current_data={currentDate} />;
+    }
+    return null;
+  };
+
   const handleBackClick = () => {
     setSelectedRecord(null);
     setViewingRecord(false);
     setAssociations(""); 
+    setIsAdding(false); 
+    setCurrentDate(null); 
   };
 
   const renderDays = () => {
@@ -78,7 +97,9 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
               ))}
             </div>
           ) : (
-            <div className={styles.noRecords}>Нет записей</div>
+            <div className={styles.noRecords} onClick={() => handleNoRecordsClick(day)}>
+              Нет записей. Нажмите, чтобы добавить.
+            </div>
           )}
         </div>
       );
@@ -110,11 +131,11 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
         <button onClick={onClose} className={styles.closeButton}>×</button>
         {viewingRecord ? renderSelectedRecord() : (
           <>
-            <h3>{selectedYear}</h3>
-            <h4>{selectedMonth}</h4>
+            <h3>{selectedYear} - {selectedMonth}</h3>
             <div className={styles.daysContainer}>
               {renderDays()}
             </div>
+            {renderAddForm()}
           </>
         )}
       </div>
@@ -122,4 +143,4 @@ const Modal = forwardRef<HTMLDivElement, ModalProps>(function Modal({
   );
 });
 
-export default Modal;
+export default Modal
